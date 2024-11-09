@@ -46,7 +46,7 @@
   "abilities.reignofnether.summon_vexes.tooltip2": "施法一段時間後召喚 %d 隻惱鬼攻擊喚魔者的目標。",
   "abilities.reignofnether.summon_vexes.tooltip3": "惱鬼會在 %d 秒後死亡。",
   "abilities.reignofnether.connect_portal": "連接傳送門",
-  "abilities.reignofnether.connect_portal.tooltip1": "連接到其它您建造的運輸傳送門。",
+  "abilities.reignofnether.connect_portal.tooltip1": "連接到其他您建造的運輸傳送門。",
   "abilities.reignofnether.connect_portal.tooltip2": "將會覆蓋之前的連接。",
   "abilities.reignofnether.connect_porta.error1": "目標必須是您建造完成的運輸傳送門。",
   "abilities.reignofnether.disconnect_portal": "解除連接",
