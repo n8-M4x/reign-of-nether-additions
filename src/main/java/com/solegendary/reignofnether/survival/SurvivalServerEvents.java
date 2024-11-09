@@ -21,6 +21,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -35,6 +36,10 @@ public class SurvivalServerEvents {
     private static Difficulty difficulty = Difficulty.EASY;
     private static final ArrayList<LivingEntity> enemies = new ArrayList<>();
     private static final int STARTING_EXTRA_SECONDS = 1200; // extra time for all difficulties on wave 1
+    private static final String MONSTER_OWNER_NAME = "Monsters";
+    private static final String PIGLIN_OWNER_NAME = "Piglins";
+    private static final String VILLAGER_OWNER_NAME = "Illagers";
+    private static final List<String> ENEMY_OWNER_NAMES = List.of(MONSTER_OWNER_NAME, PIGLIN_OWNER_NAME, VILLAGER_OWNER_NAME);
 
     private static long lastTime = -1;
 
@@ -51,6 +56,10 @@ public class SurvivalServerEvents {
 
         if (lastTime < 0) {
             lastTime = normTime;
+            return;
+        }
+        if (!isStarted()) {
+            setToStartingTime();
             return;
         }
 
@@ -73,43 +82,52 @@ public class SurvivalServerEvents {
     public static void onRegisterCommand(RegisterCommandsEvent evt) {
         evt.getDispatcher().register(Commands.literal("debug-end-wave")
                 .executes((command) -> {
+                    PlayerServerEvents.sendMessageToAllPlayers("Ending current wave");
                     for (LivingEntity entity : enemies)
                         entity.kill();
                     return 1;
                 }));
         evt.getDispatcher().register(Commands.literal("debug-reset")
                 .executes((command) -> {
+                    PlayerServerEvents.sendMessageToAllPlayers("Resetting back to wave 1");
                     resetWaves();
                     return 1;
                 }));
         evt.getDispatcher().register(Commands.literal("rts-wave-survival").then(Commands.literal("enable")
                 .executes((command) -> {
+                    PlayerServerEvents.sendMessageToAllPlayers("Enabled wave survival mode");
+                    PlayerServerEvents.sendMessageToAllPlayers("Difficulty: " + difficulty.name());
+                    PlayerServerEvents.sendMessageToAllPlayers("Time begins when the first building is placed");
                     setEnabled(true);
                     resetWaves();
                     return 1;
                 })));
         evt.getDispatcher().register(Commands.literal("difficulty").then(Commands.literal("easy")
-                .executes((command) -> {
-                    setDifficulty(Difficulty.EASY);
-                    return 1;
-                })));
+                .executes((command) -> setDifficulty(Difficulty.EASY))));
         evt.getDispatcher().register(Commands.literal("difficulty").then(Commands.literal("medium")
-                .executes((command) -> {
-                    setDifficulty(Difficulty.MEDIUM);
-                    return 1;
-                })));
+                .executes((command) -> setDifficulty(Difficulty.MEDIUM))));
         evt.getDispatcher().register(Commands.literal("difficulty").then(Commands.literal("hard")
-                .executes((command) -> {
-                    setDifficulty(Difficulty.HARD);
-                    return 1;
-                })));
+                .executes((command) -> setDifficulty(Difficulty.HARD))));
+    }
+
+    @SubscribeEvent
+    public static void onEntityJoin(EntityJoinLevelEvent evt) {
+        if (evt.getEntity() instanceof Unit unit &&
+                evt.getEntity() instanceof LivingEntity entity &&
+                !evt.getLevel().isClientSide &&
+                ENEMY_OWNER_NAMES.contains(unit.getOwnerName())) {
+
+            enemies.add(entity);
+            // TODO: sync with SurvivalClientEvents
+        }
     }
 
     @SubscribeEvent
     public static void onEntityLeave(EntityLeaveLevelEvent evt) {
-        if (evt.getEntity() instanceof Unit &&
-            evt.getEntity() instanceof LivingEntity entity &&
-            !evt.getLevel().isClientSide) {
+        if (evt.getEntity() instanceof Unit unit &&
+                evt.getEntity() instanceof LivingEntity entity &&
+                !evt.getLevel().isClientSide &&
+                ENEMY_OWNER_NAMES.contains(unit.getOwnerName())) {
 
             enemies.removeIf(e -> e.getId() == entity.getId());
             // TODO: sync with SurvivalClientEvents
@@ -124,8 +142,14 @@ public class SurvivalServerEvents {
     }
 
     // register here too for command blocks
-    public static void setDifficulty(Difficulty diff) {
-        difficulty = diff;
+    public static int setDifficulty(Difficulty diff) {
+        if (!isStarted()) {
+            setDifficulty(Difficulty.HARD);
+            PlayerServerEvents.sendMessageToAllPlayers("Difficulty set to: " + difficulty.name());
+        } else {
+            PlayerServerEvents.sendMessageToAllPlayers("Too late to change difficulty!");
+        }
+        return 1;
     }
 
     public static long getDifficultyTimeModifier() {
@@ -137,11 +161,19 @@ public class SurvivalServerEvents {
         };
     }
 
+    public static void setToStartingTime() {
+        serverLevel.setDayTime(TimeUtils.DAWN + getDifficultyTimeModifier());
+    }
+
     public static boolean isEnabled() { return isEnabled; }
 
     public static void setEnabled(boolean enable) {
         isEnabled = enable;
         // TODO: set max population to 1000
+    }
+
+    public static boolean isStarted() {
+        return !BuildingServerEvents.getBuildings().isEmpty();
     }
 
     public static List<LivingEntity> getCurrentEnemies() {
@@ -183,9 +215,11 @@ public class SurvivalServerEvents {
         Random random = new Random();
         List<Building> buildings = BuildingServerEvents.getBuildings();
         int remainingPop = nextWave.population;
+        if (buildings.isEmpty())
+            return;
 
         do {
-            Building building = BuildingServerEvents.getBuildings().get(random.nextInt(0, buildings.size()));
+            Building building = buildings.get(random.nextInt(0, buildings.size()));
             BlockPos centrePos = building.centrePos;
 
             int spawnAttempts = 0;
@@ -219,10 +253,10 @@ public class SurvivalServerEvents {
 
             EntityType<? extends Mob> monsterType = Wave.getRandomUnitOfTier(1);
 
-            ArrayList<Entity> entities = UnitServerEvents.spawnMobs(monsterType, serverLevel, spawnBp.above(), 1, "Monsters");
+            ArrayList<Entity> entities = UnitServerEvents.spawnMobs(monsterType, serverLevel, spawnBp.above(), 1, MONSTER_OWNER_NAME);
 
             for (Entity entity : entities) {
-                BotControls.startingCommand(entity);
+                BotControls.startingCommand(entity, MONSTER_OWNER_NAME);
                 if (entity instanceof Unit unit)
                     nextWave.population -= unit.getPopCost();
             }
