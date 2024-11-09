@@ -81,7 +81,7 @@ public class SurvivalServerEvents {
         lastTime = normTime;
     }
 
-    // register here too for command blocks
+    // TODO: change these to GUI buttons
     @SubscribeEvent
     public static void onRegisterCommand(RegisterCommandsEvent evt) {
         evt.getDispatcher().register(Commands.literal("debug-end-wave")
