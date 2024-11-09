@@ -1,8 +1,6 @@
 package com.solegendary.reignofnether.votesystem;
 
-import java.util.Map;
-
-import java.util.Map;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
@@ -10,7 +8,8 @@ public class MapData {
     private String name;
     private int players;
     private String description;
-    private Map<String, Object> gamerules; // Change to Map<String, Object>
+    @Nullable
+    private Map<String, Object> gamerules; // Made nullable
     private String image;
 
     public MapData(String name, int players, String description, Map<String, Object> gamerules, String image) {
@@ -28,4 +27,3 @@ public class MapData {
     public Map<String, Object> getGamerules() { return gamerules; }
     public String getImage() { return image; }
 }
-

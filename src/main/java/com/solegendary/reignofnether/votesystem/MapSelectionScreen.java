@@ -1,17 +1,13 @@
 package com.solegendary.reignofnether.votesystem;
 
-import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.solegendary.reignofnether.ReignOfNether;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.Resource;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
 
 public class MapSelectionScreen extends Screen {
@@ -124,22 +120,15 @@ public class MapSelectionScreen extends Screen {
             int y = startY;
 
             // Load and render map thumbnail
-            Path configPath = new File("config/mapvote/" + map.getImage()).toPath();
             int thumbnailHeight = 0;
-            if (Files.exists(configPath)) {
-                try {
-                    NativeImage nativeImage = NativeImage.read(Files.newInputStream(configPath));
-                    DynamicTexture dynamicTexture = new DynamicTexture(nativeImage);
-                    ResourceLocation dynamicLoc = this.minecraft.getTextureManager().register("map_" + i, dynamicTexture);
-                    RenderSystem.setShaderTexture(0, dynamicLoc);
-                    thumbnailHeight = 100;
-                    blit(poseStack, x, y, 0, 0, thumbnailWidth, thumbnailHeight, thumbnailWidth, thumbnailHeight);
-                } catch (IOException e) {
-                    System.err.println("Failed to load image for map: " + map.getName() + " from path: " + configPath);
-                    e.printStackTrace();
-                }
+            ResourceLocation rl = new ResourceLocation(ReignOfNether.MOD_ID, "textures/mapvote/" + map.getImage());
+            Optional<Resource> imageOptional = minecraft.getResourceManager().getResource(rl);
+            if(imageOptional.isPresent()) {
+                RenderSystem.setShaderTexture(0, rl);
+                thumbnailHeight = 100;
+                blit(poseStack, x, y, 0, 0, thumbnailWidth, thumbnailHeight, thumbnailWidth, thumbnailHeight);
             } else {
-                System.err.println("Image file does not exist for map: " + map.getName() + " at path: " + configPath);
+                System.err.println("Image file does not exist for map: " + map.getName() + " at path: textures/mapvote/" + map.getImage());
             }
 
             // Render map information
