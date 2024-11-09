@@ -123,7 +123,7 @@
 
   "building.reignofnether.outside_map": "距離地圖邊界過近或超出",
   "building.reignofnether.ground_not_flat": "地面不夠平坦",
-  "building.reignofnether.too_close": "太靠近其它建築物",
+  "building.reignofnether.too_close": "太靠近其他建築物",
   "building.reignofnether.must_be_nether": "必須建造在地獄地形上",
   "building.reignofnether.must_be_liquid": "必須建造在水域或熔岩上",
   "building.reignofnether.unexplored": "區域未探索",
