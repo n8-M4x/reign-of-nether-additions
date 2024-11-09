@@ -332,7 +332,7 @@
   "server.reignofnether.lost_all": "失去所有單位和建築物",
   "server.reignofnether.players_remaining": "還剩下 %d 名 RTS 玩家",
   "server.reignofnether.victorious": "%s 獲勝了！",
-  "server.reignofnether.match_reset": "本局已重置！",
+  "server.reignofnether.match_reset": "本局已重設！",
   "server.reignofnether.match_locked": "本局 RTS 已鎖定，新玩家暫時無法加入。",
   "server.reignofnether.match_unlocked": "本局 RTS 已解鎖，新玩家可以加入。",
   "server.reignofnether.sync_enabled": "RTS 登入資料同步已啟用。",
