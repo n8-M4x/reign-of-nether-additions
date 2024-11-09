@@ -276,7 +276,7 @@
   "fogofwar.reignofnether.experimental": "您即將為所有玩家啟用戰爭迷霧。該實驗性功能有以下問題：",
   "fogofwar.reignofnether.optifine_crash": "- 所有安裝 OPTIFINE 的玩家會崩潰",
   "fogofwar.reignofnether.chunk_bugs": "- 可能會導致區塊繪製錯誤",
-  "fogofwar.reignofnether.cpu_usage": "- 增加 CPU 使用率（降低區塊渲染距離有緩解）",
+  "fogofwar.reignofnether.cpu_usage": "- 增加 CPU 使用率（降低區塊顯示距離有緩解）",
   "fogofwar.reignofnether.to_confirm": "再次輸入 /rts-fog enable 確認啟用戰爭迷霧。",
 
   "hud.buttons.reignofnether.on_cooldown": "此能力仍在冷卻中",
