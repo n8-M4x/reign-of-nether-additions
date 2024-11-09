@@ -247,7 +247,7 @@
   "buildings.villagers.reignofnether.watchtower.tooltip3": "最多能駐紮 %d 名單位。",
   "buildings.villagers.reignofnether.wheat_farm": "小麥農田",
   "buildings.villagers.reignofnether.wheat_farm.tooltip1": "\uE001  %d  +  %d（每種植一株作物）",
-  "buildings.villagers.reignofnether.wheat_farm.tooltip2": "一片小麥田，可以種植收獲食物。",
+  "buildings.villagers.reignofnether.wheat_farm.tooltip2": "一片小麥田，可以種植收穫食物。",
   "buildings.villagers.reignofnether.wheat_farm.tooltip3": "工人單位會自動消耗木材重新種植。",
 
   "commands.reignofnether.toggle_fow": "%s - 切換所有玩家戰爭迷霧",
