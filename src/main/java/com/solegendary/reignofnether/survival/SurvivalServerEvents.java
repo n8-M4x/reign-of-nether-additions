@@ -5,6 +5,8 @@ import com.solegendary.reignofnether.building.Building;
 import com.solegendary.reignofnether.building.BuildingServerEvents;
 import com.solegendary.reignofnether.building.BuildingUtils;
 import com.solegendary.reignofnether.player.PlayerServerEvents;
+import com.solegendary.reignofnether.sounds.SoundAction;
+import com.solegendary.reignofnether.sounds.SoundClientboundPacket;
 import com.solegendary.reignofnether.time.TimeUtils;
 import com.solegendary.reignofnether.unit.UnitServerEvents;
 import com.solegendary.reignofnether.unit.interfaces.Unit;
@@ -36,10 +38,10 @@ public class SurvivalServerEvents {
     private static Difficulty difficulty = Difficulty.EASY;
     private static final ArrayList<LivingEntity> enemies = new ArrayList<>();
     private static final int STARTING_EXTRA_SECONDS = 1200; // extra time for all difficulties on wave 1
-    private static final String MONSTER_OWNER_NAME = "Monsters";
-    private static final String PIGLIN_OWNER_NAME = "Piglins";
-    private static final String VILLAGER_OWNER_NAME = "Illagers";
-    private static final List<String> ENEMY_OWNER_NAMES = List.of(MONSTER_OWNER_NAME, PIGLIN_OWNER_NAME, VILLAGER_OWNER_NAME);
+    public static final String MONSTER_OWNER_NAME = "Monsters";
+    public static final String PIGLIN_OWNER_NAME = "Piglins";
+    public static final String VILLAGER_OWNER_NAME = "Illagers";
+    public static final List<String> ENEMY_OWNER_NAMES = List.of(MONSTER_OWNER_NAME, PIGLIN_OWNER_NAME, VILLAGER_OWNER_NAME);
 
     private static long lastTime = -1;
 
@@ -48,8 +50,10 @@ public class SurvivalServerEvents {
     // raise speed of day if
     @SubscribeEvent
     public static void onLevelTick(TickEvent.LevelTickEvent evt) {
-        if (evt.level.isClientSide() || evt.phase != TickEvent.Phase.END)
+        if (evt.level.isClientSide() || evt.phase != TickEvent.Phase.END || !isEnabled())
             return;
+
+        serverLevel = (ServerLevel) evt.level;
 
         long time = evt.level.getDayTime();
         long normTime = TimeUtils.normaliseTime(evt.level.getDayTime());
@@ -69,12 +73,12 @@ public class SurvivalServerEvents {
         }
         else if (lastTime <= TimeUtils.DUSK && normTime > TimeUtils.DUSK) {
             PlayerServerEvents.sendMessageToAllPlayers(I18n.get("survival.reignofnether.dusk"), true);
+            SoundClientboundPacket.playSoundOnClient(SoundAction.RANDOM_CAVE_AMBIENCE);
             startNextWave();
             ((ServerLevel) evt.level).setDayTime(time + getDifficultyTimeModifier());
         }
 
         lastTime = normTime;
-        serverLevel = (ServerLevel) evt.level;
     }
 
     // register here too for command blocks
@@ -93,20 +97,20 @@ public class SurvivalServerEvents {
                     resetWaves();
                     return 1;
                 }));
-        evt.getDispatcher().register(Commands.literal("rts-wave-survival").then(Commands.literal("enable")
+        evt.getDispatcher().register(Commands.literal("rts-waves").then(Commands.literal("start")
                 .executes((command) -> {
                     PlayerServerEvents.sendMessageToAllPlayers("Enabled wave survival mode");
-                    PlayerServerEvents.sendMessageToAllPlayers("Difficulty: " + difficulty.name());
+                    PlayerServerEvents.sendMessageToAllPlayers("Difficulty: " + difficulty.name() + " (Change with /rts-difficulty)");
                     PlayerServerEvents.sendMessageToAllPlayers("Time begins when the first building is placed");
                     setEnabled(true);
                     resetWaves();
                     return 1;
                 })));
-        evt.getDispatcher().register(Commands.literal("difficulty").then(Commands.literal("easy")
+        evt.getDispatcher().register(Commands.literal("rts-difficulty").then(Commands.literal("easy")
                 .executes((command) -> setDifficulty(Difficulty.EASY))));
-        evt.getDispatcher().register(Commands.literal("difficulty").then(Commands.literal("medium")
+        evt.getDispatcher().register(Commands.literal("rts-difficulty").then(Commands.literal("medium")
                 .executes((command) -> setDifficulty(Difficulty.MEDIUM))));
-        evt.getDispatcher().register(Commands.literal("difficulty").then(Commands.literal("hard")
+        evt.getDispatcher().register(Commands.literal("rts-difficulty").then(Commands.literal("hard")
                 .executes((command) -> setDifficulty(Difficulty.HARD))));
     }
 
@@ -143,9 +147,11 @@ public class SurvivalServerEvents {
 
     // register here too for command blocks
     public static int setDifficulty(Difficulty diff) {
-        if (!isStarted()) {
+        if (!isStarted() && isEnabled()) {
             setDifficulty(Difficulty.HARD);
             PlayerServerEvents.sendMessageToAllPlayers("Difficulty set to: " + difficulty.name());
+        } else if (!isEnabled()) {
+            PlayerServerEvents.sendMessageToAllPlayers("You are not playing Wave Survival.");
         } else {
             PlayerServerEvents.sendMessageToAllPlayers("Too late to change difficulty!");
         }
@@ -173,7 +179,8 @@ public class SurvivalServerEvents {
     }
 
     public static boolean isStarted() {
-        return !BuildingServerEvents.getBuildings().isEmpty();
+        return !BuildingServerEvents.getBuildings().isEmpty() &&
+                !PlayerServerEvents.rtsPlayers.isEmpty();
     }
 
     public static List<LivingEntity> getCurrentEnemies() {

@@ -1,5 +1,6 @@
 package com.solegendary.reignofnether.sounds;
 
 public enum SoundAction {
-    USE_PORTAL
+    USE_PORTAL,
+    RANDOM_CAVE_AMBIENCE
 }
