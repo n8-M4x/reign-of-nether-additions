@@ -471,7 +471,7 @@
   "tutorial.reignofnether.syncing": "/rts-syncing enable | disable",
   "tutorial.reignofnether.reset": "/rts-reset",
   "tutorial.reignofnether.sync_disabled1": "RTS 同步已停用，您無法選擇建築物或檢視單位所屬。",
-  "tutorial.reignofnether.sync_disabled2": "要解決這個問題，請聯系伺服器主啟用 RTS 同步並重新登入。",
+  "tutorial.reignofnether.sync_disabled2": "要解決這個問題，請聯絡伺服器主啟用 RTS 同步並重新登入。",
   "tutorial.reignofnether.server_not_found": "載入教學失敗，無法找到伺服器。",
   "tutorial.reignofnether.resuming": "歡迎回來…載入教學 %s 階段",
   "tutorial.reignofnether.skipping": "跳過教學階段…您目前於 %s 階段",
