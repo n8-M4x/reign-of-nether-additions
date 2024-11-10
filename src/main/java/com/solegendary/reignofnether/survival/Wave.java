@@ -23,12 +23,14 @@ public class Wave {
 
     public static Wave getWave(int number) {
         if (number <= 0)
-            return Wave.getWave(0);
-        if (number > WAVES.size())
-            return Wave.getWave(WAVES.size() - 1);
+            return null; // Return null or throw an exception for invalid wave numbers.
 
-        return WAVES.get(number - 1);
+        if (number > WAVES.size())
+            return WAVES.get(WAVES.size() - 1); // Return the last wave if number exceeds available waves.
+
+        return WAVES.get(number - 1); // Return the requested wave (index adjusted by 1).
     }
+
 
     public static EntityType<? extends Mob> getRandomUnitOfTier(int tier) {
         return random.nextBoolean() ? TIER_1_UNITS.get(0) : TIER_1_UNITS.get(1);
