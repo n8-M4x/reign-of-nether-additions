@@ -16,6 +16,7 @@ Features
     - need to make sure enemies don't spawn too close to your buildings
     - might need improved pathfinding
         - for now, just keep repeating attack move commands
+        - can use boobcat's pathfinding improvements for enemies by default
     - each day length depends on difficulty
         - 10mins - easy (same as vanilla length)
         - 8mins - medium
@@ -86,6 +87,8 @@ Quality of Life Features
     - Will need a new flatten zone object (no need to save it)
 
 [❌] Amethyst is now mineable, and regenerates automatically after 1min
+
+[❌] Getters and Setters for unit stats
 
 
 

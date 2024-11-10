@@ -668,7 +668,7 @@
     "units.monsters.reignofnether.spider.tooltip2": "Can be upgraded to allow skeletons to ride them.",
     "units.monsters.reignofnether.spider.tooltip3": "Spiders move much more slowly under sunlight.",
     "units.monsters.reignofnether.stray": "Stray",
-    "units.monsters.reignofnether.stray.tooltip1": "An chilling variant of the skeleton that fires slowing arrows.",
+    "units.monsters.reignofnether.stray.tooltip1": "A chilling variant of the skeleton that fires slowing arrows.",
     "units.monsters.reignofnether.stray.tooltip2": "Strays will burn under sunlight.",
     "units.monsters.reignofnether.stray.tooltip3": "Requires an upgrade at the Laboratory.",
     "units.monsters.reignofnether.warden": "Warden",
@@ -731,6 +731,7 @@
 
     "survival.reignofnether.dawn": "Dawn breaks",
     "survival.reignofnether.dusk": "Night falls...",
+    "survival.reignofnether.dusksoon": "Sunlight is fading.",
 
     "block.reignofnether.decayable_nether_wart_block": "Decayable Nether Wart Block",
     "block.reignofnether.decayable_warped_wart_block": "Decayable Warped Wart Block",

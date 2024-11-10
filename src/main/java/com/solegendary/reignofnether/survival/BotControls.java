@@ -10,9 +10,7 @@ import com.solegendary.reignofnether.unit.units.monsters.ZombiePiglinUnit;
 import com.solegendary.reignofnether.unit.units.monsters.ZombieUnit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -20,25 +18,23 @@ import java.util.List;
 // only used serverside
 public class BotControls {
 
-    private static final String MONSTERS = "Monsters";
-
     // done on spawn
-    public static void startingCommand(Entity entity) {
+    public static void startingCommand(Entity entity, String ownerName) {
         if (entity instanceof AttackerUnit unit) {
             ((Unit) unit).resetBehaviours();
 
             if (entity instanceof ZombieUnit ||
                 entity instanceof ZombiePiglinUnit)
-                attackMoveNearestBuilding(unit);
+                attackMoveNearestBuilding(unit, ownerName);
         }
     }
 
     // done every few ticks
-    public static void reactionCommand(Entity entity) {
+    public static void reactionCommand(Entity entity, String ownerName) {
 
     }
 
-    private static void attackMoveNearestBuilding(AttackerUnit unit) {
+    private static void attackMoveNearestBuilding(AttackerUnit unit, String ownerName) {
         Entity entity = (Entity) unit;
         List<Building> buildings = BuildingServerEvents.getBuildings().stream()
                     .sorted(Comparator.comparing(b -> b.centrePos.distToCenterSqr(entity.getEyePosition())))
@@ -49,15 +45,15 @@ public class BotControls {
             targetBp = buildings.get(0).centrePos;
 
         if (targetBp != null)
-            UnitServerEvents.addActionItem(MONSTERS, UnitAction.ATTACK_MOVE, -1,
+            UnitServerEvents.addActionItem(ownerName, UnitAction.ATTACK_MOVE, -1,
                     new int[]{entity.getId()},  targetBp, new BlockPos(0,0,0));
     }
 
-    private static void attackMoveNearestUnit(AttackerUnit unit) {
+    private static void attackMoveNearestUnit(AttackerUnit unit, String ownerName) {
 
     }
 
-    private static void attackNearestWorker(AttackerUnit unit) {
+    private static void attackNearestWorker(AttackerUnit unit, String ownerName) {
 
     }
 }

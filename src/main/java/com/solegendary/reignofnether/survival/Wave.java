@@ -23,9 +23,9 @@ public class Wave {
 
     public static Wave getWave(int number) {
         if (number <= 0)
-            return Wave.getWave(0);
+            return WAVES.get(0);
         if (number > WAVES.size())
-            return Wave.getWave(WAVES.size() - 1);
+            return WAVES.get(WAVES.size() - 1);
 
         return WAVES.get(number - 1);
     }
