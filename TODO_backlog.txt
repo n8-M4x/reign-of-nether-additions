@@ -88,6 +88,8 @@ Quality of Life Features
 
 [❌] Amethyst is now mineable, and regenerates automatically after 1min
 
+[❌] Getters and Setters for unit stats
+
 
 
 Balancing

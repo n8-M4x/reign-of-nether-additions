@@ -254,8 +254,8 @@ public class SurvivalServerEvents {
             serverLevel.setDayTime(TimeUtils.DAWN + 10);
 
         } else {
-            PlayerServerEvents.sendMessageToAllPlayers("The prolonged battle has the next night come sooner (-" +
-                    TimeUtils.getTimeStrFromTicks(ticksToClearInv) + ")", true);
+            PlayerServerEvents.sendMessageToAllPlayers("The prolonged battle means the next night comes sooner (-" +
+                    TimeUtils.getTimeStrFromTicks(Math.abs(ticksToClearInv)) + ")", true);
             serverLevel.setDayTime(TimeUtils.DAWN - ticksToClearInv);
         }
         ticksToClearLastWave = 0;
