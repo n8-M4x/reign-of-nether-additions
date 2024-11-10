@@ -233,7 +233,7 @@ public class TutorialClientEvents {
     }
 
     @SubscribeEvent
-    public static void TickEvent(TickEvent.ClientTickEvent evt) {
+    public static void onClientTick(TickEvent.ClientTickEvent evt) {
         if (evt.phase != TickEvent.Phase.END || MC.isPaused() || !isEnabled() || !OrthoviewClientEvents.isEnabled()) {
             return;
         }

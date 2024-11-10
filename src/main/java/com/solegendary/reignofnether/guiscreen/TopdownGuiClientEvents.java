@@ -29,6 +29,9 @@ public class TopdownGuiClientEvents {
     // if no other screen is open and we've got orthoview enabled, open a screen based on shouldPause
     @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent evt) {
+        if (evt.phase != TickEvent.Phase.END)
+            return;
+
         if (OrthoviewClientEvents.isEnabled() && Minecraft.getInstance().screen == null) {
             noScreenTicks += 1;
             if (noScreenTicks >= 3) {
