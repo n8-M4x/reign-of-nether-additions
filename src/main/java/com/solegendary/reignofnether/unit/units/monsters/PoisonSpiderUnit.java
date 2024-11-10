@@ -179,6 +179,15 @@ public class PoisonSpiderUnit extends CaveSpider implements Unit, AttackerUnit {
                 spinWebs.tick(level);
     }
 
+    @Override
+    public void kill() {
+        super.kill();
+
+        for (Ability ability : this.getAbilities())
+            if (ability instanceof SpinWebs spinWebs)
+                spinWebs.delayedRemoveWebs(level);
+    }
+
     public void initialiseGoals() {
         this.usePortalGoal = new UsePortalGoal(this);
         this.moveGoal = new MoveToTargetBlockGoal(this, false, 0);

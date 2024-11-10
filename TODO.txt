@@ -45,17 +45,16 @@ Bugfixes
 [❌] Fixed crash related to Hiding Leaves
 [❌] Fixed crash related to Ranged units attacking buildings
 [❌] Fixed crash related to pressing Tab on a group of units
-[❌] Fixed enchantment icons
 
 [❌] The world generation datapack is now hardcoded into the mod by default
     - as a world gen option like superflat
+[🟡] Fixed enchantment icons
 [🟡] The clock button no longer shows up in unexpected places like the title screen
 [🟡] Fixed issue of being kicked from the official server when switching instances (eg. between a game and the lobby)
-[❌] Reduce melee unit repathing rate if out of melee range
-    - "Made melee unit pathing slightly dumber to improve performance by a lot (they still chase slower units correctly)"
+[🟡] Improved melee unit pathing performance
+[🟡] Blazes no longer die in the rain
+[🟡] Spider webs stay forever if the spider dies before they decay
 [❌] Central portals sometimes do not ignite (and this somehow makes grunts spawn underground)
-[❌] Spider webs stay forever if the spider dies before they decay
-
 
 
 Quality of Life Features
@@ -68,11 +67,10 @@ Quality of Life Features
 [❌] The thereisnospoon cheatcode to modify max population is now /gamerule maxpopulation <value>
 [🟡] Added saved UUID data for all units
 [❌] Leaving F12 will now more reliably set you to spectator mode if you were in spectator previously
-[🟡] Verified that
 
 Balancing
 ---------
-[🟡] Build times with more than 1 worker are now slightly slower (now is the same speeds as AOE2)
+[🟡] All build times with 2+ workers are slower (you need 1 more worker now)
 
 Villagers
 [🟡] Vindicators and Pillagers: -5 food

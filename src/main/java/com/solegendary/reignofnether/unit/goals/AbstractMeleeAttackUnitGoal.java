@@ -114,7 +114,12 @@ public abstract class AbstractMeleeAttackUnitGoal extends Goal {
                 if (ticksUntilNextPathRecalculation <= 0) {
                     Path path = mob.getNavigation().createPath(target.getX(), target.getY(), target.getZ(), 0);
                     this.mob.getNavigation().moveTo(path, Unit.getSpeedModifier((Unit) this.mob));
-                    ticksUntilNextPathRecalculation = tickPathRecalcMax;
+                    if (d0 < 16)
+                        ticksUntilNextPathRecalculation = tickPathRecalcMax;
+                    else if (d0 < 64)
+                        ticksUntilNextPathRecalculation = tickPathRecalcMax * 2;
+                    else
+                        ticksUntilNextPathRecalculation = tickPathRecalcMax * 4;
                 } else {
                     ticksUntilNextPathRecalculation -= 1;
                 }

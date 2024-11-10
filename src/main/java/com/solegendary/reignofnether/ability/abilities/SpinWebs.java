@@ -10,6 +10,7 @@ import com.solegendary.reignofnether.research.researchItems.ResearchSpiderWebs;
 import com.solegendary.reignofnether.research.researchItems.ResearchWitherClouds;
 import com.solegendary.reignofnether.resources.ResourceCost;
 import com.solegendary.reignofnether.unit.UnitAction;
+import com.solegendary.reignofnether.unit.UnitServerEvents;
 import com.solegendary.reignofnether.unit.interfaces.Unit;
 import com.solegendary.reignofnether.util.MiscUtil;
 import com.solegendary.reignofnether.util.MyMath;
@@ -32,6 +33,8 @@ import net.minecraft.world.phys.Vec3;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 public class SpinWebs extends Ability {
 
@@ -142,5 +145,13 @@ public class SpinWebs extends Ability {
         }
         for (WebBlock web : webs)
             web.tickAge += 1;
+    }
+
+    public void delayedRemoveWebs(Level level) {
+        CompletableFuture.delayedExecutor(DURATION_SECONDS, TimeUnit.SECONDS).execute(() -> {
+            for (WebBlock web : webs)
+                if (web.isPlaced && level.getBlockState(web.bp).getBlock() == Blocks.COBWEB)
+                    level.destroyBlock(web.bp, false);
+        });
     }
 }
