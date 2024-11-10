@@ -1,6 +1,7 @@
 package com.solegendary.reignofnether.building.buildings.monsters;
 
 import com.solegendary.reignofnether.building.*;
+import com.solegendary.reignofnether.building.buildings.villagers.Blacksmith;
 import com.solegendary.reignofnether.hud.AbilityButton;
 import com.solegendary.reignofnether.keybinds.Keybinding;
 import com.solegendary.reignofnether.keybinds.Keybindings;
@@ -11,6 +12,7 @@ import com.solegendary.reignofnether.ability.Ability;
 import com.solegendary.reignofnether.resources.ResourceCosts;
 import com.solegendary.reignofnether.ability.abilities.CallLightning;
 import com.solegendary.reignofnether.util.Faction;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
@@ -60,8 +62,10 @@ public class Laboratory extends ProductionBuilding {
                 ResearchStrays.getStartButton(this, Keybindings.keyE),
                 ResearchSpiderJockeys.getStartButton(this, Keybindings.keyR),
                 ResearchPoisonSpiders.getStartButton(this, Keybindings.keyT),
-                ResearchLabLightningRod.getStartButton(this, Keybindings.keyY),
-                ResearchSilverfish.getStartButton(this, Keybindings.keyU)
+                ResearchSpiderWebs.getStartButton(this, Keybindings.keyY),
+                ResearchLabLightningRod.getStartButton(this, Keybindings.keyU),
+                ResearchSilverfish.getStartButton(this, Keybindings.keyI),
+                ResearchSculkAmplifiers.getStartButton(this, Keybindings.keyO)
             );
             this.abilityButtons.add(callLightning.getButton(Keybindings.keyL));
         }
@@ -107,16 +111,19 @@ public class Laboratory extends ProductionBuilding {
             hotkey,
             () -> BuildingClientEvents.getBuildingToPlace() == Laboratory.class,
             () -> false,
-            () -> BuildingClientEvents.hasFinishedBuilding(Mausoleum.buildingName) ||
+            () -> (BuildingClientEvents.hasFinishedBuilding(Mausoleum.buildingName) &&
+                    BuildingClientEvents.hasFinishedBuilding(Graveyard.buildingName)) ||
                     ResearchClient.hasCheat("modifythephasevariance"),
             () -> BuildingClientEvents.setBuildingToPlace(Laboratory.class),
             null,
             List.of(
-                FormattedCharSequence.forward(Laboratory.buildingName, Style.EMPTY.withBold(true)),
+                FormattedCharSequence.forward(I18n.get("buildings.monsters.reignofnether.laboratory"), Style.EMPTY.withBold(true)),
                 ResourceCosts.getFormattedCost(cost),
                 FormattedCharSequence.forward("", Style.EMPTY),
-                FormattedCharSequence.forward("A sinister lab that can research new technologies", Style.EMPTY),
-                FormattedCharSequence.forward("based on the other buildings that have been built.", Style.EMPTY)
+                FormattedCharSequence.forward(I18n.get("buildings.monsters.reignofnether.laboratory.tooltip1"), Style.EMPTY),
+                FormattedCharSequence.forward(I18n.get("buildings.monsters.reignofnether.laboratory.tooltip2"), Style.EMPTY),
+                FormattedCharSequence.forward("", Style.EMPTY),
+                FormattedCharSequence.forward(I18n.get("buildings.monsters.reignofnether.laboratory.tooltip3"), Style.EMPTY)
             ),
             null
         );

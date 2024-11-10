@@ -25,6 +25,10 @@ public class SoundClientboundPacket {
         PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(),
                 new SoundClientboundPacket(soundAction, bp));
     }
+    public static void playSoundOnClient(SoundAction soundAction) {
+        PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(),
+                new SoundClientboundPacket(soundAction, new BlockPos(0,0,0)));
+    }
 
     public SoundClientboundPacket(SoundAction soundAction, BlockPos bp) {
         this.soundAction = soundAction;
@@ -48,7 +52,10 @@ public class SoundClientboundPacket {
         ctx.get().enqueueWork(() -> {
             DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
                     () -> () -> {
-                        SoundClientEvents.playSoundForAction(soundAction, bp);
+                        if (bp.equals(new BlockPos(0,0,0)))
+                            SoundClientEvents.playSoundForPlayer(soundAction);
+                        else
+                            SoundClientEvents.playSoundForAction(soundAction, bp);
                         success.set(true);
                     });
         });

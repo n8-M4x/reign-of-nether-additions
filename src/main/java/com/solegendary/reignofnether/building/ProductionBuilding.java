@@ -205,6 +205,7 @@ public abstract class ProductionBuilding extends Building {
                 case ResearchEvokerVexes.itemName -> prodItem = new ResearchEvokerVexes(building);
                 case ResearchGolemSmithing.itemName -> prodItem = new ResearchGolemSmithing(building);
                 case ResearchSilverfish.itemName -> prodItem = new ResearchSilverfish(building);
+                case ResearchSculkAmplifiers.itemName -> prodItem = new ResearchSculkAmplifiers(building);
                 case ResearchCastleFlag.itemName -> prodItem = new ResearchCastleFlag(building);
                 case ResearchRavagerCavalry.itemName -> prodItem = new ResearchRavagerCavalry(building);
                 case ResearchBruteShields.itemName -> prodItem = new ResearchBruteShields(building);
@@ -214,6 +215,8 @@ public abstract class ProductionBuilding extends Building {
                 case ResearchWitherClouds.itemName -> prodItem = new ResearchWitherClouds(building);
                 case ResearchAdvancedPortals.itemName -> prodItem = new ResearchAdvancedPortals(building);
                 case ResearchFireResistance.itemName -> prodItem = new ResearchFireResistance(building);
+                case ResearchGrandLibrary.itemName -> prodItem = new ResearchGrandLibrary(building);
+                case ResearchSpiderWebs.itemName -> prodItem = new ResearchSpiderWebs(building);
 
                 case ResearchPortalForCivilian.itemName -> prodItem = new ResearchPortalForCivilian(building);
                 case ResearchPortalForMilitary.itemName -> prodItem = new ResearchPortalForMilitary(building);

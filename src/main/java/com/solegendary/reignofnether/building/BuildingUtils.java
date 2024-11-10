@@ -11,6 +11,7 @@ import com.solegendary.reignofnether.building.buildings.villagers.OakBridge;
 import com.solegendary.reignofnether.building.buildings.villagers.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Rotation;
@@ -41,21 +42,6 @@ public class BuildingUtils {
         else
             return BuildingServerEvents.getBuildings().stream().map(b -> b.originPos).toList().contains(building.originPos) &&
                     building.getBlocksPlaced() < building.getBlocksTotal();
-    }
-
-    public static boolean isInRangeOfNightSource(Vec3 pos, boolean clientSide) {
-        List<Building> buildings = clientSide ? BuildingClientEvents.getBuildings() : BuildingServerEvents.getBuildings();
-        for (Building building : buildings) {
-            if (building.isDestroyedServerside)
-                continue;
-            if (building instanceof Mausoleum mausoleum)
-                if (BuildingUtils.getCentrePos(mausoleum.getBlocks()).distToCenterSqr(pos.x, pos.y, pos.z) < Math.pow(Mausoleum.nightRange, 2))
-                    return true;
-            if (building instanceof Stronghold stronghold && (stronghold.isBuilt || stronghold.isBuiltServerside))
-                if (BuildingUtils.getCentrePos(stronghold.getBlocks()).distToCenterSqr(pos.x, pos.y, pos.z) < Math.pow(Stronghold.nightRange, 2))
-                    return true;
-        }
-        return false;
     }
 
     public static boolean doesPlayerOwnCapitol(boolean isClientSide, String playerName) {
@@ -119,6 +105,7 @@ public class BuildingUtils {
             case TownCentre.buildingName -> building = new TownCentre(level, pos, rotation, ownerName);
             case IronGolemBuilding.buildingName -> building = new IronGolemBuilding(level, pos, rotation, ownerName);
             case Mausoleum.buildingName -> building = new Mausoleum(level, pos, rotation, ownerName);
+            case SculkCatalyst.buildingName -> building = new SculkCatalyst(level, pos, rotation, ownerName);
             case SpiderLair.buildingName -> building = new SpiderLair(level, pos, rotation, ownerName);
             case ArcaneTower.buildingName -> building = new ArcaneTower(level, pos, rotation, ownerName);
             case Library.buildingName -> building = new Library(level, pos, rotation, ownerName);
@@ -272,6 +259,23 @@ public class BuildingUtils {
             if (building instanceof NetherConvertingBuilding netherBuilding) {
                 double distSqr = bp.distSqr(building.centrePos);
                 if (distSqr <= Math.pow(netherBuilding.getMaxRange(), 2))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isWithinRangeOfMaxedCatalyst(LivingEntity entity) {
+        List<Building> buildings;
+        if (entity.level.isClientSide())
+            buildings = BuildingClientEvents.getBuildings();
+        else
+            buildings = BuildingServerEvents.getBuildings();
+
+        for (Building building : buildings) {
+            if (building instanceof SculkCatalyst sc && entity.distanceToSqr(Vec3.atCenterOf(sc.centrePos)) <
+                    SculkCatalyst.ESTIMATED_RANGE * SculkCatalyst.ESTIMATED_RANGE) {
+                if (sc.getUncappedNightRange() >= SculkCatalyst.nightRangeMax * 1.5f)
                     return true;
             }
         }

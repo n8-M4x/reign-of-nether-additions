@@ -3,6 +3,7 @@ package com.solegendary.reignofnether.hud.buttons;
 import com.solegendary.reignofnether.ReignOfNether;
 import com.solegendary.reignofnether.building.BuildingServerboundPacket;
 import com.solegendary.reignofnether.hud.Button;
+import com.solegendary.reignofnether.hud.HudClientEvents;
 import com.solegendary.reignofnether.keybinds.Keybinding;
 import com.solegendary.reignofnether.keybinds.Keybindings;
 import com.solegendary.reignofnether.orthoview.OrthoviewClientEvents;
@@ -11,6 +12,7 @@ import com.solegendary.reignofnether.unit.UnitClientEvents;
 import com.solegendary.reignofnether.unit.interfaces.WorkerUnit;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ChatScreen;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
@@ -41,7 +43,7 @@ public class HelperButtons {
                 MC.setScreen(new ChatScreen(""));
             },
             null,
-            List.of(FormattedCharSequence.forward("Chat (enter)", Style.EMPTY))
+            List.of(FormattedCharSequence.forward(I18n.get("hud.helperbuttons.reignofnether.chat"), Style.EMPTY))
     );
 
     private static int idleWorkerIndex = 0;
@@ -66,34 +68,29 @@ public class HelperButtons {
                             if (entity instanceof WorkerUnit) {
                                 UnitClientEvents.addSelectedUnit((LivingEntity) entity);
                             }
-                            idleWorkerIndex++;
-                        } else {
+                            idleWorkerIndex += 1;
+                        } else
                             idleWorkerIndex = 0; // Reset to zero if out of bounds
-                        }
                     }
                 } else {
-                    if (idleWorkerIndex >= idleWorkerIds.size() || idleWorkerIndex < 0) {
+                    if (idleWorkerIndex >= idleWorkerIds.size())
                         idleWorkerIndex = 0; // Reset to zero if out of bounds
-                    }
 
-                    if (idleWorkerIndex < idleWorkerIds.size()) {
-                        Entity entity = MC.level.getEntity(idleWorkerIds.get(idleWorkerIndex));
-                        if (entity instanceof WorkerUnit) {
-                            OrthoviewClientEvents.centreCameraOnPos(entity.getX(), entity.getZ());
-                            UnitClientEvents.clearSelectedUnits();
-                            UnitClientEvents.addSelectedUnit((LivingEntity) entity);
-                        }
-                        idleWorkerIndex++;
+                    Entity entity = MC.level.getEntity(idleWorkerIds.get(idleWorkerIndex));
+                    if (entity instanceof WorkerUnit) {
+                        OrthoviewClientEvents.centreCameraOnPos(entity.getX(), entity.getZ());
+                        UnitClientEvents.clearSelectedUnits();
+                        UnitClientEvents.addSelectedUnit((LivingEntity) entity);
                     }
+                    idleWorkerIndex += 1;
 
                     // Reset idleWorkerIndex if it exceeds the size after increment
-                    if (idleWorkerIndex >= idleWorkerIds.size()) {
+                    if (idleWorkerIndex >= idleWorkerIds.size())
                         idleWorkerIndex = 0;
-                    }
                 }
             },
             null,
-            List.of(FormattedCharSequence.forward("Idle workers", Style.EMPTY))
+            List.of(FormattedCharSequence.forward(I18n.get("hud.helperbuttons.reignofnether.idle_workers"), Style.EMPTY))
     );
 
     public static final Button buildingCancelButton = new Button(
@@ -109,7 +106,7 @@ public class HelperButtons {
                 hudSelectedBuilding = null;
             },
             null,
-            List.of(FormattedCharSequence.forward("Cancel", Style.EMPTY))
+            List.of(FormattedCharSequence.forward(I18n.get("hud.helperbuttons.reignofnether.cancel"), Style.EMPTY))
     );
 
     public static final Button armyButton = new Button(
@@ -130,8 +127,9 @@ public class HelperButtons {
                 UnitClientEvents.clearSelectedUnits();
                 for (LivingEntity militaryUnit : militaryUnits)
                     UnitClientEvents.addSelectedUnit(militaryUnit);
+                HudClientEvents.setLowestCdHudEntity();
             },
             null,
-            List.of(FormattedCharSequence.forward("Select all military units", Style.EMPTY))
+            List.of(FormattedCharSequence.forward(I18n.get("hud.helperbuttons.reignofnether.select_all_military_units"), Style.EMPTY))
     );
 }

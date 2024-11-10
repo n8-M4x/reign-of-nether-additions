@@ -21,9 +21,16 @@ public class SoundClientEvents {
             level.playSound(null, bp.getX(), bp.getY(), bp.getZ(), soundEvent, SoundSource.NEUTRAL, 1.0F, 1.0F);
     }
 
+    public static void playSoundForPlayer(SoundAction soundAction) {
+        Minecraft MC = Minecraft.getInstance();
+        if (MC.player != null)
+            MC.player.playSound(getSoundEvent(soundAction), 1.2f, 1.0f);
+    }
+
     private static SoundEvent getSoundEvent(SoundAction soundAction) {
         return switch (soundAction) {
             case USE_PORTAL ->  SoundEvents.ENDERMAN_TELEPORT;
+            case RANDOM_CAVE_AMBIENCE -> SoundEvents.AMBIENT_CAVE;
         };
     }
 }
