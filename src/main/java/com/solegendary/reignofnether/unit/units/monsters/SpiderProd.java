@@ -87,7 +87,7 @@ public class SpiderProd extends ProductionItem {
 
     public Button getCancelButton(ProductionBuilding prodBuilding, boolean first) {
         return new Button(
-                ResearchClient.hasResearch(ResearchPoisonSpiders.itemName) ? "Cave Spider" : "Spider",
+                ResearchClient.hasResearch(ResearchPoisonSpiders.itemName) ? "Poison Spider" : "Spider",
                 14,
                 getIcon(),
                 (Keybinding) null,

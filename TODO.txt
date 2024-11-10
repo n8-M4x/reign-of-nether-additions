@@ -30,9 +30,11 @@ Features
     - All strings in the mod are now translatable
     - If a string in your locale is not available, it will default to English
     - Due to an unforseen bug, you must restart your client when switching languages for it to take effect
-    - Languages completed so far are English (en_us) and Chinese (Simplified) (zh_cn)
-    - If you would like to contribute translations, please make a pull request to the Github here:
-        - https://github.com/SoLegendary/reignofnether/tree/1.19.2-dev/src/main/resources/assets/reignofnether/lang
+    - If you would like to contribute to translations, please see the #localisation channel and read the pinned post
+    - Completed languages are:
+        - English (en_us)
+        -
+
 
 
 Bugfixes
@@ -45,10 +47,10 @@ Bugfixes
 [❌] Fixed crash related to pressing Tab on a group of units
 [❌] Fixed enchantment icons
 
-
-[🟡] Fixed issue of being kicked from the official server when switching instances (eg. between a game and the lobby)
 [❌] The world generation datapack is now hardcoded into the mod by default
     - as a world gen option like superflat
+[🟡] The clock button no longer shows up in unexpected places like the title screen
+[🟡] Fixed issue of being kicked from the official server when switching instances (eg. between a game and the lobby)
 [❌] Reduce melee unit repathing rate if out of melee range
     - "Made melee unit pathing slightly dumber to improve performance by a lot (they still chase slower units correctly)"
 [❌] Central portals sometimes do not ignite (and this somehow makes grunts spawn underground)
@@ -66,7 +68,7 @@ Quality of Life Features
 [❌] The thereisnospoon cheatcode to modify max population is now /gamerule maxpopulation <value>
 [🟡] Added saved UUID data for all units
 [❌] Leaving F12 will now more reliably set you to spectator mode if you were in spectator previously
-
+[🟡] Verified that
 
 Balancing
 ---------
