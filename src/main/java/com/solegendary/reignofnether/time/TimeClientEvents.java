@@ -136,7 +136,7 @@ public class TimeClientEvents {
 
             FormattedCharSequence timeUntilStr = FormattedCharSequence.forward(I18n.get("time.reignofnether.time_until",
                 getTimeUntilStr(serverTime, isDay ? DUSK : DAWN),
-                isDay ? I18n.get("time.reignofnether.day") : I18n.get("time.reignofnether.night")
+                isDay ? I18n.get("time.reignofnether.night") : I18n.get("time.reignofnether.day")
             ), Style.EMPTY);
 
             FormattedCharSequence gameLengthStr = FormattedCharSequence.forward("", Style.EMPTY);
@@ -158,7 +158,6 @@ public class TimeClientEvents {
                     timeStr
                 ), Style.EMPTY),
                 timeUntilStr,
-                FormattedCharSequence.forward(timeStr, Style.EMPTY),
                 gameLengthStr,
                 FormattedCharSequence.forward(I18n.get("time.reignofnether.night_circles", nightCircleModeName),
                     Style.EMPTY
