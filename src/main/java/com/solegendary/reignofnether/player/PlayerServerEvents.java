@@ -495,8 +495,6 @@ public class PlayerServerEvents {
             playerDefaultGameModes.removeIf(p -> p.getFirst().equals(playerName));
             playerDefaultGameModes.add(new Pair<>(playerName, serverPlayer.gameMode.getGameModeForPlayer()));
 
-            System.out.println("default gamemode set to: " + serverPlayer.gameMode.getGameModeForPlayer());
-
             serverPlayer.setGameMode(GameType.CREATIVE); // could use spectator, but makes rendering less reliable
         } else {
             ReignOfNether.LOGGER.error("serverPlayer is null, cannot open topdown gui");
@@ -509,7 +507,6 @@ public class PlayerServerEvents {
         for (Pair<String, GameType> defaultGameMode : playerDefaultGameModes) {
             if (serverPlayer.getName().getString().equals(defaultGameMode.getFirst())) {
                 serverPlayer.setGameMode(defaultGameMode.getSecond());
-                System.out.println("gamemode set to: " + defaultGameMode.getSecond());
                 return;
             }
         }
