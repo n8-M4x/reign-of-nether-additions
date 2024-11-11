@@ -1,7 +1,7 @@
 package com.solegendary.reignofnether.registrars;
 
-import com.solegendary.reignofnether.Alliance.AllianceAddPacket;
-import com.solegendary.reignofnether.Alliance.AllianceRemovePacket;
+import com.solegendary.reignofnether.alliance.AllianceClientboundAddPacket;
+import com.solegendary.reignofnether.alliance.AllianceClientboundRemovePacket;
 import com.solegendary.reignofnether.ReignOfNether;
 import com.solegendary.reignofnether.ability.EnchantAbilityServerboundPacket;
 import com.solegendary.reignofnether.attackwarnings.AttackWarningClientboundPacket;
@@ -47,128 +47,128 @@ public final class PacketHandler {
 
         INSTANCE.messageBuilder(TopdownGuiServerboundPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
                 .encoder(TopdownGuiServerboundPacket::encode).decoder(TopdownGuiServerboundPacket::new)
-                .consumer(TopdownGuiServerboundPacket::handle).add();
+                .consumerNetworkThread(TopdownGuiServerboundPacket::handle).add();
 
         INSTANCE.messageBuilder(UnitActionServerboundPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
                 .encoder(UnitActionServerboundPacket::encode).decoder(UnitActionServerboundPacket::new)
-                .consumer(UnitActionServerboundPacket::handle).add();
+                .consumerNetworkThread(UnitActionServerboundPacket::handle).add();
 
         INSTANCE.messageBuilder(UnitActionClientboundPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder(UnitActionClientboundPacket::encode).decoder(UnitActionClientboundPacket::new)
-                .consumer(UnitActionClientboundPacket::handle).add();
+                .consumerNetworkThread(UnitActionClientboundPacket::handle).add();
 
         INSTANCE.messageBuilder(UnitConvertClientboundPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder(UnitConvertClientboundPacket::encode).decoder(UnitConvertClientboundPacket::new)
-                .consumer(UnitConvertClientboundPacket::handle).add();
+                .consumerNetworkThread(UnitConvertClientboundPacket::handle).add();
 
         INSTANCE.messageBuilder(UnitSyncClientboundPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder(UnitSyncClientboundPacket::encode).decoder(UnitSyncClientboundPacket::new)
-                .consumer(UnitSyncClientboundPacket::handle).add();
+                .consumerNetworkThread(UnitSyncClientboundPacket::handle).add();
 
         INSTANCE.messageBuilder(UnitSyncWorkerClientBoundPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder(UnitSyncWorkerClientBoundPacket::encode).decoder(UnitSyncWorkerClientBoundPacket::new)
-                .consumer(UnitSyncWorkerClientBoundPacket::handle).add();
+                .consumerNetworkThread(UnitSyncWorkerClientBoundPacket::handle).add();
 
         INSTANCE.messageBuilder(UnitIdleWorkerClientBoundPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder(UnitIdleWorkerClientBoundPacket::encode).decoder(UnitIdleWorkerClientBoundPacket::new)
-                .consumer(UnitIdleWorkerClientBoundPacket::handle).add();
+                .consumerNetworkThread(UnitIdleWorkerClientBoundPacket::handle).add();
 
         INSTANCE.messageBuilder(ResearchClientboundPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder(ResearchClientboundPacket::encode).decoder(ResearchClientboundPacket::new)
-                .consumer(ResearchClientboundPacket::handle).add();
+                .consumerNetworkThread(ResearchClientboundPacket::handle).add();
 
         INSTANCE.messageBuilder(PlayerServerboundPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
                 .encoder(PlayerServerboundPacket::encode).decoder(PlayerServerboundPacket::new)
-                .consumer(PlayerServerboundPacket::handle).add();
+                .consumerNetworkThread(PlayerServerboundPacket::handle).add();
 
         INSTANCE.messageBuilder(PlayerClientboundPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder(PlayerClientboundPacket::encode).decoder(PlayerClientboundPacket::new)
-                .consumer(PlayerClientboundPacket::handle).add();
+                .consumerNetworkThread(PlayerClientboundPacket::handle).add();
 
         INSTANCE.messageBuilder(FogOfWarClientboundPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder(FogOfWarClientboundPacket::encode).decoder(FogOfWarClientboundPacket::new)
-                .consumer(FogOfWarClientboundPacket::handle).add();
+                .consumerNetworkThread(FogOfWarClientboundPacket::handle).add();
 
         INSTANCE.messageBuilder(FogOfWarServerboundPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
                 .encoder(FogOfWarServerboundPacket::encode).decoder(FogOfWarServerboundPacket::new)
-                .consumer(FogOfWarServerboundPacket::handle).add();
+                .consumerNetworkThread(FogOfWarServerboundPacket::handle).add();
 
         INSTANCE.messageBuilder(FrozenChunkServerboundPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
                 .encoder(FrozenChunkServerboundPacket::encode).decoder(FrozenChunkServerboundPacket::new)
-                .consumer(FrozenChunkServerboundPacket::handle).add();
+                .consumerNetworkThread(FrozenChunkServerboundPacket::handle).add();
 
         INSTANCE.messageBuilder(FrozenChunkClientboundPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder(FrozenChunkClientboundPacket::encode).decoder(FrozenChunkClientboundPacket::new)
-                .consumer(FrozenChunkClientboundPacket::handle).add();
+                .consumerNetworkThread(FrozenChunkClientboundPacket::handle).add();
 
         INSTANCE.messageBuilder(BuildingServerboundPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
                 .encoder(BuildingServerboundPacket::encode).decoder(BuildingServerboundPacket::new)
-                .consumer(BuildingServerboundPacket::handle).add();
+                .consumerNetworkThread(BuildingServerboundPacket::handle).add();
 
         INSTANCE.messageBuilder(BuildingClientboundPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder(BuildingClientboundPacket::encode).decoder(BuildingClientboundPacket::new)
-                .consumer(BuildingClientboundPacket::handle).add();
+                .consumerNetworkThread(BuildingClientboundPacket::handle).add();
 
         INSTANCE.messageBuilder(ResourcesClientboundPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder(ResourcesClientboundPacket::encode).decoder(ResourcesClientboundPacket::new)
-                .consumer(ResourcesClientboundPacket::handle).add();
+                .consumerNetworkThread(ResourcesClientboundPacket::handle).add();
 
         INSTANCE.messageBuilder(AbilityClientboundPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder(AbilityClientboundPacket::encode).decoder(AbilityClientboundPacket::new)
-                .consumer(AbilityClientboundPacket::handle).add();
+                .consumerNetworkThread(AbilityClientboundPacket::handle).add();
 
         INSTANCE.messageBuilder(EnchantAbilityServerboundPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
                 .encoder(EnchantAbilityServerboundPacket::encode).decoder(EnchantAbilityServerboundPacket::new)
-                .consumer(EnchantAbilityServerboundPacket::handle).add();
+                .consumerNetworkThread(EnchantAbilityServerboundPacket::handle).add();
 
         INSTANCE.messageBuilder(TPSClientBoundPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder(TPSClientBoundPacket::encode).decoder(TPSClientBoundPacket::new)
-                .consumer(TPSClientBoundPacket::handle).add();
+                .consumerNetworkThread(TPSClientBoundPacket::handle).add();
 
         INSTANCE.messageBuilder(AttackWarningClientboundPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder(AttackWarningClientboundPacket::encode).decoder(AttackWarningClientboundPacket::new)
-                .consumer(AttackWarningClientboundPacket::handle).add();
+                .consumerNetworkThread(AttackWarningClientboundPacket::handle).add();
 
         INSTANCE.messageBuilder(SoundClientboundPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder(SoundClientboundPacket::encode).decoder(SoundClientboundPacket::new)
-                .consumer(SoundClientboundPacket::handle).add();
+                .consumerNetworkThread(SoundClientboundPacket::handle).add();
 
         INSTANCE.messageBuilder(TutorialClientboundPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder(TutorialClientboundPacket::encode).decoder(TutorialClientboundPacket::new)
-                .consumer(TutorialClientboundPacket::handle).add();
+                .consumerNetworkThread(TutorialClientboundPacket::handle).add();
 
         INSTANCE.messageBuilder(TutorialServerboundPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
                 .encoder(TutorialServerboundPacket::encode).decoder(TutorialServerboundPacket::new)
-                .consumer(TutorialServerboundPacket::handle).add();
+                .consumerNetworkThread(TutorialServerboundPacket::handle).add();
 
-        INSTANCE.messageBuilder(AllianceAddPacket.class, index++)
-                .encoder(AllianceAddPacket::toBytes)
-                .decoder(AllianceAddPacket::new)
-                .consumer(AllianceAddPacket::handle)
+        INSTANCE.messageBuilder(AllianceClientboundAddPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(AllianceClientboundAddPacket::toBytes)
+                .decoder(AllianceClientboundAddPacket::new)
+                .consumerNetworkThread(AllianceClientboundAddPacket::handle)
                 .add();
 
-        INSTANCE.messageBuilder(AllianceRemovePacket.class, index++)
-                .encoder(AllianceRemovePacket::toBytes)
-                .decoder(AllianceRemovePacket::new)
-                .consumer(AllianceRemovePacket::handle)
+        INSTANCE.messageBuilder(AllianceClientboundRemovePacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(AllianceClientboundRemovePacket::toBytes)
+                .decoder(AllianceClientboundRemovePacket::new)
+                .consumerNetworkThread(AllianceClientboundRemovePacket::handle)
                 .add();
       
         INSTANCE.messageBuilder(VotePacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
                 .encoder(VotePacket::encode)
                 .decoder(VotePacket::new)
-                .consumer(VotePacket::handle)
+                .consumerNetworkThread(VotePacket::handle)
                 .add();
 
         INSTANCE.messageBuilder(VoteSyncPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder(VoteSyncPacket::encode)
                 .decoder(VoteSyncPacket::new)
-                .consumer(VoteSyncPacket::handle)
+                .consumerNetworkThread(VoteSyncPacket::handle)
                 .add();
 
         INSTANCE.messageBuilder(ClientboundOpenVotenScreenPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder(ClientboundOpenVotenScreenPacket::encode)
                 .decoder(ClientboundOpenVotenScreenPacket::decode)
-                .consumer(ClientboundOpenVotenScreenPacket::handle)
+                .consumerNetworkThread(ClientboundOpenVotenScreenPacket::handle)
                 .add();
     }
 }

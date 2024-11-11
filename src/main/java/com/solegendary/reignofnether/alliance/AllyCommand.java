@@ -1,9 +1,10 @@
-package com.solegendary.reignofnether.Alliance;
+package com.solegendary.reignofnether.alliance;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.level.ServerPlayer;
@@ -37,11 +38,11 @@ public class AllyCommand {
     private static int ally(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayerOrException();
         ServerPlayer allyPlayer = EntityArgument.getPlayer(context, "player");
-
+        
         // Record the pending alliance
         pendingAlliances.put(allyPlayer.getName().getString(), player.getName().getString());
-        context.getSource().sendSuccess(Component.literal("Alliance request sent to " + allyPlayer.getName().getString() + "."), false);
-        allyPlayer.sendSystemMessage(Component.literal(player.getName().getString() + " wants to ally with you. Type /allyconfirm " + player.getName().getString() + " to confirm."));
+        context.getSource().sendSuccess(Component.translatable("alliance.reignofnether.sent_request", allyPlayer.getName().getString()), false);
+        allyPlayer.sendSystemMessage(Component.translatable("alliance.reignofnether.ally_confirm", player.getName().getString(), player.getName().getString()));
 
         return Command.SINGLE_SUCCESS;
     }
@@ -57,10 +58,10 @@ public class AllyCommand {
             AllianceSystem.addAlliance(player.getName().getString(), requesterPlayer.getName().getString());
             pendingAlliances.remove(player.getName().getString());
 
-            context.getSource().sendSuccess(Component.literal("You are now allied with " + requesterPlayer.getName().getString() + "."), false);
-            requesterPlayer.sendSystemMessage(Component.literal(player.getName().getString() + " has accepted your alliance request."));
+            context.getSource().sendSuccess(Component.translatable("alliance.reignofnether.now_allied", requesterPlayer.getName().getString()), false);
+            requesterPlayer.sendSystemMessage(Component.translatable("alliance.reignofnether.ally_accepted", player.getName().getString()));
         } else {
-            context.getSource().sendFailure(Component.literal("No pending alliance request from " + requesterPlayer.getName().getString() + "."));
+            context.getSource().sendFailure(Component.translatable("alliance.reignofnether.no_request", requesterPlayer.getName().getString()));
         }
 
         return Command.SINGLE_SUCCESS;
@@ -78,11 +79,11 @@ public class AllyCommand {
             // Check if still pending
             if (pendingDisbands.remove(playerId)) {
                 AllianceSystem.removeAlliance(player.getName().getString(), allyPlayer.getName().getString());
-                player.sendSystemMessage(Component.literal("Your alliance with " + allyPlayer.getName().getString() + " has been disbanded."));
+                player.sendSystemMessage(Component.translatable("alliance.reignofnether.disbanded", allyPlayer.getName().getString()));
             }
         }));
 
-        context.getSource().sendSuccess(Component.literal("Disbanding alliance with " + allyPlayer.getName().getString() + " in 30 seconds..."), false);
+        context.getSource().sendSuccess(Component.translatable("alliance.reignofnether.disbanding", allyPlayer.getName().getString()), false);
         return Command.SINGLE_SUCCESS;
     }
 }

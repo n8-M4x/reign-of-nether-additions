@@ -1322,6 +1322,9 @@ public class HudClientEvents {
                 .sorted(Comparator.comparing(HudClientEvents::getSimpleEntityName))
                 .toList());
 
+            if (entities.isEmpty())
+                return;
+
             if (Keybindings.shiftMod.isDown()) {
                 Collections.reverse(entities);
             }

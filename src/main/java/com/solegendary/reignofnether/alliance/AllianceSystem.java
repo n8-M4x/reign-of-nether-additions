@@ -1,4 +1,4 @@
-package com.solegendary.reignofnether.Alliance;
+package com.solegendary.reignofnether.alliance;
 
 import com.solegendary.reignofnether.registrars.PacketHandler;
 import net.minecraftforge.network.PacketDistributor;
@@ -12,7 +12,7 @@ public class AllianceSystem {
         alliances.computeIfAbsent(owner1, k -> new HashSet<>()).add(owner2);
         alliances.computeIfAbsent(owner2, k -> new HashSet<>()).add(owner1);
 
-        PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new AllianceAddPacket(owner1, owner2));
+        PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new AllianceClientboundAddPacket(owner1, owner2));
     }
 
     public static void removeAlliance(String owner1, String owner2) {
@@ -32,7 +32,7 @@ public class AllianceSystem {
             }
         }
 
-        PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new AllianceRemovePacket(owner1, owner2));
+        PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new AllianceClientboundRemovePacket(owner1, owner2));
     }
 
     public static boolean isAllied(String owner1, String owner2) {

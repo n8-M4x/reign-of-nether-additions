@@ -1,20 +1,20 @@
-package com.solegendary.reignofnether.Alliance;
+package com.solegendary.reignofnether.alliance;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class AllianceAddPacket {
+public class AllianceClientboundRemovePacket {
     private final String owner1;
     private final String owner2;
 
-    public AllianceAddPacket(String owner1, String owner2) {
+    public AllianceClientboundRemovePacket(String owner1, String owner2) {
         this.owner1 = owner1;
         this.owner2 = owner2;
     }
 
-    public AllianceAddPacket(FriendlyByteBuf buf) {
+    public AllianceClientboundRemovePacket(FriendlyByteBuf buf) {
         this.owner1 = buf.readUtf(32767);
         this.owner2 = buf.readUtf(32767);
     }
@@ -27,8 +27,8 @@ public class AllianceAddPacket {
     public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context context = contextSupplier.get();
         context.enqueueWork(() -> {
-            // Client-side handling of adding an alliance
-            AllianceSystem.addAlliance(owner1, owner2);
+            // Client-side handling of removing an alliance
+            AllianceSystem.removeAlliance(owner1, owner2);
         });
         return true;
     }

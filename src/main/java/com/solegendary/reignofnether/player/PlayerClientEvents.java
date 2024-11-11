@@ -1,5 +1,6 @@
 package com.solegendary.reignofnether.player;
 
+import com.solegendary.reignofnether.alliance.AllyCommand;
 import com.solegendary.reignofnether.building.Building;
 import com.solegendary.reignofnether.building.BuildingClientEvents;
 import com.solegendary.reignofnether.fogofwar.FogOfWarClientEvents;
@@ -17,6 +18,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.RegisterClientCommandsEvent;
 import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -32,6 +34,11 @@ public class PlayerClientEvents {
     public static boolean rtsLocked = false;
 
     public static boolean canStartRTS = true;
+
+    @SubscribeEvent
+    public static void onRegisterCommands(RegisterCommandsEvent evt) {
+        AllyCommand.register(evt.getDispatcher());
+    }
 
     @SubscribeEvent
     public static void onRegisterCommand(RegisterClientCommandsEvent evt) {

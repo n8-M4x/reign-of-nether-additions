@@ -44,32 +44,38 @@ Features
 
 Bugfixes
 --------
-[🟡] Fixed workers not actually working if they were too far out of view
-[🟡] Improved performance for all buildings
-[🟡] Fixed crash related to Hiding Leaves
-[🟡] Fixed crash related to Ranged units attacking buildings
-[🟡] Fixed crash related to pressing Tab on a group of units
-[🟡] Fixed enchantment icons
-[🟡] The clock button no longer shows up in unexpected places like the title screen
-[🟡] Fixed issue of being kicked from the official server when switching instances (eg. between a game and the lobby)
-[🟡] Improved melee unit pathing performance
-[🟡] Blazes no longer die in the rain
-[🟡] Spider webs no longer stay forever if the spider dies before they decay
-[🟡] Leaving F12 will now more reliably set you to spectator mode if you were in spectator previously
+[✔] Fixed workers not actually working if they were too far out of view
+[✔] Improved performance for all buildings
+[✔] Fixed crash related to Hiding Leaves
+[✔] Fixed crash related to Ranged units attacking buildings
+[✔] Fixed crash related to pressing Tab on neutral units
+[✔] Fixed enchantment icons
+[✔] The clock button no longer shows up in unexpected places like the title screen
+[✔] Fixed issue of being kicked from a server when switching instances (eg. between a game and lobby)
+[✔] Improved melee unit pathing performance
+[✔] Spider webs no longer stay forever if the spider dies before they decay
+[✔] Leaving F12 will now more reliably set you to spectator mode if you were in spectator previously
 
 Quality of Life Features
 ------------------------
-[🟡] The world generation datapack is now hardcoded into the mod by default
-[🟡] Improved performance for all units and buildings
+[✔] The world gen datapack is now hardcoded into the mod by default. As a reminder, this means:
+    - Ores are generated on the surface
+    - Flattened biome heights
+    - 4x normal randomTickSpeed
+    - No caves, mountains, jungles or other difficult biomes
+    - No insomnia
+    - No weather
+[✔] Improved performance for all units and buildings
 [🟡] Improved performance for Fog of War
-[🟡] The thereisnospoon cheatcode to modify max population is now /gamerule maxPopulation <value>
+[✔] The thereisnospoon cheatcode to modify max population is now /gamerule maxPopulation <value>
     - this also means it is saved to the game world
-[🟡] Added saved UUID data for all units
+[✔] Added saved UUID data for all units
 
 
 Balancing
 ---------
-[🟡] All build times with 2+ workers are slower (you need 1 more worker now)
+[✔] All build times with 2+ workers are slower (you need +1 worker to achieve previous speeds)
+    - Capitol build speeds have been sped up to compensate
 
 Villagers
 [🟡] Vindicators and Pillagers: -5 food
