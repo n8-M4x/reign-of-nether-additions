@@ -250,11 +250,6 @@ public class ZombieVillagerUnit extends Vindicator implements Unit, WorkerUnit, 
             this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 10, 1));
     }
 
-    @Override
-    protected boolean isSunBurnTick() {
-        return false;
-    }
-
     public void initialiseGoals() {
         this.usePortalGoal = new UsePortalGoal(this);
         this.moveGoal = new MoveToTargetBlockGoal(this, false, 0);
