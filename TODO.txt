@@ -17,7 +17,6 @@ Tthings to regression test once PRs are merged
 
 Features
 --------
-(In Optimize and Crash Fixes #107 PR)
 [🟡] Alliance System (Thanks to @Boobcat)
     - /ally <player name> to send an alliance request to another player
     - /allyconfirm <requester name> to accept an alliance request
@@ -27,6 +26,7 @@ Features
     - Allying a player will not automatically ally you with their allies
     - Effects that don't friendly fire like creepers should also not affect allies
     - You can still force attack allies using A + left-click
+        [❌] fix highlight and minimap colouring
 
 [🟡] Translation Compatibility (Thanks to @Promethia)
     - Added language support for:
@@ -40,13 +40,10 @@ Features
 
     - If a string in your language is not available, it will default to English
     - Due to an unforseen bug, you must restart your client when switching languages for it to take effect
-    - If you would like to contribute to translations, please see the #localisation channel and read the pinned post
-
-
+    - If you would like to contribute translations, please see the #localisation channel and the pinned post
 
 Bugfixes
 --------
-(In Optimize and Crash Fixes #107 PR)
 [🟡] Fixed workers not actually working if they were too far out of view
 [🟡] Improved performance for all buildings
 [🟡] Fixed crash related to Hiding Leaves
@@ -57,16 +54,18 @@ Bugfixes
 [🟡] Fixed issue of being kicked from the official server when switching instances (eg. between a game and the lobby)
 [🟡] Improved melee unit pathing performance
 [🟡] Blazes no longer die in the rain
-[🟡] Spider webs stay forever if the spider dies before they decay
+[🟡] Spider webs no longer stay forever if the spider dies before they decay
+[🟡] Leaving F12 will now more reliably set you to spectator mode if you were in spectator previously
 
 Quality of Life Features
 ------------------------
+[🟡] The world generation datapack is now hardcoded into the mod by default
 [🟡] Improved performance for all units and buildings
 [🟡] Improved performance for Fog of War
 [🟡] The thereisnospoon cheatcode to modify max population is now /gamerule maxPopulation <value>
     - this also means it is saved to the game world
 [🟡] Added saved UUID data for all units
-[🟡] Leaving F12 will now more reliably set you to spectator mode if you were in spectator previously
+
 
 Balancing
 ---------
