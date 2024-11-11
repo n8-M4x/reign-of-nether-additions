@@ -1,6 +1,5 @@
 package com.solegendary.reignofnether;
 
-import com.solegendary.reignofnether.Alliance.AllyCommand;
 import com.solegendary.reignofnether.network.S2CReset;
 import com.solegendary.reignofnether.registrars.*;
 import net.minecraft.client.Minecraft;
@@ -13,7 +12,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -73,10 +71,6 @@ public class ReignOfNether {
                 DisplayTest.class,
                 () -> new DisplayTest(() -> NetworkConstants.IGNORESERVERONLY, (a, b) -> true)
             );
-    }
-    @SubscribeEvent
-    public void onRegisterCommands(RegisterCommandsEvent event) {
-        AllyCommand.register(event.getDispatcher());
     }
 
     @SubscribeEvent

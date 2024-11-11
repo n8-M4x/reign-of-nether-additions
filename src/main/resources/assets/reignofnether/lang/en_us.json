@@ -729,6 +729,15 @@
     "units.villagers.reignofnether.witch": "Witch",
     "units.villagers.reignofnether.witch.tooltip1": "A devious hag who can heal and harm with potions.",
 
+    "alliance.reignofnether.sent_request": "Alliance request sent to %s.",
+    "alliance.reignofnether.ally_self": "You can't ally with yourself!",
+    "alliance.reignofnether.ally_confirm": "%s wants to ally with you. Type /allyconfirm %s to confirm.",
+    "alliance.reignofnether.now_allied": "You are now allied with %s.",
+    "alliance.reignofnether.ally_accepted": "%s has accepted your alliance request.",
+    "alliance.reignofnether.no_request": "No pending alliance request from %s.",
+    "alliance.reignofnether.disbanded": "Your alliance with %s has been disbanded.",
+    "alliance.reignofnether.disbanding": "Disbanding alliance with %s in 30 seconds...",
+
     "survival.reignofnether.dawn": "Dawn breaks",
     "survival.reignofnether.dusk": "Night falls...",
     "survival.reignofnether.dusksoon": "Sunlight is fading.",

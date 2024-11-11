@@ -1,7 +1,7 @@
 package com.solegendary.reignofnether.registrars;
 
-import com.solegendary.reignofnether.Alliance.AllianceAddPacket;
-import com.solegendary.reignofnether.Alliance.AllianceRemovePacket;
+import com.solegendary.reignofnether.alliance.AllianceClientboundAddPacket;
+import com.solegendary.reignofnether.alliance.AllianceClientboundRemovePacket;
 import com.solegendary.reignofnether.ReignOfNether;
 import com.solegendary.reignofnether.ability.EnchantAbilityServerboundPacket;
 import com.solegendary.reignofnether.attackwarnings.AttackWarningClientboundPacket;
@@ -141,16 +141,16 @@ public final class PacketHandler {
                 .encoder(TutorialServerboundPacket::encode).decoder(TutorialServerboundPacket::new)
                 .consumer(TutorialServerboundPacket::handle).add();
 
-        INSTANCE.messageBuilder(AllianceAddPacket.class, index++)
-                .encoder(AllianceAddPacket::toBytes)
-                .decoder(AllianceAddPacket::new)
-                .consumer(AllianceAddPacket::handle)
+        INSTANCE.messageBuilder(AllianceClientboundAddPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(AllianceClientboundAddPacket::toBytes)
+                .decoder(AllianceClientboundAddPacket::new)
+                .consumer(AllianceClientboundAddPacket::handle)
                 .add();
 
-        INSTANCE.messageBuilder(AllianceRemovePacket.class, index++)
-                .encoder(AllianceRemovePacket::toBytes)
-                .decoder(AllianceRemovePacket::new)
-                .consumer(AllianceRemovePacket::handle)
+        INSTANCE.messageBuilder(AllianceClientboundRemovePacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(AllianceClientboundRemovePacket::toBytes)
+                .decoder(AllianceClientboundRemovePacket::new)
+                .consumer(AllianceClientboundRemovePacket::handle)
                 .add();
       
         INSTANCE.messageBuilder(VotePacket.class, index++, NetworkDirection.PLAY_TO_SERVER)

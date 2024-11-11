@@ -68,6 +68,8 @@ Features
 Bugfixes
 --------
 
+[❌] Alliances should be reset on /rts-reset
+
 [❌] On a server, unloaded workers stop gathering stuff
     - Relook at forced chunks?
 
@@ -75,12 +77,12 @@ Bugfixes
 
 [❌] Central portals sometimes do not ignite (and this somehow makes grunts spawn underground)
 
+[❌] Due to an unforseen bug, you must restart your client when switching languages for it to take effect
+
+
 
 Quality of Life Features
 ------------------------
-
-[❌] The world generation datapack is now hardcoded into the mod by default
-    - as a world gen option like superflat
 
 [❌] Highlight portal in yellow if being built on overworld terrain
 

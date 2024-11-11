@@ -2,7 +2,7 @@ package com.solegendary.reignofnether.unit;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Vector3d;
-import com.solegendary.reignofnether.Alliance.AllianceSystem;
+import com.solegendary.reignofnether.alliance.AllianceSystem;
 import com.solegendary.reignofnether.building.*;
 import com.solegendary.reignofnether.building.buildings.shared.AbstractBridge;
 import com.solegendary.reignofnether.building.buildings.villagers.IronGolemBuilding;

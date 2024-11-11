@@ -3,8 +3,9 @@ package com.solegendary.reignofnether.player;
 import com.mojang.brigadier.context.ParsedArgument;
 import com.mojang.brigadier.context.ParsedCommandNode;
 import com.mojang.datafixers.util.Pair;
-import com.solegendary.reignofnether.Alliance.AllianceSystem;
+import com.solegendary.reignofnether.alliance.AllianceSystem;
 import com.solegendary.reignofnether.ReignOfNether;
+import com.solegendary.reignofnether.alliance.AllyCommand;
 import com.solegendary.reignofnether.building.Building;
 import com.solegendary.reignofnether.building.BuildingServerEvents;
 import com.solegendary.reignofnether.building.NetherZone;
@@ -614,6 +615,8 @@ public class PlayerServerEvents {
 
     @SubscribeEvent
     public static void onRegisterCommand(RegisterCommandsEvent evt) {
+        AllyCommand.register(evt.getDispatcher());
+
         evt.getDispatcher().register(Commands.literal("rts-reset").executes((command) -> {
             resetRTS();
             return 1;
@@ -641,7 +644,7 @@ public class PlayerServerEvents {
             PlayerClientboundPacket.resetRTS();
 
             if (!TutorialServerEvents.isEnabled()) {
-                sendMessageToAllPlayers("server.reignofnether.match_reset", true, null);
+                sendMessageToAllPlayers("server.reignofnether.match_reset", true);
             }
 
             ResourcesServerEvents.resourcesList.clear();
