@@ -56,9 +56,6 @@ public class ResearchClient {
     }
 
     public static void addCheatWithValue(String cheatItemName, int value) {
-        if (cheatItemName.equals("thereisnospoon")) {
-            UnitClientEvents.maxPopulation = value;
-        }
     }
 
     public static void addCheat(String cheatItemName) {

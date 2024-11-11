@@ -74,8 +74,8 @@ public class UnitServerEvents {
     private static final int UNIT_SYNC_TICKS_MAX = 20; // how often we send out unit syncing packets
     private static int unitSyncTicks = UNIT_SYNC_TICKS_MAX;
 
-    // max possible pop you can have regardless of buildings, adjustable via thereisnospoon cheat
-    public static int hardCapPopulation = ResourceCosts.DEFAULT_HARD_CAP_POPULATION;
+    // max possible pop you can have regardless of buildings, adjustable via /gamerule maxPopulation
+    public static int maxPopulation = ResourceCosts.DEFAULT_MAX_POPULATION;
 
     private static ServerLevel serverLevel = null;
 

@@ -1,15 +1,9 @@
 package com.solegendary.reignofnether.player;
 
 import com.solegendary.reignofnether.registrars.PacketHandler;
-import com.solegendary.reignofnether.resources.Resources;
-import com.solegendary.reignofnether.resources.ResourcesClientboundPacket;
-import com.solegendary.reignofnether.sounds.SoundAction;
-import com.solegendary.reignofnether.sounds.SoundClientEvents;
-import net.minecraft.core.BlockPos;
+import com.solegendary.reignofnether.unit.UnitClientEvents;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
@@ -21,7 +15,7 @@ public class PlayerClientboundPacket {
 
     PlayerAction playerAction;
     String playerName;
-    Long rtsGameTime;
+    Long value;
 
     public static void enableRTSStatus(String playerName) {
         PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(),
@@ -73,22 +67,27 @@ public class PlayerClientboundPacket {
                 new PlayerClientboundPacket(PlayerAction.ENABLE_START_RTS, playerName, 0L));
     }
 
-    public PlayerClientboundPacket(PlayerAction playerAction, String playerName, Long rtsGameTime) {
+    public static void syncMaxPopulation(long maxPopulation) {
+        PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(),
+                new PlayerClientboundPacket(PlayerAction.SYNC_MAX_POPULATION, "", maxPopulation));
+    }
+
+    public PlayerClientboundPacket(PlayerAction playerAction, String playerName, Long value) {
         this.playerAction = playerAction;
         this.playerName = playerName;
-        this.rtsGameTime = rtsGameTime;
+        this.value = value;
     }
 
     public PlayerClientboundPacket(FriendlyByteBuf buffer) {
         this.playerAction = buffer.readEnum(PlayerAction.class);
         this.playerName = buffer.readUtf();
-        this.rtsGameTime = buffer.readLong();
+        this.value = buffer.readLong();
     }
 
     public void encode(FriendlyByteBuf buffer) {
         buffer.writeEnum(this.playerAction);
         buffer.writeUtf(this.playerName);
-        buffer.writeLong(this.rtsGameTime);
+        buffer.writeLong(this.value);
     }
 
     // server-side packet-consuming functions
@@ -104,11 +103,12 @@ public class PlayerClientboundPacket {
                             case DISABLE_RTS -> PlayerClientEvents.disableRTS(playerName);
                             case ENABLE_RTS -> PlayerClientEvents.enableRTS(playerName);
                             case RESET_RTS -> PlayerClientEvents.resetRTS();
-                            case SYNC_RTS_GAME_TIME -> PlayerClientEvents.syncRtsGameTime(rtsGameTime);
+                            case SYNC_RTS_GAME_TIME -> PlayerClientEvents.syncRtsGameTime(value);
                             case LOCK_RTS -> PlayerClientEvents.setRTSLock(true);
                             case UNLOCK_RTS -> PlayerClientEvents.setRTSLock(false);
                             case ENABLE_START_RTS -> PlayerClientEvents.setCanStartRTS(true);
                             case DISABLE_START_RTS -> PlayerClientEvents.setCanStartRTS(false);
+                            case SYNC_MAX_POPULATION -> UnitClientEvents.setMaxPopulation(Math.toIntExact(value));
                         }
                         success.set(true);
                     });

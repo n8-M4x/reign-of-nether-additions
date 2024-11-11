@@ -71,8 +71,8 @@ public class UnitClientEvents {
 
     private static final Minecraft MC = Minecraft.getInstance();
 
-    // max possible pop you can have regardless of buildings, adjustable via thereisnospoon cheat
-    public static int maxPopulation = ResourceCosts.DEFAULT_HARD_CAP_POPULATION;
+    // max possible pop you can have regardless of buildings, adjustable via /gamerule maxPopulation cheat
+    public static int maxPopulation = ResourceCosts.DEFAULT_MAX_POPULATION;
 
     // list of vecs used in RenderChunkRegionMixin to replace leaf rendering
     private static final int WINDOW_RADIUS = 5; // size of area to hide leaves
@@ -858,6 +858,10 @@ public class UnitClientEvents {
             double d2 = rand.nextGaussian() * 0.2;
             level.addParticle(ParticleTypes.POOF, entity.getX(), entity.getY(), entity.getZ(), d0, d1, d2);
         }
+    }
+
+    public static void setMaxPopulation(int value) {
+        maxPopulation = value;
     }
 
     /*

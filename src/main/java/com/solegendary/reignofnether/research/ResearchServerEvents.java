@@ -91,11 +91,8 @@ public class ResearchServerEvents {
 
     public static void syncCheats(String playerName) {
         for (Pair<String, String> cheatItem : cheatItems)
-            if (playerName.equals(cheatItem.getFirst())) {
+            if (playerName.equals(cheatItem.getFirst()))
                 ResearchClientboundPacket.addCheat(cheatItem.getFirst(), cheatItem.getSecond());
-            }
-
-        ResearchClientboundPacket.addCheatWithValue(playerName, "thereisnospoon", UnitServerEvents.hardCapPopulation);
     }
 
     public static void addCheat(String playerName, String cheatItemName) {

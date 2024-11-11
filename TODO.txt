@@ -6,6 +6,8 @@ Tthings to regression test once PRs are merged
 - /gamerule neutralAggro still works
 - cycling unit groups with tab and shift tab
 - all tooltips for multiple languages
+- clock times are still accurate for when undead start/stop burning
+- fog of war frozen chunks (including for piglin nether terrain)
 
 
 - Done and tested
@@ -16,7 +18,7 @@ Tthings to regression test once PRs are merged
 Features
 --------
 (In Optimize and Crash Fixes #107 PR)
-[❌] Alliance System (Thanks to @Boobcat)
+[🟡] Alliance System (Thanks to @Boobcat)
     - /ally <player name> to send an alliance request to another player
     - /allyconfirm <requester name> to accept an alliance request
     - /disband to leave an alliance
@@ -26,45 +28,43 @@ Features
     - Effects that don't friendly fire like creepers should also not affect allies
     - You can still force attack allies using A + left-click
 
-[❌] Localisation Keys (Thanks to @Promethia)
-    - All strings in the mod are now translatable
-    - If a string in your locale is not available, it will default to English
+[🟡] Translation Compatibility (Thanks to @Promethia)
+    - Added language support for:
+        - English (en_us)
+        - Chinese (Simplified) (zh_cn)
+        - Chinese (Traditional) (zh_tw)
+        - Danish (da_dk)
+        - Polish (pl_pl)
+        - Russian (ru_ru)
+        - Brazilian Portuguese (pt_br)
+
+    - If a string in your language is not available, it will default to English
     - Due to an unforseen bug, you must restart your client when switching languages for it to take effect
     - If you would like to contribute to translations, please see the #localisation channel and read the pinned post
-    - Completed languages are:
-        - English (en_us)
-        -
 
 
 
 Bugfixes
 --------
 (In Optimize and Crash Fixes #107 PR)
-[❌] Fixed workers not actually working if they were too far out of view
-[❌] Improved performance for all buildings
-[❌] Fixed crash related to Hiding Leaves
-[❌] Fixed crash related to Ranged units attacking buildings
-[❌] Fixed crash related to pressing Tab on a group of units
-
-[❌] The world generation datapack is now hardcoded into the mod by default
-    - as a world gen option like superflat
+[🟡] Fixed workers not actually working if they were too far out of view
+[🟡] Improved performance for all buildings
+[🟡] Fixed crash related to Hiding Leaves
+[🟡] Fixed crash related to Ranged units attacking buildings
+[🟡] Fixed crash related to pressing Tab on a group of units
 [🟡] Fixed enchantment icons
 [🟡] The clock button no longer shows up in unexpected places like the title screen
 [🟡] Fixed issue of being kicked from the official server when switching instances (eg. between a game and the lobby)
 [🟡] Improved melee unit pathing performance
 [🟡] Blazes no longer die in the rain
 [🟡] Spider webs stay forever if the spider dies before they decay
-[❌] Central portals sometimes do not ignite (and this somehow makes grunts spawn underground)
-
 
 Quality of Life Features
 ------------------------
-(In Optimize and Crash Fixes #107 PR)
-[❌] Improved performance for all units and buildings
-[❌] Improved performance for Fog of War
-
-
-[❌] The thereisnospoon cheatcode to modify max population is now /gamerule maxpopulation <value>
+[🟡] Improved performance for all units and buildings
+[🟡] Improved performance for Fog of War
+[🟡] The thereisnospoon cheatcode to modify max population is now /gamerule maxPopulation <value>
+    - this also means it is saved to the game world
 [🟡] Added saved UUID data for all units
 [🟡] Leaving F12 will now more reliably set you to spectator mode if you were in spectator previously
 

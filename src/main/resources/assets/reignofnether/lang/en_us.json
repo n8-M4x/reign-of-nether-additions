@@ -679,7 +679,7 @@
     "units.monsters.reignofnether.zombie_villager": "Zombie Villager",
     "units.monsters.reignofnether.zombie_villager.tooltip1": "An undead worker that can construct and",
     "units.monsters.reignofnether.zombie_villager.tooltip2": "repair buildings and gather resources.",
-    "units.monsters.reignofnether.zombie_villager.tooltip3": "Zombie villagers DO NOT burn under sunlight.",
+    "units.monsters.reignofnether.zombie_villager.tooltip3": "Zombie villagers are slowed under sunlight.",
 
     "units.piglins.reignofnether.blaze": "Blaze",
     "units.piglins.reignofnether.blaze.tooltip1": "A fiery elemental that shoots fireballs from afar.",
