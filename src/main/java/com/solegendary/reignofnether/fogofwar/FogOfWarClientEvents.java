@@ -254,7 +254,7 @@ public class FogOfWarClientEvents {
         newlyDarkChunks.addAll(lastBrightChunks);
         newlyDarkChunks.removeAll(brightChunks);
 
-        newlyDarkChunks.forEach(FogOfWarClientEvents::onChunkUnexplore);
+        newlyDarkChunks.forEach(cpos -> onChunkUnexplore(cpos));
 
         Set<ChunkPos> rerenderBatch = ConcurrentHashMap.newKeySet();
         newlyDarkChunks.forEach(cpos -> {
