@@ -1,5 +1,7 @@
 package com.solegendary.reignofnether.registrars;
 
+import com.solegendary.reignofnether.Alliance.AllianceAddPacket;
+import com.solegendary.reignofnether.Alliance.AllianceRemovePacket;
 import com.solegendary.reignofnether.ReignOfNether;
 import com.solegendary.reignofnether.ability.EnchantAbilityServerboundPacket;
 import com.solegendary.reignofnether.attackwarnings.AttackWarningClientboundPacket;
@@ -20,6 +22,9 @@ import com.solegendary.reignofnether.ability.AbilityClientboundPacket;
 import com.solegendary.reignofnether.tutorial.TutorialClientboundPacket;
 import com.solegendary.reignofnether.tutorial.TutorialServerboundPacket;
 import com.solegendary.reignofnether.unit.packets.*;
+import com.solegendary.reignofnether.votesystem.networking.VotePacket;
+import com.solegendary.reignofnether.votesystem.networking.VoteSyncPacket;
+import com.solegendary.reignofnether.votesystem.networking.ClientboundOpenVotenScreenPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
@@ -135,5 +140,35 @@ public final class PacketHandler {
         INSTANCE.messageBuilder(TutorialServerboundPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
                 .encoder(TutorialServerboundPacket::encode).decoder(TutorialServerboundPacket::new)
                 .consumer(TutorialServerboundPacket::handle).add();
+
+        INSTANCE.messageBuilder(AllianceAddPacket.class, index++)
+                .encoder(AllianceAddPacket::toBytes)
+                .decoder(AllianceAddPacket::new)
+                .consumer(AllianceAddPacket::handle)
+                .add();
+
+        INSTANCE.messageBuilder(AllianceRemovePacket.class, index++)
+                .encoder(AllianceRemovePacket::toBytes)
+                .decoder(AllianceRemovePacket::new)
+                .consumer(AllianceRemovePacket::handle)
+                .add();
+      
+        INSTANCE.messageBuilder(VotePacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(VotePacket::encode)
+                .decoder(VotePacket::new)
+                .consumer(VotePacket::handle)
+                .add();
+
+        INSTANCE.messageBuilder(VoteSyncPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(VoteSyncPacket::encode)
+                .decoder(VoteSyncPacket::new)
+                .consumer(VoteSyncPacket::handle)
+                .add();
+
+        INSTANCE.messageBuilder(ClientboundOpenVotenScreenPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(ClientboundOpenVotenScreenPacket::encode)
+                .decoder(ClientboundOpenVotenScreenPacket::decode)
+                .consumer(ClientboundOpenVotenScreenPacket::handle)
+                .add();
     }
 }

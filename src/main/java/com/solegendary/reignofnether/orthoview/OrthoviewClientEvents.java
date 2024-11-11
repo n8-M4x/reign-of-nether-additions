@@ -102,7 +102,7 @@ public class OrthoviewClientEvents {
     public static void updateOrthoviewY() {
         if (MC.player != null && MC.level != null) {
             BlockPos playerPos = MC.player.blockPosition();
-            int radius = 5; // Defines the area around the player to sample heights
+            int radius = 10; // Defines the area around the player to sample heights
             int sumHeights = 0;
             int count = 0;
 

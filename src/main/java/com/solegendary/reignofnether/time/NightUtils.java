@@ -12,26 +12,32 @@ public class NightUtils {
 
     public static boolean isInRangeOfNightSource(Vec3 pos, boolean clientSide) {
         List<Building> buildings = clientSide ? BuildingClientEvents.getBuildings() : BuildingServerEvents.getBuildings();
+
+        Vec2 pos2d = new Vec2((float) pos.x, (float) pos.z);
+
         for (Building building : buildings) {
-            if (building.isDestroyedServerside)
-                continue;
+            if (building.isDestroyedServerside) continue;
             if (building instanceof NightSource ns) {
                 BlockPos centrePos = BuildingUtils.getCentrePos(building.getBlocks());
                 Vec2 centrePos2d = new Vec2(centrePos.getX(), centrePos.getZ());
-                Vec2 pos2d = new Vec2((float) pos.x, (float) pos.z);
-                if (centrePos2d.distanceToSqr(pos2d) < Math.pow(ns.getNightRange(), 2))
+                float nightRangeSqr = ns.getNightRange() * ns.getNightRange();
+                if (centrePos2d.distanceToSqr(pos2d) < nightRangeSqr) {
                     return true;
+                }
             }
         }
         return false;
     }
-
-    // more consistent version of Mob.isSunburnTick()
     public static boolean isSunBurnTick(Mob mob) {
-        if (mob.tickCount % 4 == 0 && TimeUtils.isDay(mob.level.getDayTime()) && !mob.level.isClientSide) {
+        if (mob.tickCount % 5 == 0 && TimeUtils.isDay(mob.level.getDayTime()) && !mob.level.isClientSide) {
             BlockPos blockpos = new BlockPos(mob.getX(), mob.getEyeY(), mob.getZ());
-            boolean flag = mob.isInWaterRainOrBubble() || mob.isInPowderSnow || mob.wasInPowderSnow;
-            return !mob.isOnFire() && !flag && mob.level.canSeeSky(blockpos) && !NightUtils.isInRangeOfNightSource(mob.getEyePosition(), mob.level.isClientSide);
+            boolean isProtected = mob.isInWaterRainOrBubble() || mob.isInPowderSnow || mob.wasInPowderSnow || mob.isOnFire();
+            // Return early if mob is protected or sky is not visible
+            if (isProtected || !mob.level.canSeeSky(blockpos)) return false;
+
+            // Check if mob is within range of any NightSource
+            Vec3 mobEyePos = mob.getEyePosition();
+            return !NightUtils.isInRangeOfNightSource(mobEyePos, mob.level.isClientSide);
         }
         return false;
     }
