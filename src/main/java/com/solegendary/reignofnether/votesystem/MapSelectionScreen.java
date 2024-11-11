@@ -3,6 +3,9 @@ package com.solegendary.reignofnether.votesystem;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.solegendary.reignofnether.ReignOfNether;
+import com.solegendary.reignofnether.registrars.PacketHandler;
+import com.solegendary.reignofnether.votesystem.networking.ClientVoteHandler;
+import com.solegendary.reignofnether.votesystem.networking.VotePacket;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -78,18 +81,19 @@ public class MapSelectionScreen extends Screen {
             int y = startY;
 
             if (mouseX >= x && mouseX <= x + thumbnailWidth && mouseY >= y && mouseY <= y + 100) {
-                if (playerVote != null) {
-                    votes.put(playerVote, votes.get(playerVote) - 1); // Remove vote from previous map
+                if (playerVote != map) {
+                    playerVote = map;
+
+                    // Send VotePacket with player UUID
+                    UUID playerUUID = this.minecraft.player.getUUID();
+                    PacketHandler.INSTANCE.sendToServer(new VotePacket(map.getName(), playerUUID));
                 }
-
-                playerVote = map; // Update to the new map choice
-                votes.put(map, votes.get(map) + 1); // Add vote to the new map
-
                 return true;
             }
         }
         return super.mouseClicked(mouseX, mouseY, button);
     }
+
 
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
         if (this.minecraft != null) {
@@ -150,10 +154,11 @@ public class MapSelectionScreen extends Screen {
 
             // Render vote count and percentage if voting is still ongoing
             if (!votingComplete) {
-                int voteCount = votes.get(map);
-                int totalVotes = votes.values().stream().mapToInt(Integer::intValue).sum();
+                int voteCount = ClientVoteHandler.getVotes().getOrDefault(map.getName(), 0);
+                int totalVotes = ClientVoteHandler.getVotes().values().stream().mapToInt(Integer::intValue).sum();
                 float percentage = totalVotes > 0 ? (voteCount * 100.0f / totalVotes) : 0;
                 this.font.draw(poseStack, "Votes: " + voteCount + " (" + String.format("%.1f", percentage) + "%)", x, infoStartY + 40, 0xFFFF00);
+
             }
         }
 
