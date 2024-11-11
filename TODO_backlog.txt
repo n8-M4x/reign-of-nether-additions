@@ -68,6 +68,8 @@ Features
 Bugfixes
 --------
 
+[❌] Alliances should be reset on /rts-reset
+
 [❌] On a server, unloaded workers stop gathering stuff
     - Relook at forced chunks?
 

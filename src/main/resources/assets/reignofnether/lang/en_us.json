@@ -730,6 +730,7 @@
     "units.villagers.reignofnether.witch.tooltip1": "A devious hag who can heal and harm with potions.",
 
     "alliance.reignofnether.sent_request": "Alliance request sent to %s.",
+    "alliance.reignofnether.ally_self": "You can't ally with yourself!",
     "alliance.reignofnether.ally_confirm": "%s wants to ally with you. Type /allyconfirm %s to confirm.",
     "alliance.reignofnether.now_allied": "You are now allied with %s.",
     "alliance.reignofnether.ally_accepted": "%s has accepted your alliance request.",

@@ -36,12 +36,8 @@ public class PlayerClientEvents {
     public static boolean canStartRTS = true;
 
     @SubscribeEvent
-    public static void onRegisterCommands(RegisterCommandsEvent evt) {
-        AllyCommand.register(evt.getDispatcher());
-    }
-
-    @SubscribeEvent
     public static void onRegisterCommand(RegisterClientCommandsEvent evt) {
+
         evt.getDispatcher().register(Commands.literal("rts-surrender").executes((command) -> {
             PlayerServerboundPacket.surrender();
             return 1;

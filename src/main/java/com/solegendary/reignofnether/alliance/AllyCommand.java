@@ -38,7 +38,11 @@ public class AllyCommand {
     private static int ally(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayerOrException();
         ServerPlayer allyPlayer = EntityArgument.getPlayer(context, "player");
-        
+
+        if (player.equals(allyPlayer)) {
+            player.sendSystemMessage(Component.translatable("alliance.reignofnether.ally_self", player.getName().getString()));
+            return 0;
+        }
         // Record the pending alliance
         pendingAlliances.put(allyPlayer.getName().getString(), player.getName().getString());
         context.getSource().sendSuccess(Component.translatable("alliance.reignofnether.sent_request", allyPlayer.getName().getString()), false);

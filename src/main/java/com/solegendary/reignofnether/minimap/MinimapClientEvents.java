@@ -460,14 +460,14 @@ public class MinimapClientEvents {
                             if (FogOfWarClientEvents.isBuildingInBrightChunk(building)) {
                                 switch (BuildingClientEvents.getPlayerToBuildingRelationship(building)) {
                                     case OWNED -> rgb = 0x00FF00;
-                                    case FRIENDLY -> rgb = 0x000088;
+                                    case FRIENDLY -> rgb = 0x3232FF;
                                     case HOSTILE -> rgb = 0xFF0000;
                                     case NEUTRAL -> rgb = 0xFFFF00;
                                 }
                             } else {
                                 switch (BuildingClientEvents.getPlayerToBuildingRelationship(building)) {
                                     case OWNED -> rgb = 0x008800;
-                                    case FRIENDLY -> rgb = 0x000088;
+                                    case FRIENDLY -> rgb = 0x0000AA;
                                     case HOSTILE -> rgb = 0x880000;
                                     case NEUTRAL -> rgb = 0x888800;
                                 }
@@ -533,7 +533,7 @@ public class MinimapClientEvents {
                     )) {
                         switch (relationship) {
                             case OWNED -> rgb = 0x00FF00;
-                            case FRIENDLY -> rgb = 0x000088;
+                            case FRIENDLY -> rgb = 0x3232FF;
                             case HOSTILE -> rgb = 0xFF0000;
                             case NEUTRAL -> rgb = 0xFFFF00;
                         }
