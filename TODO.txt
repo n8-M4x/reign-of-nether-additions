@@ -20,13 +20,12 @@ Features
 [🟡] Alliance System (Thanks to @Boobcat)
     - /ally <player name> to send an alliance request to another player
     - /allyconfirm <requester name> to accept an alliance request
-    - /disband to leave an alliance
+    - /disband <player name> to end an alliance
     - Allies are shown as blue in unit/building highlights and the minimap
     - Allies win and lose together
     - Allying a player will not automatically ally you with their allies
     - Effects that don't friendly fire like creepers should also not affect allies
     - You can still force attack allies using A + left-click
-        [❌] fix highlight and minimap colouring
 
 [🟡] Translation Compatibility (Thanks to @Promethia)
     - Added language support for:
@@ -44,6 +43,8 @@ Features
 
 Bugfixes
 --------
+[❌] (regression) Unit max healths are always decimals now
+
 [✔] Fixed workers not actually working if they were too far out of view
 [✔] Improved performance for all buildings
 [✔] Fixed crash related to Hiding Leaves
