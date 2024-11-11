@@ -1,6 +1,7 @@
 package com.solegendary.reignofnether.player;
 
 import com.mojang.datafixers.util.Pair;
+import com.solegendary.reignofnether.Alliance.AllianceSystem;
 import com.solegendary.reignofnether.ReignOfNether;
 import com.solegendary.reignofnether.building.Building;
 import com.solegendary.reignofnether.building.BuildingServerEvents;
@@ -47,6 +48,8 @@ import net.minecraftforge.network.NetworkHooks;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 // this class tracks all available players so that any serverside functions that need to affect the player can be
 // performed here by sending a client->server packet containing MC.player.getId()
@@ -547,46 +550,61 @@ public class PlayerServerEvents {
 
     public static void defeat(String playerName, String reason) {
         synchronized (rtsPlayers) {
+            // Remove the defeated player from the list
             rtsPlayers.removeIf(rtsPlayer -> {
                 if (rtsPlayer.name.equals(playerName)) {
-                    sendMessageToAllPlayers("server.reignofnether.is_defeated",
-                        true,
-                        playerName,
-                        Component.translatable(reason)
-                    );
-                    sendMessageToAllPlayers("server.reignofnether.players_remaining", false, rtsPlayers.size() - 1);
+                    sendMessageToAllPlayers(playerName + " has " + reason + " and is defeated!", true);
+                    sendMessageToAllPlayers("There are " + (rtsPlayers.size() - 1) + " RTS player(s) remaining");
 
                     PlayerClientboundPacket.defeat(playerName);
 
+                    // Remove ownership from all units and buildings of the defeated player
                     for (LivingEntity entity : UnitServerEvents.getAllUnits())
-                        if (entity instanceof Unit unit && unit.getOwnerName().equals(playerName)) {
+                        if (entity instanceof Unit unit && unit.getOwnerName().equals(playerName))
                             unit.setOwnerName("");
-                        }
 
                     for (Building building : BuildingServerEvents.getBuildings())
-                        if (building.ownerName.equals(playerName)) {
+                        if (building.ownerName.equals(playerName))
                             building.ownerName = "";
-                        }
 
                     return true;
                 }
                 return false;
             });
-            // if there is only one player left, they are automatically victorious
-            if (rtsPlayers.size() == 1) {
-                for (RTSPlayer rtsPlayer : rtsPlayers) {
-                    sendMessageToAllPlayers("server.reignofnether.victorious", true, rtsPlayer.name);
-                    PlayerClientboundPacket.victory(rtsPlayer.name);
-                }
-            }
-            saveRTSPlayers();
 
+            // Remove research data and resources associated with the defeated player
+            saveRTSPlayers();
             ResearchServerEvents.removeAllResearchFor(playerName);
             ResearchServerEvents.syncResearch(playerName);
-
             ResearchServerEvents.saveResearch();
+            ResourcesServerEvents.resourcesList.removeIf(rl -> rl.ownerName.equals(playerName));
+
+            // Check if only allied players are left or if a single player remains
+            if (rtsPlayers.size() > 1) {
+                // Get the set of remaining player names
+                Set<String> remainingPlayers = rtsPlayers.stream()
+                        .map(player -> player.name)
+                        .collect(Collectors.toSet());
+
+                // Use the first remaining player as a reference to find all connected allies
+                String referencePlayer = remainingPlayers.iterator().next();
+                Set<String> factionGroup = AllianceSystem.getAllConnectedAllies(referencePlayer);
+
+                // Check if all remaining players are part of the same alliance group
+                if (remainingPlayers.equals(factionGroup)) {
+                    // Declare victory for all players in the faction group
+                    for (String winner : remainingPlayers) {
+                        sendMessageToAllPlayers(winner + " and their allies are victorious!", true);
+                        PlayerClientboundPacket.victory(winner);
+                    }
+                }
+            } else if (rtsPlayers.size() == 1) {
+                // Single remaining player - declare victory
+                RTSPlayer winner = rtsPlayers.get(0);
+                sendMessageToAllPlayers(winner.name + " is victorious!", true);
+                PlayerClientboundPacket.victory(winner.name);
+            }
         }
-        ResourcesServerEvents.resourcesList.removeIf(rl -> rl.ownerName.equals(playerName));
     }
 
     @SubscribeEvent

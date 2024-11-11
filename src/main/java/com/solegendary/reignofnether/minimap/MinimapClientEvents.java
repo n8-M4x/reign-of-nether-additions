@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3d;
+import com.solegendary.reignofnether.Alliance.AllianceSystem;
 import com.solegendary.reignofnether.ReignOfNether;
 import com.solegendary.reignofnether.building.Building;
 import com.solegendary.reignofnether.building.BuildingClientEvents;
@@ -439,25 +440,22 @@ public class MinimapClientEvents {
         // draw buildings
         for (Building building : BuildingClientEvents.getBuildings()) {
 
-            if (!building.isExploredClientside || building instanceof AbstractBridge) {
+            if (!building.isExploredClientside || building instanceof AbstractBridge)
                 continue;
-            }
 
             int xc = building.originPos.getX() + (BUILDING_RADIUS / 2);
             int zc = building.originPos.getZ() + (BUILDING_RADIUS / 2);
 
             for (int x = xc - BUILDING_RADIUS; x < xc + BUILDING_RADIUS; x++) {
                 for (int z = zc - BUILDING_RADIUS; z < zc + BUILDING_RADIUS; z++) {
-                    if (isWorldXZinsideMap(x, z)) {
+                    if (isWorldXZinsideMap(x,z)) {
                         int x0 = x - xc + BUILDING_RADIUS;
                         int z0 = z - zc + BUILDING_RADIUS;
                         int rgb = 0x000000;
 
                         // if pixel is on the edge of the square keep it coloured black
-                        if (!(
-                            x0 < BUILDING_THICKNESS || x0 >= (BUILDING_RADIUS * 2) - BUILDING_THICKNESS
-                                || z0 < BUILDING_THICKNESS || z0 >= (BUILDING_RADIUS * 2) - BUILDING_THICKNESS
-                        )) {
+                        if (!(x0 < BUILDING_THICKNESS || x0 >= (BUILDING_RADIUS * 2) - BUILDING_THICKNESS ||
+                                z0 < BUILDING_THICKNESS || z0 >= (BUILDING_RADIUS * 2) - BUILDING_THICKNESS)) {
 
                             if (FogOfWarClientEvents.isBuildingInBrightChunk(building)) {
                                 switch (BuildingClientEvents.getPlayerToBuildingRelationship(building)) {
@@ -486,28 +484,38 @@ public class MinimapClientEvents {
 
         // draw units
         for (LivingEntity entity : UnitClientEvents.getAllUnits()) {
-            if (!FogOfWarClientEvents.isInBrightChunk(entity)) {
+            if (!FogOfWarClientEvents.isInBrightChunk(entity))
                 continue;
-            }
             drawUnitOnMap(entity.getOnPos().getX(),
-                entity.getOnPos().getZ(),
-                UnitClientEvents.getPlayerToEntityRelationship(entity)
+                    entity.getOnPos().getZ(),
+                    UnitClientEvents.getPlayerToEntityRelationship(entity)
             );
         }
         for (MinimapUnit minimapUnit : minimapUnits) {
-            if (!FogOfWarClientEvents.isInBrightChunk(minimapUnit.pos) || MC.player == null) {
+            if (!FogOfWarClientEvents.isInBrightChunk(minimapUnit.pos) || MC.player == null)
                 continue;
-            }
 
+            String playerName = MC.player.getName().getString();
+            String unitOwnerName = minimapUnit.ownerName;
             Relationship relationship = Relationship.HOSTILE;
-            if (MC.player.getName().getString().equals(minimapUnit.ownerName)) {
+
+            // Determine relationship based on ownership and alliances
+            if (playerName.equals(unitOwnerName)) {
                 relationship = Relationship.OWNED;
-            } else if (minimapUnit.ownerName.isBlank()) {
+            } else if (unitOwnerName.isBlank()) {
                 relationship = Relationship.NEUTRAL;
+            } else if (AllianceSystem.isAllied(playerName, unitOwnerName)) {
+                relationship = Relationship.FRIENDLY;
             }
 
-            drawUnitOnMap(minimapUnit.pos.getX(), minimapUnit.pos.getZ(), relationship);
+            // Draw the unit on the map based on its relationship
+            drawUnitOnMap(
+                    minimapUnit.pos.getX(),
+                    minimapUnit.pos.getZ(),
+                    relationship
+            );
         }
+
     }
 
     private static void drawUnitOnMap(int xc, int zc, Relationship relationship) {

@@ -192,10 +192,17 @@ public class SkeletonUnit extends Skeleton implements Unit, AttackerUnit, Ranged
         }
     }
 
+    private int burnTickCounter = 0;
+
     @Override
     protected boolean isSunBurnTick() {
-        return NightUtils.isSunBurnTick(this);
+        burnTickCounter++;
+        if (burnTickCounter % 10 == 0) {
+            return NightUtils.isSunBurnTick(this);
+        }
+        return false; // Skip burning on every other tick
     }
+
 
     public void initialiseGoals() {
         this.usePortalGoal = new UsePortalGoal(this);

@@ -250,9 +250,14 @@ public class ZombieVillagerUnit extends Vindicator implements Unit, WorkerUnit, 
             this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 10, 1));
     }
 
+    private int burnTickCounter = 0;
     @Override
     protected boolean isSunBurnTick() {
-        return false;
+        burnTickCounter++;
+        if (burnTickCounter % 10 == 0) {
+            return NightUtils.isSunBurnTick(this);
+        }
+        return false; // Skip burning on every other tick
     }
 
     public void initialiseGoals() {
