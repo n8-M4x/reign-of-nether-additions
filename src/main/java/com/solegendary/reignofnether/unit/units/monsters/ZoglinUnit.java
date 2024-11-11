@@ -190,14 +190,9 @@ public class ZoglinUnit extends Zoglin implements Unit, AttackerUnit {
         return this.targetGoal.getTarget();
     }
 
-    private int burnTickCounter = 0;
     @Override
     protected boolean isSunBurnTick() {
-        burnTickCounter++;
-        if (burnTickCounter % 10 == 0) {
-            return NightUtils.isSunBurnTick(this);
-        }
-        return false; // Skip burning on every other tick
+        return NightUtils.isSunBurnTick(this);
     }
 
     public void tick() {

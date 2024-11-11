@@ -6,7 +6,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class NightUtils {
@@ -14,38 +13,32 @@ public class NightUtils {
     public static boolean isInRangeOfNightSource(Vec3 pos, boolean clientSide) {
         List<Building> buildings = clientSide ? BuildingClientEvents.getBuildings() : BuildingServerEvents.getBuildings();
 
-        // Create a copy to prevent concurrent modification issues
-        List<Building> buildingCopy = new ArrayList<>(buildings);
+        Vec2 pos2d = new Vec2((float) pos.x, (float) pos.z);
 
-        float posX = (float) pos.x;
-        float posZ = (float) pos.z;
-
-        for (Building building : buildingCopy) {
-            if (!(building instanceof NightSource ns) || building.isDestroyedServerside) continue;
-
-            BlockPos centrePos = BuildingUtils.getCentrePos(building.getBlocks());
-            float dx = centrePos.getX() - posX;
-            float dz = centrePos.getZ() - posZ;
-            float rangeSquared = ns.getNightRange() * ns.getNightRange();
-
-            if (dx * dx + dz * dz < rangeSquared) {
-                return true;
+        for (Building building : buildings) {
+            if (building.isDestroyedServerside) continue;
+            if (building instanceof NightSource ns) {
+                BlockPos centrePos = BuildingUtils.getCentrePos(building.getBlocks());
+                Vec2 centrePos2d = new Vec2(centrePos.getX(), centrePos.getZ());
+                float nightRangeSqr = ns.getNightRange() * ns.getNightRange();
+                if (centrePos2d.distanceToSqr(pos2d) < nightRangeSqr) {
+                    return true;
+                }
             }
         }
         return false;
     }
-
-
     public static boolean isSunBurnTick(Mob mob) {
-        if (!TimeUtils.isDay(mob.level.getDayTime()) || mob.level.isClientSide || mob.isOnFire()) {
-            return false;
+        if (mob.tickCount % 5 == 0 && TimeUtils.isDay(mob.level.getDayTime()) && !mob.level.isClientSide) {
+            BlockPos blockpos = new BlockPos(mob.getX(), mob.getEyeY(), mob.getZ());
+            boolean isProtected = mob.isInWaterRainOrBubble() || mob.isInPowderSnow || mob.wasInPowderSnow || mob.isOnFire();
+            // Return early if mob is protected or sky is not visible
+            if (isProtected || !mob.level.canSeeSky(blockpos)) return false;
+
+            // Check if mob is within range of any NightSource
+            Vec3 mobEyePos = mob.getEyePosition();
+            return !NightUtils.isInRangeOfNightSource(mobEyePos, mob.level.isClientSide);
         }
-
-        BlockPos blockPos = new BlockPos(mob.getX(), mob.getEyeY(), mob.getZ());
-        boolean inWeatherOrSnow = mob.isInWaterRainOrBubble() || mob.isInPowderSnow || mob.wasInPowderSnow;
-
-        // Only return true if all conditions for sunburn are met
-        return !inWeatherOrSnow && mob.level.canSeeSky(blockPos) &&
-                !isInRangeOfNightSource(mob.getEyePosition(), mob.level.isClientSide);
+        return false;
     }
 }
