@@ -1,5 +1,7 @@
 package com.solegendary.reignofnether.player;
 
+import com.mojang.brigadier.context.ParsedArgument;
+import com.mojang.brigadier.context.ParsedCommandNode;
 import com.mojang.datafixers.util.Pair;
 import com.solegendary.reignofnether.Alliance.AllianceSystem;
 import com.solegendary.reignofnether.ReignOfNether;
@@ -9,6 +11,7 @@ import com.solegendary.reignofnether.building.NetherZone;
 import com.solegendary.reignofnether.building.ProductionBuilding;
 import com.solegendary.reignofnether.guiscreen.TopdownGuiContainer;
 import com.solegendary.reignofnether.registrars.EntityRegistrar;
+import com.solegendary.reignofnether.registrars.GameRuleRegistrar;
 import com.solegendary.reignofnether.research.ResearchClientboundPacket;
 import com.solegendary.reignofnether.research.ResearchServerEvents;
 import com.solegendary.reignofnether.resources.ResourceCost;
@@ -22,6 +25,7 @@ import com.solegendary.reignofnether.unit.interfaces.Unit;
 import com.solegendary.reignofnether.unit.packets.UnitSyncClientboundPacket;
 import com.solegendary.reignofnether.util.Faction;
 import com.solegendary.reignofnether.util.MiscUtil;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -37,6 +41,7 @@ import net.minecraft.world.inventory.MenuConstructor;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.TickEvent;
@@ -48,6 +53,7 @@ import net.minecraftforge.network.NetworkHooks;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -81,7 +87,6 @@ public class PlayerServerEvents {
     // modifythephasevariance - ignore building requirements
     // medievalman - get all research (cannot reverse)
     // greedisgood X - gain X of each resource
-    // thereisnospoon X - set hard population cap for everyone to X
     // foodforthought - ignore soft population caps
     public static final List<String> singleWordCheats = List.of("warpten",
         "operationcwal",
@@ -102,7 +107,22 @@ public class PlayerServerEvents {
     }
 
     @SubscribeEvent
-    public static void loadRTSPlayers(ServerStartedEvent evt) {
+    public static void onCommandUsed(CommandEvent evt) {
+        List<ParsedCommandNode<CommandSourceStack>> nodes = evt.getParseResults().getContext().getNodes();
+        if (nodes.size() >= 2 &&
+                nodes.get(0).getNode().getName().equals("gamerule") &&
+                nodes.get(1).getNode().getName().equals("maxPopulation")) {
+
+            Map<String, ParsedArgument<CommandSourceStack, ?>> args = evt.getParseResults().getContext().getArguments();
+            if (args.containsKey("value")) {
+                UnitServerEvents.maxPopulation = (int) args.get("value").getResult();
+                PlayerClientboundPacket.syncMaxPopulation(UnitServerEvents.maxPopulation);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onServerStarted(ServerStartedEvent evt) {
         ServerLevel level = evt.getServer().getLevel(Level.OVERWORLD);
 
         if (level != null) {
@@ -110,6 +130,9 @@ public class PlayerServerEvents {
 
             rtsPlayers.clear();
             rtsPlayers.addAll(data.rtsPlayers);
+
+            UnitServerEvents.maxPopulation = level.getGameRules().getInt(GameRuleRegistrar.MAX_POPULATION);
+            PlayerClientboundPacket.syncMaxPopulation(UnitServerEvents.maxPopulation);
         }
     }
 
@@ -249,6 +272,7 @@ public class PlayerServerEvents {
         } else {
             PlayerClientboundPacket.disableStartRTS(playerName);
         }
+        PlayerClientboundPacket.syncMaxPopulation(UnitServerEvents.maxPopulation);
     }
 
     @SubscribeEvent
@@ -410,24 +434,6 @@ public class PlayerServerEvents {
                                 Integer.toString(amount)
                             );
                         }
-                    } else if (words[0].equalsIgnoreCase("thereisnospoon")) {
-                        int amount = Integer.parseInt(words[1]);
-                        if (amount > 0) {
-                            UnitServerEvents.hardCapPopulation = amount;
-                            for (ServerPlayer player : players) {
-                                ResearchClientboundPacket.addCheatWithValue(player.getName().getString(),
-                                    words[0],
-                                    amount
-                                );
-                            }
-                            evt.setCanceled(true);
-                            sendMessageToAllPlayers("server.reignofnether.cheat_used",
-                                false,
-                                playerName,
-                                words[0],
-                                Integer.toString(amount)
-                            );
-                        }
                     }
                 } catch (NumberFormatException err) {
                     ReignOfNether.LOGGER.error(err);
@@ -456,8 +462,7 @@ public class PlayerServerEvents {
                 playerName.equalsIgnoreCase("solegendary") || playerName.equalsIgnoreCase("altsolegendary")
             )) {
                 ResourcesServerEvents.addSubtractResources(new Resources(playerName, 99999, 99999, 99999));
-                UnitServerEvents.hardCapPopulation = 99999;
-                ResearchClientboundPacket.addCheatWithValue(playerName, "thereisnospoon", 99999);
+                UnitServerEvents.maxPopulation = 99999;
 
                 for (String cheatName : singleWordCheats) {
                     ResearchServerEvents.addCheat(playerName, cheatName);

@@ -27,7 +27,7 @@ import java.util.List;
 
 public class ResearchPoisonSpiders extends ProductionItem {
 
-    public final static String itemName = "Cave Spiders";
+    public final static String itemName = "Poison Spiders";
     public final static ResourceCost cost = ResourceCosts.RESEARCH_POISON_SPIDERS;
 
     public ResearchPoisonSpiders(ProductionBuilding building) {

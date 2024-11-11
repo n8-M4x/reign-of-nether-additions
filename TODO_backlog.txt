@@ -73,10 +73,14 @@ Bugfixes
 
 [❌] Made building on tall grass easier
 
+[❌] Central portals sometimes do not ignite (and this somehow makes grunts spawn underground)
 
 
 Quality of Life Features
 ------------------------
+
+[❌] The world generation datapack is now hardcoded into the mod by default
+    - as a world gen option like superflat
 
 [❌] Highlight portal in yellow if being built on overworld terrain
 

@@ -437,7 +437,7 @@
     "research.reignofnether.pillager_crossbows": "Pillager Crossbows",
     "research.reignofnether.pillager_crossbows.tooltip1": "Enchants the crossbows of all pillagers with multishot",
     "research.reignofnether.poison_spiders": "Poison Spiders",
-    "research.reignofnether.poison_spiders.tooltip1": "Transforms your Spiders into Cave Spiders, ",
+    "research.reignofnether.poison_spiders.tooltip1": "Transforms your Spiders into Poison Spiders, ",
     "research.reignofnether.poison_spiders.tooltip2": "granting them poisonous attacks.",
     "research.reignofnether.poison_spiders.tooltip3": "Requires a Spider Lair.",
     "research.reignofnether.civilian_portal": "Civilian Portal",
@@ -679,7 +679,7 @@
     "units.monsters.reignofnether.zombie_villager": "Zombie Villager",
     "units.monsters.reignofnether.zombie_villager.tooltip1": "An undead worker that can construct and",
     "units.monsters.reignofnether.zombie_villager.tooltip2": "repair buildings and gather resources.",
-    "units.monsters.reignofnether.zombie_villager.tooltip3": "Zombie villagers DO NOT burn under sunlight.",
+    "units.monsters.reignofnether.zombie_villager.tooltip3": "Zombie villagers are slowed under sunlight.",
 
     "units.piglins.reignofnether.blaze": "Blaze",
     "units.piglins.reignofnether.blaze.tooltip1": "A fiery elemental that shoots fireballs from afar.",

@@ -90,7 +90,7 @@ public abstract class ProductionItem {
                 if (this.building.level.isClientSide())
                     return (currentPop + popCost) <= UnitClientEvents.maxPopulation;
                 else
-                    return (currentPop + popCost) <= UnitServerEvents.hardCapPopulation;
+                    return (currentPop + popCost) <= UnitServerEvents.maxPopulation;
             }
         }
         return false;

@@ -363,7 +363,7 @@ public class BuildingServerEvents {
 
     public static int getTotalPopulationSupply(String ownerName) {
         if (ResearchServerEvents.playerHasCheat(ownerName, "foodforthought")) {
-            return UnitServerEvents.hardCapPopulation;
+            return UnitServerEvents.maxPopulation;
         }
 
         int totalPopulationSupply = 0;
@@ -371,7 +371,7 @@ public class BuildingServerEvents {
             if (building.ownerName.equals(ownerName) && building.isBuilt) {
                 totalPopulationSupply += building.popSupply;
             }
-        return Math.min(UnitServerEvents.hardCapPopulation, totalPopulationSupply);
+        return Math.min(UnitServerEvents.maxPopulation, totalPopulationSupply);
     }
 
     // similar to BuildingClientEvents getPlayerToBuildingRelationship: given a Unit and Building, what is the

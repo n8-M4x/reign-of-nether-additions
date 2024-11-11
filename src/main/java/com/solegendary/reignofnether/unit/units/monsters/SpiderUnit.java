@@ -34,6 +34,7 @@ import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.WebBlock;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -190,6 +191,15 @@ public class SpiderUnit extends Spider implements Unit, AttackerUnit, Convertabl
                 if (ability instanceof SpinWebs spinWebs)
                     spinWebs.tick(level);
         }
+    }
+
+    @Override
+    public void kill() {
+        super.kill();
+
+        for (Ability ability : this.getAbilities())
+            if (ability instanceof SpinWebs spinWebs)
+                spinWebs.delayedRemoveWebs(level);
     }
 
     public void initialiseGoals() {

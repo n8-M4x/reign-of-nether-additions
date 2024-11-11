@@ -181,6 +181,11 @@ public class BlazeUnit extends Blaze implements Unit, AttackerUnit, RangedAttack
             attackGoal.tickCooldown();
     }
 
+    @Override
+    public boolean isSensitiveToWater() {
+        return false;
+    }
+
     public void initialiseGoals() {
         this.usePortalGoal = new UsePortalGoal(this);
         this.moveGoal = new MoveToTargetBlockGoal(this, false, 0);
