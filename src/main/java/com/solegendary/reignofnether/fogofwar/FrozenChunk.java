@@ -58,14 +58,16 @@ public class FrozenChunk {
         this.unsaved = frozenChunkToCopy.unsaved;
     }
 
-    // Save client level blocks
+    // saves the ClientLevel blocks into this.blocks
     public void saveBlocks() {
         if (MC.level == null) return;
 
-        Set<BlockPos> buildingBlockPositions = building.getBlocks().stream()
-                .map(BuildingBlock::getBlockPos)
-                .filter(this::isPosInside)
-                .collect(Collectors.toSet());
+        ArrayList<BuildingBlock> bbs = new ArrayList<>();
+        for (BuildingBlock bb : building.getBlocks()) {
+            if (isPosInside(bb.getBlockPos()) && !bb.getBlockState().isAir()) {
+                bbs.add(bb);
+            }
+        }
 
         for (int x = 0; x < 16; x++) {
             for (int y = 0; y < 16; y++) {
@@ -81,14 +83,16 @@ public class FrozenChunk {
         unsaved = false;
     }
 
-    // Save fake blocks
+    // Fake block saving logic with optimizations
     public void saveFakeBlocks() {
         if (MC.level == null) return;
 
-        Set<BlockPos> buildingBlockPositions = building.getBlocks().stream()
-                .map(BuildingBlock::getBlockPos)
-                .filter(this::isPosInside)
-                .collect(Collectors.toSet());
+        ArrayList<BuildingBlock> bbs = new ArrayList<>();
+        for (BuildingBlock bb : building.getBlocks()) {
+            if (isPosInside(bb.getBlockPos()) && !bb.getBlockState().isAir()) {
+                bbs.add(bb);
+            }
+        }
 
         for (int x = 0; x < 16; x++) {
             for (int y = 0; y < 16; y++) {
@@ -96,7 +100,7 @@ public class FrozenChunk {
                     BlockPos bp = origin.offset(x, y, z);
                     BlockState bs = MC.level.getBlockState(bp);
 
-                    if (replaceBlock(bs, bp, buildingBlockPositions)) {
+                    if (replaceBlock(bs, bp, bbs)) {
                         continue;
                     }
 
@@ -109,14 +113,16 @@ public class FrozenChunk {
         unsaved = false;
     }
 
-    private boolean replaceBlock(BlockState bs, BlockPos bp, Set<BlockPos> buildingBlockPositions) {
-        if (buildingBlockPositions.contains(bp)) {
-            BlockState newBlockState = (building instanceof AbstractBridge &&
-                    !(bs.getBlock() instanceof WallBlock) &&
-                    !(bs.getBlock() instanceof FenceBlock))
-                    ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState();
-            saveBlock(bp, newBlockState);
-            return true;
+    private boolean replaceBlock(BlockState bs, BlockPos bp, ArrayList<BuildingBlock> bbs) {
+        for (BuildingBlock bb : bbs) {
+            if (bb.getBlockPos().equals(bp)) {
+                BlockState newBlockState = (building instanceof AbstractBridge &&
+                        !(bb.getBlockState().getBlock() instanceof WallBlock) &&
+                        !(bb.getBlockState().getBlock() instanceof FenceBlock))
+                        ? Blocks.WATER.defaultBlockState() : Blocks.AIR.defaultBlockState();
+                saveBlock(bp, newBlockState);
+                return true;
+            }
         }
 
         String blockName = bs.getBlock().getName().getString().toLowerCase();
@@ -150,11 +156,9 @@ public class FrozenChunk {
     public void loadBlocks() {
         if (MC.level == null) return;
 
-        blocks.forEach((bp, bs) -> {
-            if (!MC.level.getBlockState(bp).equals(bs)) {
-                MC.level.setBlockAndUpdate(bp, bs);
-            }
-        });
+        for (BlockPos bp : blocks.keySet()) {
+            MC.level.setBlockAndUpdate(bp, blocks.get(bp));
+        }
     }
 
     public void unloadBlocks() {
@@ -163,7 +167,7 @@ public class FrozenChunk {
 
     private boolean isFullyLoaded() {
         if (MC.level == null) return false;
-        return IntStream.range(0, 16).parallel().allMatch(x -> {
+        for (int x = 0; x < 16; x++) {
             for (int y = 0; y < 16; y++) {
                 for (int z = 0; z < 16; z++) {
                     if (!MC.level.isLoaded(origin.offset(x, y, z))) {
@@ -171,8 +175,8 @@ public class FrozenChunk {
                     }
                 }
             }
-            return true;
-        });
+        }
+        return true;
     }
 
     private void saveBlock(BlockPos bp, BlockState bs) {
