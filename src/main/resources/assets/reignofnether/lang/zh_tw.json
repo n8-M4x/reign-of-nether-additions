@@ -737,6 +737,8 @@
   "alliance.reignofnether.no_request": "沒有來自 %s 待處理同盟請求。",
   "alliance.reignofnether.disbanded": "您與 %s 的同盟已解散。",
   "alliance.reignofnether.disbanding": "與 %s 的同盟將在 30 秒後解散…",
+  "alliance.reignofnether.disband_self": "無法解散自己。",
+  "alliance.reignofnether.disband_pending": "已向該玩家發送解散同盟請求。",
   
   "survival.reignofnether.dawn": "天快亮了",
   "survival.reignofnether.dusk": "夜幕降臨…",
