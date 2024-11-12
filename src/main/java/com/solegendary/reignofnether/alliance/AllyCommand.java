@@ -12,6 +12,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.TickTask;
 
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import net.minecraft.commands.arguments.EntityArgument;
 
@@ -19,6 +22,7 @@ public class AllyCommand {
 
     public static final Map<String, String> pendingAlliances = new HashMap<>(); // Tracks pending alliance requests
     public static final Set<UUID> pendingDisbands = new HashSet<>(); // Tracks pending disbands by player UUID
+    private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("ally")
@@ -76,16 +80,19 @@ public class AllyCommand {
         ServerPlayer player = context.getSource().getPlayerOrException();
         ServerPlayer allyPlayer = EntityArgument.getPlayer(context, "player");
 
-        // Schedule disbanding after 30 seconds (600 ticks)
+        // Schedule disbanding after 30 seconds
         UUID playerId = player.getUUID();
         pendingDisbands.add(playerId);
-        player.getServer().tell(new TickTask(player.getServer().getTickCount() + 600, () -> {
+
+        scheduler.schedule(() -> {
             // Check if still pending
             if (pendingDisbands.remove(playerId)) {
                 AllianceSystem.removeAlliance(player.getName().getString(), allyPlayer.getName().getString());
                 player.sendSystemMessage(Component.translatable("alliance.reignofnether.disbanded", allyPlayer.getName().getString()));
+                allyPlayer.sendSystemMessage(Component.translatable("alliance.reignofnether.disbanded", player.getName().getString()));
+
             }
-        }));
+        }, 30, TimeUnit.SECONDS);
 
         context.getSource().sendSuccess(Component.translatable("alliance.reignofnether.disbanding", allyPlayer.getName().getString()), false);
         return Command.SINGLE_SUCCESS;

@@ -45,13 +45,6 @@ public class FogOfWarServerEvents {
     }
 
     @SubscribeEvent
-    public static void onWorldTick(TickEvent.LevelTickEvent evt) {
-        if (evt.phase != TickEvent.Phase.END || evt.level.isClientSide() || evt.level.dimension() != Level.OVERWORLD)
-            return;
-
-        serverLevel = (ServerLevel) evt.level;
-    }
-    @SubscribeEvent
     public static void onRegisterCommand(RegisterCommandsEvent evt) {
         evt.getDispatcher().register(Commands.literal("rts-fog").then(Commands.literal("enable")
                 .executes((command) -> {
@@ -64,6 +57,15 @@ public class FogOfWarServerEvents {
                     return 1;
                 })));
     }
+    // Sync fog status across all clients
+    @SubscribeEvent
+    public static void onWorldTick(TickEvent.LevelTickEvent evt) {
+        if (evt.phase != TickEvent.Phase.END || evt.level.isClientSide() || evt.level.dimension() != Level.OVERWORLD)
+            return;
+
+        serverLevel = (ServerLevel) evt.level;
+    }
+
     // Sync fog status across all clients
     private static void syncClientFog() {
         FogOfWarClientboundPacket.setEnabled(enabled);
