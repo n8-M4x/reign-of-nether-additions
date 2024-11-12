@@ -289,7 +289,7 @@
 
   "commands.reignofnether.toggle_fow": "%s - 为所有玩家开关战争迷雾",
   "commands.reignofnether.surrender": "%s - 投降认输",
-  "commands.reignofnether.reset": "%s - 清除对局中所有单位/建筑，将所有玩家重设为观察者模式",
+  "commands.reignofnether.reset": "%s - 清除对局中所有单位/建筑，将所有玩家重设为旁观模式",
   "commands.reignofnether.lock": "%s - 使新玩家无法加入对局",
 
   "controls.reignofnether.toggle_cam": "F12 - 切换原版/RTS 视角",
@@ -347,6 +347,7 @@
   "hud.orthoview.reignofnether.hiding_leaves_around": "隐藏树叶：单位与鼠标周围的树叶",
   "hud.orthoview.reignofnether.hiding_leaves_all": "隐藏树叶：所有树叶",
   "hud.orthoview.reignofnether.disabled_hiding_leaves": "禁用隐藏树叶",
+  "hud.orthoview.reignofnether.ortho_error": "\n你必须在创造模式或旁观模式下才能进入 RTS 视野\n",
 
   "hud.reignofnether.drop_off_resources": "交付资源",
   "hud.reignofnether.gather_resources": "采集资源（%s）",
