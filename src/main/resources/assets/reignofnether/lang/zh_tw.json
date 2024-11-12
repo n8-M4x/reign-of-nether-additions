@@ -347,6 +347,7 @@
   "hud.orthoview.reignofnether.hiding_leaves_around": "隱藏樹葉：單位和游標周圍",
   "hud.orthoview.reignofnether.hiding_leaves_all": "隱藏樹葉：所有",
   "hud.orthoview.reignofnether.disabled_hiding_leaves": "停用隱藏樹葉",
+  "hud.orthoview.reignofnether.ortho_error": "\n您必須在創造模式或旁觀者模式下進行 RTS 模式\n",
 
   "hud.reignofnether.drop_off_resources": "存放資源",
   "hud.reignofnether.gather_resources": "攜帶的資源 (%s)",
@@ -679,7 +680,7 @@
   "units.monsters.reignofnether.zombie_villager": "殭屍村民",
   "units.monsters.reignofnether.zombie_villager.tooltip1": "能建造和修理建築並",
   "units.monsters.reignofnether.zombie_villager.tooltip2": "採集資源的不死工人。",
-  "units.monsters.reignofnether.zombie_villager.tooltip3": "殭屍村民不會在陽光下燃燒。",
+  "units.monsters.reignofnether.zombie_villager.tooltip3": "殭屍村民在陽光下移動速度減少。",
 
   "units.piglins.reignofnether.blaze": "烈焰使者",
   "units.piglins.reignofnether.blaze.tooltip1": "兇猛的火焰怪物，能遠程發射火球。",
@@ -729,8 +730,20 @@
   "units.villagers.reignofnether.witch": "女巫",
   "units.villagers.reignofnether.witch.tooltip1": "陰險狡猾的魔女，能用藥水治療和攻擊。",
   
+  "alliance.reignofnether.sent_request": "\n已發送同盟請求至 %s。\n",
+  "alliance.reignofnether.ally_self": "\n無法與自己同盟！\n",
+  "alliance.reignofnether.ally_confirm": "\n%s 想要與您同盟。輸入 /allyconfirm %s 來確定。\n",
+  "alliance.reignofnether.now_allied": "\n您現在與 %s 為同盟。\n",
+  "alliance.reignofnether.ally_accepted": "\n%s 接受您的同盟請求。\n",
+  "alliance.reignofnether.no_request": "\n沒有來自 %s 待處理同盟請求。\n",
+  "alliance.reignofnether.disbanded": "\n您與 %s 的同盟已解散。\n",
+  "alliance.reignofnether.disbanding": "\n與 %s 的同盟將在 30 秒後解散…\n",
+  "alliance.reignofnether.disband_self": "\n無法解散自己。\n",
+  "alliance.reignofnether.disband_pending": "\n已向該玩家發送解散同盟請求。\n",
+  
   "survival.reignofnether.dawn": "天快亮了",
   "survival.reignofnether.dusk": "夜幕降臨…",
+  "survival.reignofnether.dusksoon": "天快黑了。",
 
   "block.reignofnether.decayable_nether_wart_block": "腐朽地獄疙瘩塊",
   "block.reignofnether.decayable_warped_wart_block": "腐朽扭曲疙瘩塊",
