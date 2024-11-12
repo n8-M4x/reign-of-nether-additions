@@ -43,19 +43,12 @@ public class AllyCommand {
         ServerPlayer allyPlayer = EntityArgument.getPlayer(context, "player");
 
         if (player.equals(allyPlayer)) {
-            player.sendSystemMessage(Component.literal(""));
             player.sendSystemMessage(Component.translatable("alliance.reignofnether.ally_self", player.getName().getString()));
-            player.sendSystemMessage(Component.literal(""));
             return 0;
         }
         pendingAlliances.put(allyPlayer.getName().getString(), player.getName().getString());
-        context.getSource().sendSystemMessage(Component.literal(""));
         context.getSource().sendSuccess(Component.translatable("alliance.reignofnether.sent_request", allyPlayer.getName().getString()), false);
-        context.getSource().sendSystemMessage(Component.literal(""));
-
-        allyPlayer.sendSystemMessage(Component.literal(""));
         allyPlayer.sendSystemMessage(Component.translatable("alliance.reignofnether.ally_confirm", player.getName().getString(), player.getName().getString()));
-        allyPlayer.sendSystemMessage(Component.literal(""));
 
         return Command.SINGLE_SUCCESS;
     }
@@ -68,17 +61,10 @@ public class AllyCommand {
             AllianceSystem.addAlliance(player.getName().getString(), requesterPlayer.getName().getString());
             pendingAlliances.remove(player.getName().getString());
 
-            context.getSource().sendSystemMessage(Component.literal(""));
             context.getSource().sendSuccess(Component.translatable("alliance.reignofnether.now_allied", requesterPlayer.getName().getString()), false);
-            context.getSource().sendSystemMessage(Component.literal(""));
-
-            requesterPlayer.sendSystemMessage(Component.literal(""));
             requesterPlayer.sendSystemMessage(Component.translatable("alliance.reignofnether.ally_accepted", player.getName().getString()));
-            requesterPlayer.sendSystemMessage(Component.literal(""));
         } else {
-            context.getSource().sendSystemMessage(Component.literal(""));
             context.getSource().sendFailure(Component.translatable("alliance.reignofnether.no_request", requesterPlayer.getName().getString()));
-            context.getSource().sendSystemMessage(Component.literal(""));
         }
 
         return Command.SINGLE_SUCCESS;
@@ -89,17 +75,13 @@ public class AllyCommand {
         ServerPlayer allyPlayer = EntityArgument.getPlayer(context, "player");
 
         if (player.equals(allyPlayer)) {
-            context.getSource().sendSystemMessage(Component.literal(""));
             context.getSource().sendFailure(Component.translatable("alliance.reignofnether.disband_self"));
-            context.getSource().sendSystemMessage(Component.literal(""));
             return 0;
         }
 
         UUID playerId = player.getUUID();
         if (pendingDisbands.contains(playerId)) {
-            context.getSource().sendSystemMessage(Component.literal(""));
             context.getSource().sendFailure(Component.translatable("alliance.reignofnether.disband_pending", allyPlayer.getName().getString()));
-            context.getSource().sendSystemMessage(Component.literal(""));
             return 0;
         }
 
@@ -107,18 +89,12 @@ public class AllyCommand {
         scheduler.schedule(() -> {
             if (pendingDisbands.remove(playerId)) {
                 AllianceSystem.removeAlliance(player.getName().getString(), allyPlayer.getName().getString());
-                player.sendSystemMessage(Component.literal(""));
                 player.sendSystemMessage(Component.translatable("alliance.reignofnether.disbanded", allyPlayer.getName().getString()));
-                player.sendSystemMessage(Component.literal(""));
-                allyPlayer.sendSystemMessage(Component.literal(""));
                 allyPlayer.sendSystemMessage(Component.translatable("alliance.reignofnether.disbanded", player.getName().getString()));
-                allyPlayer.sendSystemMessage(Component.literal(""));
             }
         }, 30, TimeUnit.SECONDS);
 
-        context.getSource().sendSystemMessage(Component.literal(""));
         context.getSource().sendSuccess(Component.translatable("alliance.reignofnether.disbanding", allyPlayer.getName().getString()), false);
-        context.getSource().sendSystemMessage(Component.literal(""));
         return Command.SINGLE_SUCCESS;
     }
 }
