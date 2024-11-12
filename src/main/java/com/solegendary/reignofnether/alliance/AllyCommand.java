@@ -12,13 +12,17 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.TickTask;
 
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import net.minecraft.commands.arguments.EntityArgument;
 
 public class AllyCommand {
 
-    public static final Map<String, String> pendingAlliances = new HashMap<>(); // Tracks pending alliance requests
-    public static final Set<UUID> pendingDisbands = new HashSet<>(); // Tracks pending disbands by player UUID
+    public static final Map<String, String> pendingAlliances = new HashMap<>();
+    public static final Set<UUID> pendingDisbands = new HashSet<>();
+    private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("ally")
@@ -34,7 +38,6 @@ public class AllyCommand {
                         .executes(AllyCommand::disband)));
     }
 
-    // Initiates an ally request
     private static int ally(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayerOrException();
         ServerPlayer allyPlayer = EntityArgument.getPlayer(context, "player");
@@ -43,7 +46,6 @@ public class AllyCommand {
             player.sendSystemMessage(Component.translatable("alliance.reignofnether.ally_self", player.getName().getString()));
             return 0;
         }
-        // Record the pending alliance
         pendingAlliances.put(allyPlayer.getName().getString(), player.getName().getString());
         context.getSource().sendSuccess(Component.translatable("alliance.reignofnether.sent_request", allyPlayer.getName().getString()), false);
         allyPlayer.sendSystemMessage(Component.translatable("alliance.reignofnether.ally_confirm", player.getName().getString(), player.getName().getString()));
@@ -51,14 +53,11 @@ public class AllyCommand {
         return Command.SINGLE_SUCCESS;
     }
 
-    // Confirms an ally request
     private static int allyConfirm(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayerOrException();
         ServerPlayer requesterPlayer = EntityArgument.getPlayer(context, "player");
 
-        // Check if there is a pending alliance request from the specified player
         if (pendingAlliances.getOrDefault(player.getName().getString(), "").equals(requesterPlayer.getName().getString())) {
-            // Create the alliance
             AllianceSystem.addAlliance(player.getName().getString(), requesterPlayer.getName().getString());
             pendingAlliances.remove(player.getName().getString());
 
@@ -71,21 +70,29 @@ public class AllyCommand {
         return Command.SINGLE_SUCCESS;
     }
 
-    // Initiates disbanding an alliance with a delay
     private static int disband(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayerOrException();
         ServerPlayer allyPlayer = EntityArgument.getPlayer(context, "player");
 
-        // Schedule disbanding after 30 seconds (600 ticks)
+        if (player.equals(allyPlayer)) {
+            context.getSource().sendFailure(Component.translatable("alliance.reignofnether.disband_self"));
+            return 0;
+        }
+
         UUID playerId = player.getUUID();
+        if (pendingDisbands.contains(playerId)) {
+            context.getSource().sendFailure(Component.translatable("alliance.reignofnether.disband_pending", allyPlayer.getName().getString()));
+            return 0;
+        }
+
         pendingDisbands.add(playerId);
-        player.getServer().tell(new TickTask(player.getServer().getTickCount() + 600, () -> {
-            // Check if still pending
+        scheduler.schedule(() -> {
             if (pendingDisbands.remove(playerId)) {
                 AllianceSystem.removeAlliance(player.getName().getString(), allyPlayer.getName().getString());
                 player.sendSystemMessage(Component.translatable("alliance.reignofnether.disbanded", allyPlayer.getName().getString()));
+                allyPlayer.sendSystemMessage(Component.translatable("alliance.reignofnether.disbanded", player.getName().getString()));
             }
-        }));
+        }, 30, TimeUnit.SECONDS);
 
         context.getSource().sendSuccess(Component.translatable("alliance.reignofnether.disbanding", allyPlayer.getName().getString()), false);
         return Command.SINGLE_SUCCESS;

@@ -654,7 +654,7 @@ public class PlayerServerEvents {
 
             if (rtsLocked)
                 setRTSLock(false);
-
+            AllianceSystem.resetAllAlliances();
             if (SurvivalServerEvents.isEnabled()) {
                 SurvivalServerEvents.resetWaves();
                 SurvivalServerEvents.setEnabled(false);

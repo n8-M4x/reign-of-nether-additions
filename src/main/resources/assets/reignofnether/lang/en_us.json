@@ -737,6 +737,8 @@
     "alliance.reignofnether.no_request": "No pending alliance request from %s.",
     "alliance.reignofnether.disbanded": "Your alliance with %s has been disbanded.",
     "alliance.reignofnether.disbanding": "Disbanding alliance with %s in 30 seconds...",
+    "alliance.reignofnether.disband_self": "You cannot disband yourself.",
+    "alliance.reignofnether.disband_pending": "A disband request for this player is already pending.",
 
     "survival.reignofnether.dawn": "Dawn breaks",
     "survival.reignofnether.dusk": "Night falls...",
