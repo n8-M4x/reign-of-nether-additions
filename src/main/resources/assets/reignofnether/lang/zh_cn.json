@@ -729,8 +729,20 @@
   "units.villagers.reignofnether.witch": "女巫",
   "units.villagers.reignofnether.witch.tooltip1": "女巫是狡诈的老巫婆，使用药水治疗己方，伤害敌人",
 
+  "alliance.reignofnether.sent_request": "结盟请求已发送至%s。",
+  "alliance.reignofnether.ally_self": "你没法和自己结盟！",
+  "alliance.reignofnether.ally_confirm": "%s想要同你结盟。请在聊天框输入 /allyconfirm %s 以确认结盟。",
+  "alliance.reignofnether.now_allied": "你现在已经同%s结盟。",
+  "alliance.reignofnether.ally_accepted": "%s已经同意了你的结盟请求。",
+  "alliance.reignofnether.no_request": "目前尚无来自%s的结盟请求。",
+  "alliance.reignofnether.disbanded": "你与%s的同盟已经解散。",
+  "alliance.reignofnether.disbanding": "将在 30 秒内解散与%s的同盟……",
+  "alliance.reignofnether.disband_self": "你没法解散和自己的结盟！",
+  "alliance.reignofnether.disband_pending": "你已经向该玩家发送了解散同盟请求。",
+
   "survival.reignofnether.dawn": "破晓已至",
   "survival.reignofnether.dusk": "夜幕降临……",
+  "survival.reignofnether.dusksoon": "太阳日渐西斜。",
 
   "block.reignofnether.decayable_nether_wart_block": "腐化的下界疣块",
   "block.reignofnether.decayable_warped_wart_block": "腐化的扭曲疣块",
