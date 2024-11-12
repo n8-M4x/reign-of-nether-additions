@@ -55,7 +55,8 @@ public class ThrowRegenPotion extends Ability {
                     Style.EMPTY.withBold(true)
                 ),
                 FormattedCharSequence.forward(
-                    I18n.get("abilities.reignofnether.regen_potion.tooltip1", CD_MAX_SECONDS,witchUnit.getPotionThrowRange()),
+                    I18n.get("abilities.reignofnether.regen_potion.tooltip1", CD_MAX_SECONDS)
+                            + witchUnit.getPotionThrowRange(),
                     MyRenderer.iconStyle
                 ),
                 FormattedCharSequence.forward(I18n.get("abilities.reignofnether.regen_potion.tooltip2"), Style.EMPTY)
