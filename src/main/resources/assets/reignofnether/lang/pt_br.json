@@ -502,7 +502,7 @@
     "tutorial.reignofnether.locked": "Esta partida RTS foi bloqueada. Aguarde por um novo jogo antes de entrar.",
     "tutorial.reignofnether.welcome_back": "Bem-vindo de volta ao Reign of Nether",
     "tutorial.reignofnether.op_commands": "Como administrador do servidor, você pode usar:",
-    "tutorial.reignofnether.fog": "/rts-fog enable | disable",
+    "tutorial.reignofnether.fog": "/rts-fog enable | disable (experimental)",
     "tutorial.reignofnether.lock": "/rts-lock enable | disable",
     "tutorial.reignofnether.syncing": "/rts-syncing enable | disable (experimental)",
     "tutorial.reignofnether.reset": "/rts-reset",

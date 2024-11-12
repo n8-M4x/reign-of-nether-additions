@@ -65,6 +65,7 @@ Quality of Life Features
 [✔] The thereisnospoon cheatcode to modify max population is now /gamerule maxPopulation <value>
     - this also means it is saved to the game world
 [✔] Added saved UUID data for all units
+[✔] Added gamerules to /rts-help
 
 
 Balancing
