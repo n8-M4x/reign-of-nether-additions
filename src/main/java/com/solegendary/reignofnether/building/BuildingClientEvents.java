@@ -996,10 +996,10 @@ public class BuildingClientEvents {
             // if a player is looking directly at a frozenchunk on login, they may load in the real blocks before
             // they are frozen so move them to their capitol (or any of their buildings if they don't have one)
             if (MC.player != null && forPlayerLoggingIn && ownerName.equals(MC.player.getName().getString())) {
-                if (!FogOfWarClientEvents.movedToCapitol.get()) {
+                if (!FogOfWarClientEvents.movedToCapitol) {
                     OrthoviewClientEvents.centreCameraOnPos(newBuilding.originPos.getX(), newBuilding.originPos.getZ());
                     if (newBuilding.isCapitol) {
-                        FogOfWarClientEvents.movedToCapitol.set(true);  // Set the AtomicBoolean to true
+                        FogOfWarClientEvents.movedToCapitol = true;  // Set the AtomicBoolean to true
                     }
                 }
             }
