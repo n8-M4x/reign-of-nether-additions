@@ -59,11 +59,9 @@ public class AllianceSystem {
             }
         }
     }
-/*
-    public static void resetAlliances() {
+    public static void resetAllAlliances() {
         alliances.clear();
-        PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new AllianceResetPacket());
+        PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(), new AllianceClientboundRemovePacket());
     }
 
- */
 }
