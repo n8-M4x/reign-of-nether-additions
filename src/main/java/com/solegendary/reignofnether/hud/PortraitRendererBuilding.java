@@ -61,7 +61,7 @@ class PortraitRendererBuilding {
         int bgCol = 0x0;
         switch (rs) {
             case OWNED    -> bgCol = 0x90000000;
-            case FRIENDLY -> bgCol = 0x90009000;
+            case FRIENDLY -> bgCol = 0x90000090;
             case NEUTRAL  -> bgCol = 0x90909000;
             case HOSTILE  -> bgCol = 0x90900000;
         }

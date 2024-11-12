@@ -241,7 +241,7 @@ public class WitherSkeletonUnit extends WitherSkeleton implements Unit, Attacker
     }
 
     public static final int WITHER_SECONDS = 7;
-    public static final int WITHER_SECONDS_ON_HIT = 3;
+    public static final int WITHER_SECONDS_TO_ATTACKERS = 2;
 
     @Override
     public boolean doHurtTarget(@NotNull Entity pEntity) {

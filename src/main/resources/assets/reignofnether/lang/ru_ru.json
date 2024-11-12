@@ -34,7 +34,7 @@
     "sounds.reignofnether.chat": "Чат",
     "sounds.reignofnether.ally": "Союзник",
     "sounds.reignofnether.neutral": "Нейтральный",
-    "sounds.reignofnether.enemy": "Враг"
+    "sounds.reignofnether.enemy": "Враг",
     
     "abilities.reignofnether.attack_ground": "Атака по земле",
     "abilities.reignofnether.call_lightning": "Призвать молнию",
@@ -48,7 +48,7 @@
     "abilities.reignofnether.connect_portal": "Соединить портал",
     "abilities.reignofnether.connect_portal.tooltip1": "Соедините с другим принадлежащим вам транспортным порталом.",
     "abilities.reignofnether.connect_portal.tooltip2": "Перезаписывает любые существующие соединения с обеих сторон.",
-    "abilities.reignofnether.connect_porta.error1": "Нужно выбрать завершённый транспортный портал, который вам принадлежит.",
+    "abilities.reignofnether.connect_portal.error1": "Нужно выбрать завершённый транспортный портал, который вам принадлежит.",
     "abilities.reignofnether.disconnect_portal": "Разорвать соединение",
     "abilities.reignofnether.dismount": "Слезть",
     "abilities.reignofnether.eject": "Извлечь",
@@ -108,7 +108,7 @@
     "abilities.reignofnether.lingering_regen_potion.tooltip2": "Бросить зелье, оставляющее облако лечащего газа.",
     "abilities.reignofnether.shield_stance": "Стойка с щитом",
     "abilities.reignofnether.shield_stance.tooltip1": "Поднять или опустить щит - снижает урон ",
-    "abilities.reignofnether.shield_stance.tooltip2": "от снарядов на 67%% и скорость движения на 50%%.",
+    "abilities.reignofnether.shield_stance.tooltip2": "от снарядов на 75%% и скорость движения на 50%%.",
     "abilities.reignofnether.sacrifice": "Жертвоприношение",
     "abilities.reignofnether.sacrifice.tooltip1": "\uE005  %d",
     "abilities.reignofnether.sacrifice.tooltip2": "Убить дружелюбного моба, чтобы распространить скалк.",
@@ -392,7 +392,7 @@
     "server.resources.reignofnether.not_enough_wood": "У вас недостаточно древесины",
     "server.resources.reignofnether.not_enough_ore": "У вас недостаточно руды",
     "server.resources.reignofnether.not_enough_pop": "У вас недостаточно запаса населения",
-    "server.resources.reignofnether.max_pop": "Вы достигли максимального населения"
+    "server.resources.reignofnether.max_pop": "Вы достигли максимального населения",
 
     "research.reignofnether.upgrade_completed": "Обновление завершено: %s",
     "research.reignofnether.advanced_portals": "Продвинутые порталы",
@@ -404,7 +404,7 @@
     "research.reignofnether.blaze_firewall.tooltip2": "блоки в линии, но временно отключает их атаки.",
     "research.reignofnether.brute_shields": "Щиты Брутов",
     "research.reignofnether.brute_shields.tooltip1": "Позволяет Брутам поднимать щит, чтобы снизить урон от снарядов",
-    "research.reignofnether.brute_shields.tooltip2": "на 67% и скорость передвижения на 50%.",
+    "research.reignofnether.brute_shields.tooltip2": "на 75% и скорость передвижения на 50%.",
     "research.reignofnether.castle_flag": "Флаг замка",
     "research.reignofnether.castle_flag.tooltip1": "Улучшает замок, позволяя продвигать юнита-илладжера",
     "research.reignofnether.castle_flag.tooltip2": "в капитана, который дает ауру скорости для дружественных юнитов.",
@@ -490,7 +490,7 @@
     "time.reignofnether.night_circles": "Ночные круги: %s",
     "time.reignofnether.night_circle_mode_all": "Все",
     "time.reignofnether.night_circle_mode_no_overlaps": "Без перекрытий",
-    "time.reignofnether.night_circle_mode_off": "Выключено"
+    "time.reignofnether.night_circle_mode_off": "Выключено",
 
     "tutorial.reignofnether.tutorial_help": "Помощь в обучении",
     "tutorial.reignofnether.welcome": "Добро пожаловать в Reign of Nether",
@@ -679,7 +679,7 @@
     "units.monsters.reignofnether.zombie_villager": "Зомби-житель",
     "units.monsters.reignofnether.zombie_villager.tooltip1": "Нежить-рабочий, который может строить и",
     "units.monsters.reignofnether.zombie_villager.tooltip2": "ремонтировать здания и собирать ресурсы.",
-    "units.monsters.reignofnether.zombie_villager.tooltip3": "Зомби-жители НЕ горят на солнечном свете."
+    "units.monsters.reignofnether.zombie_villager.tooltip3": "Зомби-жители НЕ горят на солнечном свете.",
 
     "units.piglins.reignofnether.blaze": "Блейз",
     "units.piglins.reignofnether.blaze.tooltip1": "Огненный элементаль, который стреляет огненными шарами на дальнем расстоянии.",

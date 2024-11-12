@@ -53,7 +53,7 @@ public class VindicatorProd extends ProductionItem {
         ));
         if (ResearchClient.hasResearch(ResearchVindicatorAxes.itemName)) {
             tooltipLines.add(FormattedCharSequence.forward("", Style.EMPTY));
-            tooltipLines.add(FormattedCharSequence.forward(I18n.get("units.reignofnether.vindicator.tooltip2"), Style.EMPTY.withBold(true)));
+            tooltipLines.add(FormattedCharSequence.forward(I18n.get("units.villagers.reignofnether.vindicator.tooltip2"), Style.EMPTY.withBold(true)));
         }
         return new Button(
             VindicatorProd.itemName,

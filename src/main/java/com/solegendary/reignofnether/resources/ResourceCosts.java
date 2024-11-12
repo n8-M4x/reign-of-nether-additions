@@ -91,7 +91,7 @@ public class ResourceCosts {
     public static ResourceCost VILLAGER_HOUSE = ResourceCost.Building(0,100,0, 10);
     public static ResourceCost WHEAT_FARM = ResourceCost.Building(0,150,0, 0);
     public static ResourceCost BARRACKS = ResourceCost.Building(0,150,0, 0);
-    public static ResourceCost BLACKSMITH = ResourceCost.Building(0,150,250, 0);
+    public static ResourceCost BLACKSMITH = ResourceCost.Building(0,100,300, 0);
     public static ResourceCost ARCANE_TOWER = ResourceCost.Building(0,200,100, 0);
     public static ResourceCost LIBRARY = ResourceCost.Building(0,300,100, 0);
     public static ResourceCost WATCHTOWER = ResourceCost.Building(0,100,100, 0);
@@ -109,7 +109,7 @@ public class ResourceCosts {
     public static ResourceCost FORTRESS = ResourceCost.Building(0, 400, 300, 0);
 
     // ******************* RESEARCH ******************* //
-    public static ResourceCost RESEARCH_GOLEM_SMITHING = ResourceCost.Research(0, 150, 150, 60);
+    public static ResourceCost RESEARCH_GOLEM_SMITHING = ResourceCost.Research(0, 150,200, 90);
     public static ResourceCost RESEARCH_LAB_LIGHTNING_ROD = ResourceCost.Research(0,0,400, 120);
     public static ResourceCost RESEARCH_RESOURCE_CAPACITY = ResourceCost.Research(200,200,0, 90);
     public static ResourceCost RESEARCH_SPIDER_JOCKEYS = ResourceCost.Research(300,250,0, 100);
