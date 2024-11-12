@@ -291,6 +291,11 @@
   "commands.reignofnether.surrender": "%s - 投降",
   "commands.reignofnether.reset": "%s - 刪除所有單位/建築物，將所有玩家設為旁觀者模式",
   "commands.reignofnether.lock": "%s - 使新玩家無法加入本局 RTS 遊戲",
+  "commands.reignofnether.ally": "%s - 發送同盟請求給其他玩家",
+  "commands.reignofnether.disband": "%s - 與其他玩家解散同盟",
+  "commands.reignofnether.gamerule.do_log_falling": "%s - 設定是否砍伐樹木時掉落",
+  "commands.reignofnether.gamerule.neutral_aggro": "%s - 設定是否自動攻擊中立單位/建築物",
+  "commands.reignofnether.gamerule.max_population": "%s - 設定最高的人口上限",
 
   "controls.reignofnether.toggle_cam": "F12 - 切換 RTS 視角",
   "controls.reignofnether.refresh_chunks": "F8 - 更新區塊",
