@@ -17,7 +17,7 @@ Tthings to regression test once PRs are merged
 
 Features
 --------
-[🟡] Alliance System (Thanks to @Boobcat)
+[✔] Alliance System (Thanks to @Boobcat)
     - /ally <player name> to send an alliance request to another player
     - /allyconfirm <requester name> to accept an alliance request
     - /disband <player name> to end an alliance
@@ -27,7 +27,7 @@ Features
     - Effects that don't friendly fire like creepers should also not affect allies
     - You can still force attack allies using A + left-click
 
-[🟡] Translation Compatibility (Thanks to @Promethia)
+[✔] Translation Compatibility (Thanks to @Promethia)
     - Added language support for:
         - Danish (da_dk)
         - Polish (pl_pl)
@@ -77,17 +77,17 @@ Balancing
     - Capitol build speeds have been sped up to compensate
 
 Piglins
-[🟡] Wither Skeleton Death Cloud: Duration +2s, Cooldown +5s
+[✔] Wither Skeleton Death Cloud: Duration +2s, Cooldown +5s
     - Is now a one-click-one-use ability
-[🟡] Melee units attacking a Wither Skeleton now get withered for 2 seconds (4 damage total)
+[✔] Melee units attacking a Wither Skeleton now get withered for 2 seconds (4 damage total)
 
 Villagers
-[🟡] Golem Smithing Upgrade: +50 ore, +30s
-[🟡] Vindicators and Pillagers: -5 food
-[🟡] Blacksmith: -150 wood, +150 ore
-[🟡] Libraries now only require a Barracks to be built instead of an Arcane Tower
-[🟡] Library: -50 wood, +10% build time
-[🟡] Grand Library Upgrade: +100 wood, -250 ore, +20s
-[🟡] Swapped Maiming and Sharpness Enchantment costs and requirements (Sharpness is now level II)
-[🟡] Enchant Maiming: -5 wood, -15 ore
-[🟡] Enchant Multishot: -10 wood, -5 ore
+[✔] Golem Smithing Upgrade: +50 ore, +30s
+[✔] Vindicators and Pillagers: -5 food
+[✔] Blacksmith: -150 wood, +150 ore
+[✔] Libraries now only require a Barracks to be built instead of an Arcane Tower
+[✔] Library: -50 wood, +10% build time
+[✔] Grand Library Upgrade: +100 wood, -250 ore, +20s
+[✔] Swapped Maiming and Sharpness Enchantment costs and requirements (Sharpness is now level II)
+[✔] Enchant Maiming: -5 wood, -15 ore
+[✔] Enchant Multishot: -10 wood, -5 ore
