@@ -679,7 +679,7 @@
   "units.monsters.reignofnether.zombie_villager": "殭屍村民",
   "units.monsters.reignofnether.zombie_villager.tooltip1": "能建造和修理建築並",
   "units.monsters.reignofnether.zombie_villager.tooltip2": "採集資源的不死工人。",
-  "units.monsters.reignofnether.zombie_villager.tooltip3": "殭屍村民不會在陽光下燃燒。",
+  "units.monsters.reignofnether.zombie_villager.tooltip3": "殭屍村民在陽光下移動速度減少。",
 
   "units.piglins.reignofnether.blaze": "烈焰使者",
   "units.piglins.reignofnether.blaze.tooltip1": "兇猛的火焰怪物，能遠程發射火球。",
@@ -729,8 +729,18 @@
   "units.villagers.reignofnether.witch": "女巫",
   "units.villagers.reignofnether.witch.tooltip1": "陰險狡猾的魔女，能用藥水治療和攻擊。",
   
+  "alliance.reignofnether.sent_request": "已發送同盟請求至 %s。",
+  "alliance.reignofnether.ally_self": "無法與自己同盟！",
+  "alliance.reignofnether.ally_confirm": "%s 想要與您同盟。輸入 /allyconfirm %s 來確定。",
+  "alliance.reignofnether.now_allied": "您現在與 %s 為同盟。",
+  "alliance.reignofnether.ally_accepted": "%s 接受您的同盟請求。",
+  "alliance.reignofnether.no_request": "沒有來自 %s 待處理同盟請求。",
+  "alliance.reignofnether.disbanded": "您與 %s 的同盟已解散。",
+  "alliance.reignofnether.disbanding": "與 %s 的同盟將在 30 秒後解散…",
+  
   "survival.reignofnether.dawn": "天快亮了",
   "survival.reignofnether.dusk": "夜幕降臨…",
+  "survival.reignofnether.dusksoon": "天快黑了。",
 
   "block.reignofnether.decayable_nether_wart_block": "腐朽地獄疙瘩塊",
   "block.reignofnether.decayable_warped_wart_block": "腐朽扭曲疙瘩塊",
