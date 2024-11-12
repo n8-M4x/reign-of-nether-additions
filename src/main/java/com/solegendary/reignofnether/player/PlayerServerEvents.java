@@ -51,11 +51,7 @@ import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.network.NetworkHooks;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 // this class tracks all available players so that any serverside functions that need to affect the player can be
@@ -64,7 +60,9 @@ import java.util.stream.Collectors;
 public class PlayerServerEvents {
 
     // list of what gamemode these players should be in when outside of RTS cam
-    private static final ArrayList<Pair<String, GameType>> playerDefaultGameModes = new ArrayList<>();
+    private static final Map<String, GameType> playerDefaultGameModes = new HashMap<>();
+    private static final Map<String, Boolean> playerGuiOpenStatus = new HashMap<>();
+
     private static final GameType defaultGameMode = GameType.SPECTATOR;
     public static final ArrayList<ServerPlayer> players = new ArrayList<>();
     public static final ArrayList<ServerPlayer> orthoviewPlayers = new ArrayList<>();
@@ -494,34 +492,51 @@ public class PlayerServerEvents {
     public static void openTopdownGui(int playerId) {
         ServerPlayer serverPlayer = getPlayerById(playerId);
 
-        // containers have to be opened server side so that the server can track its data
         if (serverPlayer != null) {
+            // Open GUI server-side
             MenuConstructor provider = TopdownGuiContainer.getServerContainerProvider();
             MenuProvider namedProvider = new SimpleMenuProvider(provider, TopdownGuiContainer.TITLE);
             NetworkHooks.openScreen(serverPlayer, namedProvider);
 
+            // Save original game mode only if it's not already saved for this session
             String playerName = serverPlayer.getName().getString();
-            playerDefaultGameModes.removeIf(p -> p.getFirst().equals(playerName));
-            playerDefaultGameModes.add(new Pair<>(playerName, serverPlayer.gameMode.getGameModeForPlayer()));
-            //System.out.println("save default: " + serverPlayer.gameMode.getGameModeForPlayer());
+            playerDefaultGameModes.putIfAbsent(playerName, serverPlayer.gameMode.getGameModeForPlayer());
 
-            serverPlayer.setGameMode(GameType.CREATIVE); // could use spectator, but makes rendering less reliable
+            // Mark that this player has the GUI open
+            playerGuiOpenStatus.put(playerName, true);
+
+            // Set game mode to CREATIVE for GUI interaction
+            serverPlayer.setGameMode(GameType.CREATIVE);
         } else {
-            ReignOfNether.LOGGER.error("serverPlayer is null, cannot open topdown gui");
+            ReignOfNether.LOGGER.warn("serverPlayer is null, cannot open topdown GUI");
         }
     }
 
     public static void closeTopdownGui(int playerId) {
         ServerPlayer serverPlayer = getPlayerById(playerId);
 
-        for (Pair<String, GameType> defaultGameMode : playerDefaultGameModes) {
-            if (serverPlayer.getName().getString().equals(defaultGameMode.getFirst())) {
-                serverPlayer.setGameMode(defaultGameMode.getSecond());
-                //System.out.println("set gamemode: " + serverPlayer.gameMode.getGameModeForPlayer());
-                return;
+        if (serverPlayer != null) {
+            String playerName = serverPlayer.getName().getString();
+
+            // Ensure player had GUI open before attempting to close
+            if (Boolean.TRUE.equals(playerGuiOpenStatus.get(playerName))) {
+                // Restore the player’s original game mode if saved
+                GameType originalGameMode = playerDefaultGameModes.remove(playerName);
+
+                if (originalGameMode != null) {
+                    serverPlayer.setGameMode(originalGameMode);
+                } else {
+                    ReignOfNether.LOGGER.warn("No original game mode found for player {}", playerName);
+                }
+
+                // Mark that the GUI is now closed
+                playerGuiOpenStatus.remove(playerName);
+            } else {
+                ReignOfNether.LOGGER.warn("Attempted to close GUI for player {} who didn't have it open", playerName);
             }
+        } else {
+            ReignOfNether.LOGGER.warn("serverPlayer is null, cannot close topdown GUI");
         }
-        serverPlayer.setGameMode(defaultGameMode);
     }
 
     public static void movePlayer(int playerId, double x, double y, double z) {
