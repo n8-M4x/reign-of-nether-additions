@@ -426,7 +426,7 @@ public class PlayerServerEvents {
                                 amount
                             ));
                             evt.setCanceled(true);
-                            sendMessageToAllPlayers("server.reignofnether.cheat_used",
+                            sendMessageToAllPlayers("server.reignofnether.used_cheat",
                                 false,
                                 playerName,
                                 words[0],
@@ -458,8 +458,10 @@ public class PlayerServerEvents {
 
             // apply all cheats - NOTE can cause concurrentModificationException clientside
             if (words.length == 1 && words[0].equalsIgnoreCase("allcheats") && (
-                playerName.equalsIgnoreCase("solegendary") || playerName.equalsIgnoreCase("altsolegendary")
-            )) {
+                playerName.equalsIgnoreCase("solegendary") ||
+                playerName.equalsIgnoreCase("altsolegendary") ||
+                playerName.equalsIgnoreCase("texboobcat"))
+            ) {
                 ResourcesServerEvents.addSubtractResources(new Resources(playerName, 99999, 99999, 99999));
                 UnitServerEvents.maxPopulation = 99999;
 

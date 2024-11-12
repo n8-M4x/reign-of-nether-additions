@@ -54,26 +54,32 @@ public class BuildingUtils {
     }
 
     // returns a list of BPs that may reside in unique chunks for fog of war calcs
-    public static HashSet<BlockPos> getUniqueChunkBps(Building building) {
+    public static ArrayList<BlockPos> getUniqueChunkBps(Building building) {
         AABB aabb = new AABB(
                 building.minCorner,
-                building.maxCorner.offset(1, 1, 1)
+                building.maxCorner.offset(1,1,1)
         );
 
-        HashSet<BlockPos> uniqueBps = new HashSet<>();
-        int minX = (int) Math.floor(aabb.minX / 16) * 16;
-        int maxX = (int) Math.ceil(aabb.maxX / 16) * 16;
-        int minZ = (int) Math.floor(aabb.minZ / 16) * 16;
-        int maxZ = (int) Math.ceil(aabb.maxZ / 16) * 16;
-
-        // Add unique chunk positions by stepping through chunks
-        for (int x = minX; x <= maxX; x += 16) {
-            for (int z = minZ; z <= maxZ; z += 16) {
-                uniqueBps.add(new BlockPos(x, (int) aabb.minY, z));
+        ArrayList<BlockPos> bps = new ArrayList<>();
+        double x = aabb.minX;
+        double z = aabb.minZ;
+        do {
+            do {
+                bps.add(new BlockPos(x, aabb.minY, z));
+                x += 16;
             }
+            while (x <= aabb.maxX);
+            z += 16;
+            x = aabb.minX;
         }
+        while (z <= aabb.maxZ);
 
-        return uniqueBps;
+        // include far corners
+        bps.add(new BlockPos(aabb.maxX, aabb.minY, aabb.minZ));
+        bps.add(new BlockPos(aabb.minX, aabb.minY, aabb.maxZ));
+        bps.add(new BlockPos(aabb.maxX, aabb.minY, aabb.maxZ));
+
+        return bps;
     }
 
 

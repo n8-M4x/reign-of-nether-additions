@@ -57,21 +57,6 @@ public class PlayerClientEvents {
                 }
                 return 0;
             })));
-        evt.getDispatcher().register(Commands.literal("rts-reset").executes((command) -> {
-            if (MC.player != null && MC.player.hasPermissions(4)) {
-                PlayerServerboundPacket.resetRTS();
-                return 1;
-            }
-            return 0;
-        }));
-        evt.getDispatcher()
-            .register(Commands.literal("rts-lock").then(Commands.literal("enable").executes((command) -> {
-                if (MC.player != null && MC.player.hasPermissions(4)) {
-                    PlayerServerboundPacket.lockRTS();
-                    return 1;
-                }
-                return 0;
-            })));
         evt.getDispatcher()
             .register(Commands.literal("rts-lock").then(Commands.literal("disable").executes((command) -> {
                 if (MC.player != null && MC.player.hasPermissions(4)) {
@@ -98,55 +83,22 @@ public class PlayerClientEvents {
             })));
         evt.getDispatcher().register(Commands.literal("rts-help").executes((command) -> {
             if (MC.player != null) {
-                MC.player.sendSystemMessage(Component.literal(" "));
-                MC.player.sendSystemMessage(Component.literal(
-                    "/rts-fog enable/disable - Toggle fog of war for all players"));
-                MC.player.sendSystemMessage(Component.literal("/rts-surrender - Concede the match"));
-                MC.player.sendSystemMessage(Component.literal(
-                    "/rts-reset - Delete all units/buildings, set all to spectator"));
-                MC.player.sendSystemMessage(Component.literal(
-                    "/rts-lock enable/disable - Prevent all players from joining the RTS match"));
-                MC.player.sendSystemMessage(Component.literal(
-                    "/gamerule doLogFalling - Set whether tree logs fall when cut"));
-                MC.player.sendSystemMessage(Component.literal(
-                    "/gamerule neutralAggro - Set whether you auto-attack neutral units/buildings"));
-            }
-            return 1;
-        }));
-        evt.getDispatcher()
-            .register(Commands.literal("rts-syncing").then(Commands.literal("enable").executes((command) -> {
-                if (MC.player != null && MC.player.hasPermissions(4)) {
-                    PlayerServerboundPacket.enableRTSSyncing();
-                    return 1;
-                }
-                return 0;
-            })));
-        evt.getDispatcher()
-            .register(Commands.literal("rts-syncing").then(Commands.literal("disable").executes((command) -> {
-                if (MC.player != null && MC.player.hasPermissions(4)) {
-                    PlayerServerboundPacket.disableRTSSyncing();
-                    return 1;
-                }
-                return 0;
-            })));
-        evt.getDispatcher().register(Commands.literal("rts-help").executes((command) -> {
-            if (MC.player != null) {
-                MC.player.sendSystemMessage(Component.literal(" "));
-                MC.player.sendSystemMessage(Component.translatable("commands.reignofnether.toggle_fow",
-                    "/rts-fog enable/disable"
-                ));
-                MC.player.sendSystemMessage(Component.translatable("commands.reignofnether.surrender",
-                    "/rts-surrender"
-                ));
+                MC.player.sendSystemMessage(Component.literal(""));
+                MC.player.sendSystemMessage(Component.translatable("commands.reignofnether.toggle_fow","/rts-fog enable/disable"));
+                MC.player.sendSystemMessage(Component.translatable("commands.reignofnether.surrender","/rts-surrender"));
                 MC.player.sendSystemMessage(Component.translatable("commands.reignofnether.reset", "/rts-reset"));
-                MC.player.sendSystemMessage(Component.translatable("commands.reignofnether.lock",
-                    "/rts-lock enable/disable"
-                ));
+                MC.player.sendSystemMessage(Component.translatable("commands.reignofnether.lock", "/rts-lock enable/disable"));
+                MC.player.sendSystemMessage(Component.translatable("commands.reignofnether.ally", "/ally"));
+                MC.player.sendSystemMessage(Component.translatable("commands.reignofnether.disband", "/disband"));
+                MC.player.sendSystemMessage(Component.translatable("commands.reignofnether.gamerule.do_log_falling", "/gamerule doLogFalling"));
+                MC.player.sendSystemMessage(Component.translatable("commands.reignofnether.gamerule.neutral_aggro", "/gamerule neutralAggro"));
+                MC.player.sendSystemMessage(Component.translatable("commands.reignofnether.gamerule.max_population", "/gamerule maxPopulation"));
             }
             return 1;
         }));
         evt.getDispatcher().register(Commands.literal("rts-controls").executes((command) -> {
             if (MC.player != null) {
+                MC.player.sendSystemMessage(Component.literal(""));
                 MC.player.sendSystemMessage(Component.translatable("controls.reignofnether.toggle_cam"));
                 MC.player.sendSystemMessage(Component.translatable("controls.reignofnether.refresh_chunks"));
                 MC.player.sendSystemMessage(Component.translatable("controls.reignofnether.toggle_fps_tps"));
@@ -213,7 +165,7 @@ public class PlayerClientEvents {
         // LOG OUT FROM SINGLEPLAYER WORLD ONLY
         if (MC.player != null && evt.getEntity().getId() == MC.player.getId()) {
             resetRTS();
-            FogOfWarClientEvents.movedToCapitol.set(false);
+            FogOfWarClientEvents.movedToCapitol = false;
             FogOfWarClientEvents.frozenChunks.clear();
             FogOfWarClientEvents.semiFrozenChunks.clear();
             OrthoviewClientEvents.unlockCam();
@@ -233,7 +185,7 @@ public class PlayerClientEvents {
         // LOG OUT FROM SERVER WORLD ONLY
         if (MC.player != null && evt.getPlayer() != null && evt.getPlayer().getId() == MC.player.getId()) {
             resetRTS();
-            FogOfWarClientEvents.movedToCapitol.set(false);
+            FogOfWarClientEvents.movedToCapitol = false;
             FogOfWarClientEvents.frozenChunks.clear();
             FogOfWarClientEvents.semiFrozenChunks.clear();
         }

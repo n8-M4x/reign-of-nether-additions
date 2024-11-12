@@ -615,7 +615,7 @@ public class UnitServerEvents {
             evt.setCanceled(true);
         }
 
-        // prevent friendly fire from your own creepers (but still set off chained explosions and cause knockback)
+        // prevent friendly fire from your own/friendly creepers (but still cause knockback)
         if (evt.getSource().getEntity() instanceof CreeperUnit creeperUnit
             && getUnitToEntityRelationship(creeperUnit, evt.getEntity()) == Relationship.FRIENDLY) {
             evt.setCanceled(true);

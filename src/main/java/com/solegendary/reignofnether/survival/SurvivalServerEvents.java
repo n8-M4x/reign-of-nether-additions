@@ -106,6 +106,7 @@ public class SurvivalServerEvents {
     }
 
     // TODO: change these to GUI buttons
+    /*
     @SubscribeEvent
     public static void onRegisterCommand(RegisterCommandsEvent evt) {
         evt.getDispatcher().register(Commands.literal("debug-end-wave")
@@ -143,6 +144,7 @@ public class SurvivalServerEvents {
         evt.getDispatcher().register(Commands.literal("rts-difficulty").then(Commands.literal("extreme")
                 .executes((command) -> setDifficulty(Difficulty.EXTREME))));
     }
+     */
 
     @SubscribeEvent
     public static void onEntityJoin(EntityJoinLevelEvent evt) {
