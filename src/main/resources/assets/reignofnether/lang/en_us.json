@@ -291,6 +291,11 @@
     "commands.reignofnether.surrender": "%s - Concede the match",
     "commands.reignofnether.reset": "%s - Delete all units/buildings, set all to spectator",
     "commands.reignofnether.lock": "%s - Prevent all players from joining the RTS match",
+    "commands.reignofnether.ally": "%s - Send an ally request to another player",
+    "commands.reignofnether.disband": "%s - Disband an alliance with another player",
+    "commands.reignofnether.gamerule.do_log_falling": "%s - Set whether tree logs fall when cut",
+    "commands.reignofnether.gamerule.neutral_aggro": "%s - Set whether you auto-attack neutral units/buildings",
+    "commands.reignofnether.gamerule.max_population": "%s - Set the highest possible population limit",
 
     "controls.reignofnether.toggle_cam": "F12 - Toggle RTS camera",
     "controls.reignofnether.refresh_chunks": "F8 - Refresh chunks",

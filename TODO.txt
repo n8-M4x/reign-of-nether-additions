@@ -5,9 +5,7 @@
 Tthings to regression test once PRs are merged
 - /gamerule neutralAggro still works
 - cycling unit groups with tab and shift tab
-- all tooltips for multiple languages
 - clock times are still accurate for when undead start/stop burning
-- fog of war frozen chunks (including for piglin nether terrain)
 
 
 - Done and tested
@@ -37,6 +35,7 @@ Features
         - Chinese (Simplified) (zh_cn)
         - Chinese (Traditional) (zh_tw)
 
+    - Some languages may not yet have support for Alliances since it was just added
     - If a string in your language is not available, it will default to English
     - Due to an unforseen bug, you must restart your client when switching languages for it to take effect
     - If you would like to contribute translations, please see the #localisation channel and the pinned post
@@ -44,14 +43,12 @@ Features
 Bugfixes
 --------
 [✔] Fixed workers not actually working if they were too far out of view
-[✔] Improved performance for all buildings
 [✔] Fixed crash related to Hiding Leaves
 [✔] Fixed crash related to Ranged units attacking buildings
 [✔] Fixed crash related to pressing Tab on neutral units
 [✔] Fixed enchantment icons
 [✔] The clock button no longer shows up in unexpected places like the title screen
 [✔] Fixed issue of being kicked from a server when switching instances (eg. between a game and lobby)
-[✔] Improved melee unit pathing performance
 [✔] Spider webs no longer stay forever if the spider dies before they decay
 [✔] Leaving F12 will now more reliably set you to spectator mode if you were in spectator previously
 
@@ -65,7 +62,6 @@ Quality of Life Features
     - No insomnia
     - No weather
 [✔] Improved performance for all units and buildings
-[🟡] Improved performance for Fog of War
 [✔] The thereisnospoon cheatcode to modify max population is now /gamerule maxPopulation <value>
     - this also means it is saved to the game world
 [✔] Added saved UUID data for all units
