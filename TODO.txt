@@ -43,8 +43,6 @@ Features
 
 Bugfixes
 --------
-[❌] (regression) Unit max healths are always decimals now
-
 [✔] Fixed workers not actually working if they were too far out of view
 [✔] Improved performance for all buildings
 [✔] Fixed crash related to Hiding Leaves
@@ -84,9 +82,9 @@ Piglins
 [🟡] Melee units attacking a Wither Skeleton now get withered for 2 seconds (4 damage total)
 
 Villagers
-[🟡] Iron Golem buildings: +10% build time
+[🟡] Golem Smithing Upgrade: +50 ore, +30s
 [🟡] Vindicators and Pillagers: -5 food
-[🟡] Blacksmith: -100 wood, +100 ore
+[🟡] Blacksmith: -150 wood, +150 ore
 [🟡] Libraries now only require a Barracks to be built instead of an Arcane Tower
 [🟡] Library: -50 wood, +10% build time
 [🟡] Grand Library Upgrade: +100 wood, -250 ore, +20s
