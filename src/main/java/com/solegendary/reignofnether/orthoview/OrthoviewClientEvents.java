@@ -330,9 +330,7 @@ public class OrthoviewClientEvents {
                     MC.gameMode.getPlayerMode() == GameType.ADVENTURE
                         || MC.gameMode.getPlayerMode() == GameType.SURVIVAL
                 )) {
-                    MC.player.sendSystemMessage(Component.literal(""));
-                    MC.player.sendSystemMessage(Component.literal("You must be in creative or spectator for RTS mode"));
-                    MC.player.sendSystemMessage(Component.literal(""));
+                    MC.player.sendSystemMessage(Component.literal(I18n.get("hud.orthoview.reignofnether.ortho_error")));
                 } else {
                     toggleEnable();
                 }

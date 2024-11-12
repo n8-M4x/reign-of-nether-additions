@@ -503,6 +503,7 @@ public class PlayerServerEvents {
             String playerName = serverPlayer.getName().getString();
             playerDefaultGameModes.removeIf(p -> p.getFirst().equals(playerName));
             playerDefaultGameModes.add(new Pair<>(playerName, serverPlayer.gameMode.getGameModeForPlayer()));
+            //System.out.println("save default: " + serverPlayer.gameMode.getGameModeForPlayer());
 
             serverPlayer.setGameMode(GameType.CREATIVE); // could use spectator, but makes rendering less reliable
         } else {
@@ -516,6 +517,7 @@ public class PlayerServerEvents {
         for (Pair<String, GameType> defaultGameMode : playerDefaultGameModes) {
             if (serverPlayer.getName().getString().equals(defaultGameMode.getFirst())) {
                 serverPlayer.setGameMode(defaultGameMode.getSecond());
+                //System.out.println("set gamemode: " + serverPlayer.gameMode.getGameModeForPlayer());
                 return;
             }
         }
