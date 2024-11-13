@@ -402,8 +402,8 @@
 
   "research.reignofnether.upgrade_completed": "已升級：%s",
   "research.reignofnether.advanced_portals": "進階傳送門",
-  "research.reignofnether.advanced_portals.tooltip1": "允許傳送門在非地獄地形下建造",
-  "research.reignofnether.advanced_portals.tooltip2": "並可升級成運輸傳送門，",
+  "research.reignofnether.advanced_portals.tooltip1": "允許傳送門在非地獄地形下建造，建造",
+  "research.reignofnether.advanced_portals.tooltip2": "速度不再減少，並可升級成運輸傳送門，",
   "research.reignofnether.advanced_portals.tooltip3": "實現單位瞬間傳送。",
   "research.reignofnether.blaze_firewall": "烈焰使者火牆",
   "research.reignofnether.blaze_firewall.tooltip1": "使烈焰使者射出火球，點燃一條直線上所有方塊，",
