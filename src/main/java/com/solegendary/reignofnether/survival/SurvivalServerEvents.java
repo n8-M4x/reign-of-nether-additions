@@ -16,10 +16,11 @@ import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Material;
@@ -57,13 +58,17 @@ public class SurvivalServerEvents {
     // raise speed of day if
     @SubscribeEvent
     public static void onLevelTick(TickEvent.LevelTickEvent evt) {
-        if (evt.level.isClientSide() || evt.phase != TickEvent.Phase.END || !isEnabled())
-            return;
-        ticks += 1;
-        if (ticks % 4 != 0)
+        if (evt.level.isClientSide() || evt.phase != TickEvent.Phase.END)
             return;
 
         serverLevel = (ServerLevel) evt.level;
+
+        if (!isEnabled())
+            return;
+
+        ticks += 1;
+        if (ticks % 4 != 0)
+            return;
 
         long time = evt.level.getDayTime();
         long normTime = TimeUtils.normaliseTime(evt.level.getDayTime());
@@ -88,7 +93,7 @@ public class SurvivalServerEvents {
             SoundClientboundPacket.playSoundOnClient(SoundAction.RANDOM_CAVE_AMBIENCE);
         }
         if (lastTime <= TimeUtils.DUSK + 100 && normTime > TimeUtils.DUSK + 100) {
-            startNextWave();
+            startNextWave((ServerLevel) evt.level);
         }
         else if (!TimeUtils.isDay(normTime) && isWaveInProgress()) {
             ((ServerLevel) evt.level).setDayTime(TimeUtils.DUSK + 6000);
@@ -100,15 +105,21 @@ public class SurvivalServerEvents {
             if (enemyCount == 0)
                 PlayerServerEvents.sendMessageToAllPlayers(enemyCount + " enemies remain.");
             else
-                endCurrentWave();
+                endCurrentWave((ServerLevel) evt.level);
         }
+        lastTime = time;
         lastEnemyCount = enemyCount;
     }
 
     // TODO: change these to GUI buttons
-    /*
+
     @SubscribeEvent
     public static void onRegisterCommand(RegisterCommandsEvent evt) {
+        evt.getDispatcher().register(Commands.literal("debug-spawn")
+                .executes((command) -> {
+                    spawnMonsterWave(command.getSource().getLevel());
+                    return 1;
+                }));
         evt.getDispatcher().register(Commands.literal("debug-end-wave")
                 .executes((command) -> {
                     PlayerServerEvents.sendMessageToAllPlayers("Ending current wave");
@@ -144,7 +155,7 @@ public class SurvivalServerEvents {
         evt.getDispatcher().register(Commands.literal("rts-difficulty").then(Commands.literal("extreme")
                 .executes((command) -> setDifficulty(Difficulty.EXTREME))));
     }
-     */
+
 
     @SubscribeEvent
     public static void onEntityJoin(EntityJoinLevelEvent evt) {
@@ -235,12 +246,12 @@ public class SurvivalServerEvents {
     }
 
     // triggered at nightfall
-    public static void startNextWave() {
-        spawnMonsterWave();
+    public static void startNextWave(ServerLevel level) {
+        spawnMonsterWave(level);
     }
 
     // triggered when last enemy is killed
-    public static void endCurrentWave() {
+    public static void endCurrentWave(ServerLevel level) {
         nextWave = Wave.getWave(nextWave.number + 1);
         PlayerServerEvents.sendMessageToAllPlayers("Your enemies have been defeated... for now.", true);
 
@@ -253,12 +264,12 @@ public class SurvivalServerEvents {
             PlayerServerEvents.sendMessageToAllPlayers(I18n.get("survival.reignofnether.dawn"), true);
             PlayerServerEvents.sendMessageToAllPlayers("Their swift defeat gives you more time to prepare (+" +
                     TimeUtils.getTimeStrFromTicks(ticksToClearInv) + ")", true);
-            serverLevel.setDayTime(TimeUtils.DAWN + 10);
+            level.setDayTime(TimeUtils.DAWN + 10);
 
         } else {
             PlayerServerEvents.sendMessageToAllPlayers("The prolonged battle means the next night comes sooner (-" +
                     TimeUtils.getTimeStrFromTicks(Math.abs(ticksToClearInv)) + ")", true);
-            serverLevel.setDayTime(TimeUtils.DAWN - ticksToClearInv);
+            level.setDayTime(TimeUtils.DAWN - ticksToClearInv);
         }
         ticksToClearLastWave = 0;
     }
@@ -266,10 +277,10 @@ public class SurvivalServerEvents {
     private static final int MONSTER_MAX_SPAWN_RANGE = 60;
     private static final int MONSTER_MIN_SPAWN_RANGE = 40;
 
-    public static void spawnMonsterWave() {
+    public static void spawnMonsterWave(ServerLevel level) {
         Random random = new Random();
         List<Building> buildings = BuildingServerEvents.getBuildings();
-        int remainingPop = nextWave.population;
+        int remainingPop = 1;//nextWave.population;
         if (buildings.isEmpty())
             return;
 
@@ -285,10 +296,10 @@ public class SurvivalServerEvents {
             do {
                 int x = centrePos.getX() + random.nextInt(-MONSTER_MAX_SPAWN_RANGE / 2, MONSTER_MAX_SPAWN_RANGE / 2);
                 int z = centrePos.getZ() + random.nextInt(-MONSTER_MAX_SPAWN_RANGE / 2, MONSTER_MAX_SPAWN_RANGE / 2);
-                int y = serverLevel.getChunkAt(new BlockPos(x, 0, z)).getHeight(Heightmap.Types.WORLD_SURFACE, x, z);
+                int y = level.getChunkAt(new BlockPos(x, 0, z)).getHeight(Heightmap.Types.WORLD_SURFACE, x, z);
 
-                spawnBp =  MiscUtil.getHighestNonAirBlock(serverLevel, new BlockPos(x, y, z), true);
-                spawnBs = serverLevel.getBlockState(spawnBp);
+                spawnBp =  MiscUtil.getHighestNonAirBlock(level, new BlockPos(x, y, z), true);
+                spawnBs = level.getBlockState(spawnBp);
                 spawnAttempts += 1;
                 if (spawnAttempts > 30) {
                     ReignOfNether.LOGGER.warn("Gave up trying to find a suitable monster spawn!");
@@ -298,16 +309,41 @@ public class SurvivalServerEvents {
                 Building b = BuildingUtils.findClosestBuilding(false, vec3, (b1) -> true);
                 distSqrToNearestBuilding = b.centrePos.distToCenterSqr(vec3);
 
-            } while (!spawnBs.getMaterial().isSolid() || spawnBs.getMaterial() == Material.LEAVES
-                    || spawnBs.getMaterial() == Material.WOOD || distSqrToNearestBuilding < (MONSTER_MIN_SPAWN_RANGE / 2f) * (MONSTER_MIN_SPAWN_RANGE / 2f)
-                    || BuildingUtils.isPosInsideAnyBuilding(serverLevel.isClientSide(), spawnBp)
-                    || BuildingUtils.isPosInsideAnyBuilding(serverLevel.isClientSide(), spawnBp.above()));
+            } while (spawnBs.getMaterial() == Material.LEAVES
+                    || spawnBs.getMaterial() == Material.WOOD
+                    || distSqrToNearestBuilding < (MONSTER_MIN_SPAWN_RANGE / 2f) * (MONSTER_MIN_SPAWN_RANGE / 2f)
+                    || BuildingUtils.isPosInsideAnyBuilding(level.isClientSide(), spawnBp)
+                    || BuildingUtils.isPosInsideAnyBuilding(level.isClientSide(), spawnBp.above()));
 
             EntityType<? extends Mob> monsterType = Wave.getRandomUnitOfTier(1);
 
-            ArrayList<Entity> entities = UnitServerEvents.spawnMobs(monsterType, serverLevel, spawnBp.above(), 1, MONSTER_OWNER_NAME);
+            if (spawnBs.getMaterial().isLiquid())
+                spawnBp = spawnBp.above();
+
+            ArrayList<Entity> entities = UnitServerEvents.spawnMobs(monsterType, level, spawnBp.above(), 1, MONSTER_OWNER_NAME);
 
             for (Entity entity : entities) {
+                if (spawnBs.getMaterial().isLiquid()) {
+
+                    level.setBlockAndUpdate(spawnBp, Blocks.ICE.defaultBlockState());
+
+                    List<BlockPos> bps = List.of(spawnBp.north(), spawnBp.east(), spawnBp.south(), spawnBp.west(),
+                            spawnBp.north().east(),
+                            spawnBp.south().west(),
+                            spawnBp.north().east(),
+                            spawnBp.south().west());
+
+                    for (BlockPos bp : bps) {
+                        BlockState bs = level.getBlockState(bp);
+                        if (bs.getMaterial().isLiquid())
+                            level.setBlockAndUpdate(bp, Blocks.ICE.defaultBlockState());
+                    }
+                    // TODO: give frostwalker boot effects to all enemies, even those that can't wear boots
+                    ItemStack fsboots = new ItemStack(Items.LEATHER_BOOTS);
+                    fsboots.enchant(Enchantments.FROST_WALKER, 1);
+                    fsboots.enchant(Enchantments.UNBREAKING, 255);
+                    entity.setItemSlot(EquipmentSlot.FEET, fsboots);
+                }
                 BotControls.startingCommand(entity, MONSTER_OWNER_NAME);
                 if (entity instanceof Unit unit)
                     nextWave.population -= unit.getPopCost();

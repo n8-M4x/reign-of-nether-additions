@@ -395,6 +395,7 @@ public class UnitClientEvents {
     /**
      * Add and update entities from clientside action
      */
+
     @SubscribeEvent
     public static void onEntityJoin(EntityJoinLevelEvent evt) {
         Entity entity = evt.getEntity();

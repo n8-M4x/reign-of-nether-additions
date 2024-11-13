@@ -211,7 +211,7 @@
     "buildings.monsters.reignofnether.sculk_catalyst.tooltip4": "provides absorption health.",
 
     "buildings.piglins.reignofnether.bastion": "Bastion",
-    "buildings.piglins.reignofnether.bastion.tooltip1": "A fortified barracks to house military piglins, ",
+    "buildings.piglins.reignofnether.bastion.tooltip1": "A fortified barracks to house Headhunter piglins, ",
     "buildings.piglins.reignofnether.bastion.tooltip2": "enabling them to be produced at military portals.",
     "buildings.piglins.reignofnether.bastion.tooltip3": "Also garrisons up to %d units.",
     "buildings.piglins.reignofnether.bastion.tooltip4": "Requires a Basic Portal",
@@ -373,6 +373,7 @@
     "server.reignofnether.lost_buildings": "lost all their buildings",
     "server.reignofnether.lost_capitol": "%s has lost their capitol and will be revealed in %d seconds unless they rebuild it!",
     "server.reignofnether.lost_all": "lost all their units and buildings",
+    "server.reignofnether.lost_capitol_defeat": "has lost their capitol",
     "server.reignofnether.players_remaining": "There are %d RTS player(s) remaining",
     "server.reignofnether.victorious": "%s is victorious!",
     "server.reignofnether.match_reset": "Match has been reset!",

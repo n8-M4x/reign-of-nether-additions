@@ -18,6 +18,7 @@ import com.solegendary.reignofnether.research.ResearchServerEvents;
 import com.solegendary.reignofnether.research.researchItems.ResearchAdvancedPortals;
 import com.solegendary.reignofnether.research.researchItems.ResearchSilverfish;
 import com.solegendary.reignofnether.resources.*;
+import com.solegendary.reignofnether.survival.SurvivalServerEvents;
 import com.solegendary.reignofnether.tutorial.TutorialClientEvents;
 import com.solegendary.reignofnether.tutorial.TutorialServerEvents;
 import com.solegendary.reignofnether.unit.UnitAction;
@@ -525,12 +526,16 @@ public abstract class Building {
         if (!this.level.isClientSide() && isRTSPlayer(this.ownerName)) {
             if (BuildingUtils.getTotalCompletedBuildingsOwned(false, this.ownerName) == 0) {
                 PlayerServerEvents.defeat(this.ownerName, "server.reignofnether.lost_buildings");
-            } else if (this.isCapitol && FogOfWarServerEvents.isEnabled()) {
-                sendMessageToAllPlayers("server.reignofnether.lost_capitol",
-                    false,
-                    this.ownerName,
-                    PlayerServerEvents.TICKS_TO_REVEAL / ResourceCost.TICKS_PER_SECOND
-                );
+            } else if (this.isCapitol) {
+                if (FogOfWarServerEvents.isEnabled()) {
+                    sendMessageToAllPlayers("server.reignofnether.lost_capitol",
+                            false,
+                            this.ownerName,
+                            PlayerServerEvents.TICKS_TO_REVEAL / ResourceCost.TICKS_PER_SECOND
+                    );
+                } else if (SurvivalServerEvents.isEnabled()) {
+                    PlayerServerEvents.defeat(this.ownerName, "server.reignofnether.lost_capitol_defeat");
+                }
             }
         }
     }
