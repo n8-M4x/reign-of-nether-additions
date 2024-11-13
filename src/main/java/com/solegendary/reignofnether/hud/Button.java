@@ -34,6 +34,7 @@ public class Button {
     int iconSize;
     public static int iconFrameSize = 22;
     public static int iconFrameSelectedSize = 24;
+    public int tooltipOffsetY = 0;
 
     public ResourceLocation iconResource;
     public ResourceLocation bgIconResource = null; // for rendering a background icon (eg. for mounted unit passengers)
@@ -209,7 +210,7 @@ public class Button {
     }
 
     public void renderTooltip(PoseStack poseStack, int mouseX, int mouseY) {
-        MyRenderer.renderTooltip(poseStack, tooltipLines, mouseX, mouseY);
+        MyRenderer.renderTooltip(poseStack, tooltipLines, mouseX, mouseY + tooltipOffsetY);
     }
 
     public boolean isMouseOver(int mouseX, int mouseY) {

@@ -60,6 +60,8 @@ Bugfixes
 
 Quality of Life Features
 ------------------------
+[❌] Limit ghast heights?
+
 [❌] Highlight portal in yellow if being built on overworld terrain
 
 [❌] Shift queueing movements and buildings (not just placement)

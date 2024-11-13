@@ -20,6 +20,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.enchantment.FrostWalkerEnchantment;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -39,7 +40,7 @@ public class SurvivalServerEvents {
 
     private static boolean isEnabled = false;
     private static Wave nextWave = Wave.getWave(0);
-    private static Difficulty difficulty = Difficulty.EASY;
+    private static WaveDifficulty difficulty = WaveDifficulty.EASY;
     private static final ArrayList<LivingEntity> enemies = new ArrayList<>();
     private static final int STARTING_EXTRA_SECONDS = 1200; // extra time for all difficulties on wave 1
     public static final String MONSTER_OWNER_NAME = "Monsters";
@@ -133,29 +134,25 @@ public class SurvivalServerEvents {
                     resetWaves();
                     return 1;
                 }));
-        evt.getDispatcher().register(Commands.literal("rts-waves").then(Commands.literal("start")
-                .executes((command) -> {
-                    if (isStarted()) {
-                        PlayerServerEvents.sendMessageToAllPlayers("Too late to start wave survival. Use /rts-reset and try again.");
-                    } else {
-                        PlayerServerEvents.sendMessageToAllPlayers("Enabled wave survival mode");
-                        PlayerServerEvents.sendMessageToAllPlayers("Difficulty: " + difficulty.name() + " (Change with /rts-difficulty)");
-                        PlayerServerEvents.sendMessageToAllPlayers("Time begins when the first building is placed");
-                        setEnabled(true);
-                        resetWaves();
-                    }
-                    return 1;
-                })));
         evt.getDispatcher().register(Commands.literal("rts-difficulty").then(Commands.literal("easy")
-                .executes((command) -> setDifficulty(Difficulty.EASY))));
+                .executes((command) -> setDifficulty(WaveDifficulty.EASY))));
         evt.getDispatcher().register(Commands.literal("rts-difficulty").then(Commands.literal("medium")
-                .executes((command) -> setDifficulty(Difficulty.MEDIUM))));
+                .executes((command) -> setDifficulty(WaveDifficulty.MEDIUM))));
         evt.getDispatcher().register(Commands.literal("rts-difficulty").then(Commands.literal("hard")
-                .executes((command) -> setDifficulty(Difficulty.HARD))));
+                .executes((command) -> setDifficulty(WaveDifficulty.HARD))));
         evt.getDispatcher().register(Commands.literal("rts-difficulty").then(Commands.literal("extreme")
-                .executes((command) -> setDifficulty(Difficulty.EXTREME))));
+                .executes((command) -> setDifficulty(WaveDifficulty.EXTREME))));
     }
 
+    public static void start() {
+        if (!isEnabled()) {
+            PlayerServerEvents.sendMessageToAllPlayers("Enabled wave survival mode");
+            PlayerServerEvents.sendMessageToAllPlayers("Difficulty: " + difficulty.name() + " (Change with /rts-difficulty)");
+            PlayerServerEvents.sendMessageToAllPlayers("Time begins when the first building is placed");
+            setEnabled(true);
+            resetWaves();
+        }
+    }
 
     @SubscribeEvent
     public static void onEntityJoin(EntityJoinLevelEvent evt) {
@@ -181,15 +178,10 @@ public class SurvivalServerEvents {
         }
     }
 
-    private enum Difficulty {
-        EASY,
-        MEDIUM,
-        HARD,
-        EXTREME
-    }
+
 
     // register here too for command blocks
-    public static int setDifficulty(Difficulty diff) {
+    public static int setDifficulty(WaveDifficulty diff) {
         if (!isStarted() && isEnabled()) {
             difficulty = diff;
             PlayerServerEvents.sendMessageToAllPlayers("Difficulty set to: " + difficulty.name());
@@ -320,7 +312,6 @@ public class SurvivalServerEvents {
             if (spawnBs.getMaterial().isLiquid())
                 spawnBp = spawnBp.above();
 
-            System.out.println("spawning at: " + spawnBp);
             ArrayList<Entity> entities = UnitServerEvents.spawnMobs(monsterType, level,
                     monsterType.getDescription().getString().contains("spider") ? spawnBp.above().above(): spawnBp.above(),
                     1, MONSTER_OWNER_NAME);
@@ -336,16 +327,12 @@ public class SurvivalServerEvents {
                             spawnBp.north().east(),
                             spawnBp.south().west());
 
+                    // Frostwalker effect provided in LivingEntityMixin, but it only happens on changing block positions on the ground
                     for (BlockPos bp : bps) {
                         BlockState bs = level.getBlockState(bp);
                         if (bs.getMaterial().isLiquid())
                             level.setBlockAndUpdate(bp, Blocks.ICE.defaultBlockState());
                     }
-                    // TODO: give frostwalker boot effects to all enemies, even those that can't wear boots
-                    ItemStack fsboots = new ItemStack(Items.LEATHER_BOOTS);
-                    fsboots.enchant(Enchantments.FROST_WALKER, 1);
-                    fsboots.enchant(Enchantments.UNBREAKING, 255);
-                    entity.setItemSlot(EquipmentSlot.FEET, fsboots);
                 }
                 BotControls.startingCommand(entity, MONSTER_OWNER_NAME);
                 if (entity instanceof Unit unit)
