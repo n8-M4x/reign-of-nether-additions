@@ -320,7 +320,10 @@ public class SurvivalServerEvents {
             if (spawnBs.getMaterial().isLiquid())
                 spawnBp = spawnBp.above();
 
-            ArrayList<Entity> entities = UnitServerEvents.spawnMobs(monsterType, level, spawnBp.above(), 1, MONSTER_OWNER_NAME);
+            System.out.println("spawning at: " + spawnBp);
+            ArrayList<Entity> entities = UnitServerEvents.spawnMobs(monsterType, level,
+                    monsterType.getDescription().getString().contains("spider") ? spawnBp.above().above(): spawnBp.above(),
+                    1, MONSTER_OWNER_NAME);
 
             for (Entity entity : entities) {
                 if (spawnBs.getMaterial().isLiquid()) {
