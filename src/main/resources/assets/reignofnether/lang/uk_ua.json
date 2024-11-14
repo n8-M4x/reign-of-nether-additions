@@ -724,5 +724,15 @@
     "hud.gamemodebuttons.koth3": "потужних ефектів та перемоги, керуючи ним досить довго. ",
     "hud.gamemodebuttons.koth4": "ЛКМ щоб поставити маяк.",
     "hud.gamemodebuttons.changemode": "ПКМ щоб змінити режим гри",
-    "hud.gamemodebuttons.locked": "(закрито)"
+    "hud.gamemodebuttons.locked": "(закрито)",
+    "alliance.reignofnether.sent_request": "Запрошення на вступ до союзу надіслано %s.",
+    "alliance.reignofnether.ally_self": "Ти не можешь вступити в собз з самим собой!",
+    "alliance.reignofnether.ally_confirm": "%s хоче стати союзником с тобою. Напиши /allyconfirm %s щоб приняти.",
+    "alliance.reignofnether.now_allied": "Ти тепер союзник с %s.",
+    "alliance.reignofnether.ally_accepted": "%s приняв союз с тобой.",
+    "alliance.reignofnether.no_request": "Немає приглошень на вступ до союзу від %s.",
+    "alliance.reignofnether.disbanded": "Твій союз з %s був скасован.",
+    "alliance.reignofnether.disbanding": "Скасування союзу с %s через 30 секунд...",
+    "alliance.reignofnether.disband_self": "Ти не можешь себе скасувати.",
+    "alliance.reignofnether.disband_pending": "Запит на скасування союзу з цим гравцем вже надіслан.",
 }
