@@ -211,8 +211,8 @@
   "buildings.monsters.reignofnether.sculk_catalyst.tooltip4": "并能够为幽匿催发体提供吸收到的生命值。",
 
   "buildings.piglins.reignofnether.bastion": "猪灵堡垒",
-  "buildings.piglins.reignofnether.bastion.tooltip1": "一座猪灵大军的军营。",
-  "buildings.piglins.reignofnether.bastion.tooltip2": "使军用传送门能够训练猪灵的大军。",
+  "buildings.piglins.reignofnether.bastion.tooltip1": "一座供猪灵猎头者居住的军营。",
+  "buildings.piglins.reignofnether.bastion.tooltip2": "使军用传送门能够训练猪灵猎头者。",
   "buildings.piglins.reignofnether.bastion.tooltip3": "最多可进驻%d名单位。",
   "buildings.piglins.reignofnether.bastion.tooltip4": "需要基础传送门以建造。",
   "buildings.piglins.reignofnether.blackstone_bridge": "黑石桥",
@@ -373,6 +373,7 @@
   "server.reignofnether.lost_buildings": "失去了所有建筑",
   "server.reignofnether.lost_capitol": "%s已失去了他们的首府建筑，若在 %d 秒前未能成功重建，将在地图上暴露行迹！",
   "server.reignofnether.lost_all": "失去了所有单位和建筑",
+  "server.reignofnether.lost_capitol_defeat": "失去了所有的首府建筑",
   "server.reignofnether.players_remaining": "场上还剩下 %d 名玩家",
   "server.reignofnether.victorious": "%s 获胜了！",
   "server.reignofnether.match_reset": "对局已重置！",
@@ -760,5 +761,20 @@
   "block.reignofnether.falling_mangrove_log": "下落的红树原木",
   "block.reignofnether.falling_acacia_log": "下落的金合欢原木",
   "block.reignofnether.falling_warped_stem": "下落的诡异菌柄",
-  "block.reignofnether.falling_crimson_stem": "下落的绯红菌柄"
+  "block.reignofnether.falling_crimson_stem": "下落的绯红菌柄",
+
+  "hud.gamemodebuttons.standard1": "标准模式",
+  "hud.gamemodebuttons.standard2": "经典的即时战略游戏体验。",
+  "hud.gamemodebuttons.standard3": "通过摧毁敌方建筑以击败对手。",
+  "hud.gamemodebuttons.survival1": "塔防生存",
+  "hud.gamemodebuttons.survival2": "在日渐强力的敌人冲击下生存下来，",
+  "hud.gamemodebuttons.survival3": "既可单人挑战也可携友结盟游玩。",
+  "hud.gamemodebuttons.survival4": "%s（每天 %s 分钟）",
+  "hud.gamemodebuttons.survival5": "左击以调整难度",
+  "hud.gamemodebuttons.koth1": "夺信标为王",
+  "hud.gamemodebuttons.koth2": "为争夺中心信标的所属权而战。",
+  "hud.gamemodebuttons.koth3": "升级信标以获得强力效果，控制信标一段时间以取胜。",
+  "hud.gamemodebuttons.koth4": "左击以放置信标",
+  "hud.gamemodebuttons.changemode": "右击以切换游戏模式",
+  "hud.gamemodebuttons.locked": "（已锁定）"
 }
