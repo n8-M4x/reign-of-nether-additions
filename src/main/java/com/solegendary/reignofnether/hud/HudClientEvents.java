@@ -1088,7 +1088,7 @@ public class HudClientEvents {
         // ------------------------------
         if (!PlayerClientEvents.isRTSPlayer && !PlayerClientEvents.rtsLocked) {
             Button gamemodeButton = ClientGameModeHelper.getButton();
-            if (gamemodeButton != null && !gamemodeButton.isHidden.get()) {
+            if (gamemodeButton != null && !gamemodeButton.isHidden.get() && !TutorialClientEvents.isEnabled()) {
                 gamemodeButton.render(evt.getPoseStack(),
                         screenWidth - (StartButtons.ICON_SIZE * 8),
                         StartButtons.ICON_SIZE / 2,
