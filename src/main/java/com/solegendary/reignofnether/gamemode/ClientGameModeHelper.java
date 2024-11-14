@@ -13,17 +13,16 @@ import java.util.List;
 
 public class ClientGameModeHelper {
 
-    public static RTSGameMode gameMode = RTSGameMode.STANDARD;
+    public static GameMode gameMode = GameMode.STANDARD;
     public static boolean gameModeLocked = false; // locked with startRTS() in any gamemode, unlocked with /rts-reset
 
     public static void cycleGameMode() {
         if (gameModeLocked)
             return;
         switch (gameMode) {
-            case STANDARD -> gameMode = RTSGameMode.SURVIVAL;
-            case SURVIVAL -> gameMode = RTSGameMode.KOTH;
-            case KOTH -> gameMode = RTSGameMode.STANDARD;
-            default -> gameMode = RTSGameMode.STANDARD;
+            case STANDARD -> gameMode = GameMode.SURVIVAL;
+            case SURVIVAL -> gameMode = GameMode.STANDARD;
+            default -> gameMode = GameMode.STANDARD;
         }
     }
 
@@ -37,7 +36,7 @@ public class ClientGameModeHelper {
     }
 
     private static String getLockedString() {
-        return gameModeLocked ? " " + I18n.get("hud.gamemodebuttons.locked") : "";
+        return gameModeLocked ? " " + I18n.get("hud.gamemode.reignofnether.locked") : "";
     }
 
     // TODO: on startRTS(), send a packet to everyone to set and lock the gamemode
@@ -57,13 +56,13 @@ public class ClientGameModeHelper {
                     () -> {},
                     ClientGameModeHelper::cycleGameMode,
                     List.of(
-                            FormattedCharSequence.forward(I18n.get("hud.gamemodebuttons.standard1") +
+                            FormattedCharSequence.forward(I18n.get("hud.gamemode.reignofnether.standard1") +
                                     getLockedString(), Style.EMPTY.withBold(true)),
                             FormattedCharSequence.forward("", Style.EMPTY),
-                            FormattedCharSequence.forward(I18n.get("hud.gamemodebuttons.standard2"), Style.EMPTY),
-                            FormattedCharSequence.forward(I18n.get("hud.gamemodebuttons.standard3"), Style.EMPTY),
+                            FormattedCharSequence.forward(I18n.get("hud.gamemode.reignofnether.standard2"), Style.EMPTY),
+                            FormattedCharSequence.forward(I18n.get("hud.gamemode.reignofnether.standard3"), Style.EMPTY),
                             FormattedCharSequence.forward("", Style.EMPTY),
-                            FormattedCharSequence.forward(I18n.get("hud.gamemodebuttons.changemode"), Style.EMPTY)
+                            FormattedCharSequence.forward(I18n.get("hud.gamemode.reignofnether.changemode"), Style.EMPTY)
                     )
             );
             case SURVIVAL -> new Button(
@@ -82,16 +81,16 @@ public class ClientGameModeHelper {
                     ClientGameModeHelper::cycleWaveDifficulty, // TODO: send packet to server to set difficulty
                     ClientGameModeHelper::cycleGameMode,
                     List.of(
-                            FormattedCharSequence.forward(I18n.get("hud.gamemodebuttons.survival1") +
+                            FormattedCharSequence.forward(I18n.get("hud.gamemode.reignofnether.survival1") +
                                     getLockedString(), Style.EMPTY.withBold(true)),
                             FormattedCharSequence.forward("", Style.EMPTY),
-                            FormattedCharSequence.forward(I18n.get("hud.gamemodebuttons.survival2"), Style.EMPTY),
-                            FormattedCharSequence.forward(I18n.get("hud.gamemodebuttons.survival3"), Style.EMPTY),
-                            FormattedCharSequence.forward(I18n.get("hud.gamemodebuttons.survival4",
+                            FormattedCharSequence.forward(I18n.get("hud.gamemode.reignofnether.survival2"), Style.EMPTY),
+                            FormattedCharSequence.forward(I18n.get("hud.gamemode.reignofnether.survival3"), Style.EMPTY),
+                            FormattedCharSequence.forward(I18n.get("hud.gamemode.reignofnether.survival4",
                                     SurvivalClientEvents.difficulty, SurvivalClientEvents.getMinutesPerDay()), Style.EMPTY),
                             FormattedCharSequence.forward("", Style.EMPTY),
-                            FormattedCharSequence.forward(I18n.get("hud.gamemodebuttons.survival5"), Style.EMPTY),
-                            FormattedCharSequence.forward(I18n.get("hud.gamemodebuttons.changemode"), Style.EMPTY)
+                            FormattedCharSequence.forward(I18n.get("hud.gamemode.reignofnether.survival5"), Style.EMPTY),
+                            FormattedCharSequence.forward(I18n.get("hud.gamemode.reignofnether.changemode"), Style.EMPTY)
                     )
             );
             case KOTH -> new Button(
@@ -105,14 +104,14 @@ public class ClientGameModeHelper {
                     () -> {},
                     ClientGameModeHelper::cycleGameMode,
                     List.of(
-                            FormattedCharSequence.forward(I18n.get("hud.gamemodebuttons.koth1") +
+                            FormattedCharSequence.forward(I18n.get("hud.gamemode.reignofnether.koth1") +
                                     getLockedString(), Style.EMPTY.withBold(true)),
                             FormattedCharSequence.forward("", Style.EMPTY),
-                            FormattedCharSequence.forward(I18n.get("hud.gamemodebuttons.koth2"), Style.EMPTY),
-                            FormattedCharSequence.forward(I18n.get("hud.gamemodebuttons.koth3"), Style.EMPTY),
+                            FormattedCharSequence.forward(I18n.get("hud.gamemode.reignofnether.koth2"), Style.EMPTY),
+                            FormattedCharSequence.forward(I18n.get("hud.gamemode.reignofnether.koth3"), Style.EMPTY),
                             FormattedCharSequence.forward("", Style.EMPTY),
-                            FormattedCharSequence.forward(I18n.get("hud.gamemodebuttons.koth4"), Style.EMPTY),
-                            FormattedCharSequence.forward(I18n.get("hud.gamemodebuttons.changemode"), Style.EMPTY)
+                            FormattedCharSequence.forward(I18n.get("hud.gamemode.reignofnether.koth4"), Style.EMPTY),
+                            FormattedCharSequence.forward(I18n.get("hud.gamemode.reignofnether.changemode"), Style.EMPTY)
                     )
             );
             case SANDBOX -> null;

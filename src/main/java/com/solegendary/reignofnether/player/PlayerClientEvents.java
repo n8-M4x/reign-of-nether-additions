@@ -1,9 +1,10 @@
 package com.solegendary.reignofnether.player;
 
-import com.solegendary.reignofnether.alliance.AllyCommand;
 import com.solegendary.reignofnether.building.Building;
 import com.solegendary.reignofnether.building.BuildingClientEvents;
 import com.solegendary.reignofnether.fogofwar.FogOfWarClientEvents;
+import com.solegendary.reignofnether.gamemode.GameMode;
+import com.solegendary.reignofnether.gamemode.ClientGameModeHelper;
 import com.solegendary.reignofnether.hud.HudClientEvents;
 import com.solegendary.reignofnether.keybinds.Keybindings;
 import com.solegendary.reignofnether.orthoview.OrthoviewClientEvents;
@@ -18,7 +19,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.RegisterClientCommandsEvent;
 import net.minecraftforge.client.event.ScreenEvent;
-import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -245,6 +245,8 @@ public class PlayerClientEvents {
         BuildingClientEvents.getSelectedBuildings().clear();
         BuildingClientEvents.getBuildings().clear();
         ResourcesClientEvents.resourcesList.clear();
+        ClientGameModeHelper.gameMode = GameMode.STANDARD;
+        ClientGameModeHelper.gameModeLocked = false;
     }
 
     public static void setRTSLock(boolean lock) {

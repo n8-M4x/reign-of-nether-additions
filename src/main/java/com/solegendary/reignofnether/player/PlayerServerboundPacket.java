@@ -1,7 +1,13 @@
 package com.solegendary.reignofnether.player;
 
+import com.solegendary.reignofnether.gamemode.ClientGameModeHelper;
+import com.solegendary.reignofnether.gamemode.GameMode;
+import com.solegendary.reignofnether.gamemode.GameModeClientboundPacket;
+import com.solegendary.reignofnether.gamemode.GameModeServerboundPacket;
 import com.solegendary.reignofnether.hud.HudClientEvents;
 import com.solegendary.reignofnether.registrars.PacketHandler;
+import com.solegendary.reignofnether.survival.SurvivalClientEvents;
+import com.solegendary.reignofnether.survival.SurvivalServerboundPacket;
 import com.solegendary.reignofnether.util.Faction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
@@ -74,6 +80,9 @@ public class PlayerServerboundPacket {
                 case NONE -> null;
             };
             PacketHandler.INSTANCE.sendToServer(new PlayerServerboundPacket(playerAction, MC.player.getId(), x, y, z));
+            GameModeServerboundPacket.setAndLockAllClientGameModes(ClientGameModeHelper.gameMode);
+            if (ClientGameModeHelper.gameMode == GameMode.SURVIVAL)
+                SurvivalServerboundPacket.startSurvivalMode(SurvivalClientEvents.difficulty);
         }
     }
 

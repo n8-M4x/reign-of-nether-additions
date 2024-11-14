@@ -15,12 +15,7 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.item.enchantment.FrostWalkerEnchantment;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -56,7 +51,6 @@ public class SurvivalServerEvents {
 
     private static ServerLevel serverLevel = null;
 
-    // raise speed of day if
     @SubscribeEvent
     public static void onLevelTick(TickEvent.LevelTickEvent evt) {
         if (evt.level.isClientSide() || evt.phase != TickEvent.Phase.END)
@@ -131,27 +125,30 @@ public class SurvivalServerEvents {
         evt.getDispatcher().register(Commands.literal("debug-reset")
                 .executes((command) -> {
                     PlayerServerEvents.sendMessageToAllPlayers("Resetting back to wave 1");
-                    resetWaves();
+                    reset();
                     return 1;
                 }));
-        evt.getDispatcher().register(Commands.literal("rts-difficulty").then(Commands.literal("easy")
-                .executes((command) -> setDifficulty(WaveDifficulty.EASY))));
-        evt.getDispatcher().register(Commands.literal("rts-difficulty").then(Commands.literal("medium")
-                .executes((command) -> setDifficulty(WaveDifficulty.MEDIUM))));
-        evt.getDispatcher().register(Commands.literal("rts-difficulty").then(Commands.literal("hard")
-                .executes((command) -> setDifficulty(WaveDifficulty.HARD))));
-        evt.getDispatcher().register(Commands.literal("rts-difficulty").then(Commands.literal("extreme")
-                .executes((command) -> setDifficulty(WaveDifficulty.EXTREME))));
     }
 
-    public static void start() {
+    public static void enable(WaveDifficulty diff) {
         if (!isEnabled()) {
-            PlayerServerEvents.sendMessageToAllPlayers("Enabled wave survival mode");
+            reset();
+            difficulty = diff;
+            PlayerServerEvents.sendMessageToAllPlayers(I18n.get("hud.gamemode.reignofnether.survival1"), true);
             PlayerServerEvents.sendMessageToAllPlayers("Difficulty: " + difficulty.name() + " (Change with /rts-difficulty)");
             PlayerServerEvents.sendMessageToAllPlayers("Time begins when the first building is placed");
-            setEnabled(true);
-            resetWaves();
+            isEnabled = true;
+            // TODO: set max population to 1000
+            // TODO: sync enabled and difficulty with client
         }
+    }
+
+    public static void reset() {
+        for (LivingEntity entity : enemies)
+            entity.kill();
+        nextWave = Wave.getWave(0);
+        difficulty = WaveDifficulty.EASY;
+        isEnabled = false;
     }
 
     @SubscribeEvent
@@ -178,22 +175,6 @@ public class SurvivalServerEvents {
         }
     }
 
-
-
-    // register here too for command blocks
-    public static int setDifficulty(WaveDifficulty diff) {
-        if (!isStarted() && isEnabled()) {
-            difficulty = diff;
-            PlayerServerEvents.sendMessageToAllPlayers("Difficulty set to: " + difficulty.name());
-            PlayerServerEvents.sendMessageToAllPlayers("Day length: " + (10 - getDifficultyTimeModifier()/60) + " mins");
-        } else if (!isEnabled()) {
-            PlayerServerEvents.sendMessageToAllPlayers("You are not playing Wave Survival.");
-        } else {
-            PlayerServerEvents.sendMessageToAllPlayers("Too late to change difficulty!");
-        }
-        return 1;
-    }
-
     public static long getDifficultyTimeModifier() {
         return switch (difficulty) {
             default -> 0; // 10mins each day/night
@@ -213,11 +194,6 @@ public class SurvivalServerEvents {
 
     public static boolean isEnabled() { return isEnabled; }
 
-    public static void setEnabled(boolean enable) {
-        isEnabled = enable;
-        // TODO: set max population to 1000
-    }
-
     public static boolean isStarted() {
         return !BuildingServerEvents.getBuildings().isEmpty() &&
                 !PlayerServerEvents.rtsPlayers.isEmpty();
@@ -231,11 +207,7 @@ public class SurvivalServerEvents {
         return !getCurrentEnemies().isEmpty();
     }
 
-    public static void resetWaves() {
-        for (LivingEntity entity : enemies)
-            entity.kill();
-        nextWave = Wave.getWave(0);
-    }
+
 
     // triggered at nightfall
     public static void startNextWave(ServerLevel level) {

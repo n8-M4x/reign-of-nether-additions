@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 @Mod.EventBusSubscriber
 public class VoteCommand {
 
-
+    /*
     @SubscribeEvent
     public static void onCommandRegister(RegisterCommandsEvent event) {
         CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
@@ -33,6 +33,7 @@ public class VoteCommand {
                         })
         );
     }
+     */
     private static List<MapData> loadMaps(CommandSourceStack source) {
         MinecraftServer minecraftServerInstance = source.getServer();
         ResourceManager resourceManager = minecraftServerInstance.getResourceManager();

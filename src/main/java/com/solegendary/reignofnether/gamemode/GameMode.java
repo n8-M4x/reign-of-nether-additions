@@ -1,6 +1,6 @@
 package com.solegendary.reignofnether.gamemode;
 
-public enum RTSGameMode {
+public enum GameMode {
     STANDARD, // Standard RTS match
     SURVIVAL, // Wave survival - left click changes difficulty
 

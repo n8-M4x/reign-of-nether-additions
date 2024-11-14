@@ -83,7 +83,7 @@ public class ResourceCosts {
     public static ResourceCost SPIDER_LAIR = ResourceCost.Building(0,150,75, 0);
     public static ResourceCost DUNGEON = ResourceCost.Building(0,150,75, 0);
     public static ResourceCost LABORATORY = ResourceCost.Building(0,250,150, 0);
-    public static ResourceCost DARK_WATCHTOWER = ResourceCost.Building(0,100,100, 0);
+    public static ResourceCost DARK_WATCHTOWER = ResourceCost.Building(0,100,75, 0);
     public static ResourceCost STRONGHOLD = ResourceCost.Building(0,400,300, 0);
 
     // Villagers
@@ -94,7 +94,7 @@ public class ResourceCosts {
     public static ResourceCost BLACKSMITH = ResourceCost.Building(0,100,300, 0);
     public static ResourceCost ARCANE_TOWER = ResourceCost.Building(0,200,100, 0);
     public static ResourceCost LIBRARY = ResourceCost.Building(0,300,100, 0);
-    public static ResourceCost WATCHTOWER = ResourceCost.Building(0,100,100, 0);
+    public static ResourceCost WATCHTOWER = ResourceCost.Building(0,100,75, 0);
     public static ResourceCost CASTLE = ResourceCost.Building(0,400,300, 0);
     public static ResourceCost IRON_GOLEM_BUILDING = ResourceCost.Building(0,50,200, 0);
 

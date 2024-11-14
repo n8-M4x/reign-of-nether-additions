@@ -74,14 +74,16 @@ Balancing
 
 Piglins
 [✔] Bastion: -20% build time
-[🟡] All piglin units now move at regular speed on soulsand
-[✔] Ghasts -1dmg to buildings
+[❌] All piglin units now move at regular speed on soulsand
+[❌] Ghasts' random damage to garrisoned units has been reduced by 25%
 
 Monsters
+[✔] Dark Watchtower: -25 ore
 [✔] Skeletons & Strays: -10 food, +10 wood
 [✔] Night now begins 10 mins after game start
     - This reverses the change from 1.0.5 which was made before Sculk Catalysts
 
 Villagers
+[✔] Watchtower: -25 ore
 [✔] Vindicators: -5 food, +5hp, -3s
 [✔] Pillager: -5 wood, -3s

@@ -50,6 +50,9 @@ Quality of Life Features
 Balancing
 ---------
 
+[❌] Solution to discourage rushing
+    - allow villagers to shoot out of garrisons?
+
 [❌] Lightning should only charge one creeper at a time
 
 [❌] - Upgrade gives stimpacks (-10hp for 10s of double attack speed and speed buff, cant be used while mounted)
