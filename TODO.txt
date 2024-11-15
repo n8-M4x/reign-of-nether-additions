@@ -51,11 +51,21 @@ Features
 
 
 
+[❌] Bloodlust ability
+    - Unlockable active ability for Brutes and Headhunters
+    - Researched at the Fortress (250 all resources, 150s)
+    - When used, instantly trades 10hp for 10s of +50% attack speed and +25% movement speed
+    - Headhunters cannot use it while mounted
+    - Remember that Piglins heal at a rate of 1hp per 8s while standing on Nether terrain
+
+
 Bugfixes
 --------
 [🟡] Can't exit an ally's garrison
 
 [❌] Tall grass and barrier blocks are now ignored by the cursor
+
+[❌] Hoglins can no longer spawn as neutral baby hoglins
 
 
 Quality of Life Features
@@ -70,15 +80,22 @@ Quality of Life Features
     - Add end detections in goals for when to move to nextActionItem
     - Add clientside checkpoints
 
+[❌] Witch regen potions can now be auto-cast with right-click
+    - The witch will splash a potion at her feet whenever it is off cooldown
+[❌] Witch harming potions can now be thrown by right-clicking an enemy
+    - This will NOT be automatically used off cooldown
 
 Balancing
 ---------
 [✔] All bridges: +50 wood (ore for piglins)
+[❌] Random damage dealt to garrisoned units by explosions has been halved
+    - This affects creepers and ghasts
 
 Piglins
 [✔] Bastion: -20% build time
 [❌] All piglin units now move at regular speed on soulsand
-[❌] Ghasts' random damage to garrisoned units has been reduced by 25%
+[❌] Ghasts are now immune to knockback
+[❌] Brute Shields now make brutes immune to knockback when active
 
 Monsters
 [✔] Dark Watchtower: -25 ore
@@ -88,5 +105,7 @@ Monsters
 
 Villagers
 [✔] Watchtower: -25 ore
+
 [✔] Vindicators: -5 food, +5hp, -3s
 [✔] Pillager: -5 wood, -3s
+[❌] Iron Golem: -10hp, -1dmg

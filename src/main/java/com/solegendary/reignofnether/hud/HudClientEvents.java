@@ -950,29 +950,28 @@ public class HudClientEvents {
                             }
                         }
                     }
+                }
+                if (resName == ResourceName.FOOD) {
+                    numWorkersAssigned += numWorkersHunting;
+                }
 
-                    if (resName == ResourceName.FOOD) {
-                        numWorkersAssigned += numWorkersHunting;
-                    }
-
-                    hudZones.add(MyRenderer.renderIconFrameWithBg(evt.getPoseStack(),
+                hudZones.add(MyRenderer.renderIconFrameWithBg(evt.getPoseStack(),
                         new ResourceLocation(ReignOfNether.MOD_ID, "textures/hud/icon_frame.png"),
                         blitX + 69,
                         blitY,
                         iconFrameSize,
                         iconBgColour
-                    ));
+                ));
 
-                    GuiComponent.drawCenteredString(evt.getPoseStack(),
+                GuiComponent.drawCenteredString(evt.getPoseStack(),
                         MC.font,
                         String.valueOf(numWorkersAssigned),
                         blitX + 69 + (iconFrameSize / 2),
                         blitY + (iconSize / 2) + 1,
                         0xFFFFFF
-                    );
+                );
 
-                    blitY += iconFrameSize - 1;
-                }
+                blitY += iconFrameSize - 1;
             }
 
             blitY = resourceBlitYStart;

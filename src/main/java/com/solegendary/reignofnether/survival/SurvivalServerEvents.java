@@ -5,6 +5,7 @@ import com.solegendary.reignofnether.building.Building;
 import com.solegendary.reignofnether.building.BuildingServerEvents;
 import com.solegendary.reignofnether.building.BuildingUtils;
 import com.solegendary.reignofnether.player.PlayerServerEvents;
+import com.solegendary.reignofnether.registrars.GameRuleRegistrar;
 import com.solegendary.reignofnether.sounds.SoundAction;
 import com.solegendary.reignofnether.sounds.SoundClientboundPacket;
 import com.solegendary.reignofnether.time.TimeUtils;
@@ -25,6 +26,7 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.ArrayList;
@@ -138,8 +140,7 @@ public class SurvivalServerEvents {
             PlayerServerEvents.sendMessageToAllPlayers("Difficulty: " + difficulty.name() + " (Change with /rts-difficulty)");
             PlayerServerEvents.sendMessageToAllPlayers("Time begins when the first building is placed");
             isEnabled = true;
-            // TODO: set max population to 1000
-            // TODO: sync enabled and difficulty with client
+            SurvivalClientboundPacket.enableAndSetDifficulty(difficulty);
         }
     }
 
@@ -149,6 +150,12 @@ public class SurvivalServerEvents {
         nextWave = Wave.getWave(0);
         difficulty = WaveDifficulty.EASY;
         isEnabled = false;
+    }
+
+    @SubscribeEvent
+    public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent evt) {
+        if (isEnabled())
+            SurvivalClientboundPacket.enableAndSetDifficulty(difficulty);
     }
 
     @SubscribeEvent

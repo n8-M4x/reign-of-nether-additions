@@ -30,7 +30,7 @@ public class AbilityButton extends Button {
         this.onLeftClick = () -> {
             if (this.ability != null && (this.ability.getCooldown() > 0 && !this.ability.canBypassCooldown()))
                 HudClientEvents.showTemporaryMessage(I18n.get("hud.buttons.reignofnether.on_cooldown"));
-            else
+            else if (originalOnLeftClick != null)
                 originalOnLeftClick.run();
         };
     }

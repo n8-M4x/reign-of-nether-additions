@@ -2,8 +2,8 @@ package com.solegendary.reignofnether.survival;
 
 public class SurvivalClientEvents {
 
-    public static int waveNumber;
-    public static boolean isEnabled;
+    public static int waveNumber = 1;
+    public static boolean isEnabled = false;
     public static WaveDifficulty difficulty = WaveDifficulty.EASY;
 
     public static int getMinutesPerDay() {

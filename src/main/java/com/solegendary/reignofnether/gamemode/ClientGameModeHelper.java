@@ -51,7 +51,7 @@ public class ClientGameModeHelper {
                     () -> false,
                     () -> false,
                     () -> !gameModeLocked,
-                    () -> {},
+                    null,
                     ClientGameModeHelper::cycleGameMode,
                     List.of(
                             FormattedCharSequence.forward(I18n.get("hud.gamemode.reignofnether.standard1") +
@@ -76,16 +76,16 @@ public class ClientGameModeHelper {
                     () -> false,
                     () -> false,
                     () -> !gameModeLocked,
-                    ClientGameModeHelper::cycleWaveDifficulty, // TODO: send packet to server to set difficulty
+                    ClientGameModeHelper::cycleWaveDifficulty,
                     ClientGameModeHelper::cycleGameMode,
                     List.of(
                             FormattedCharSequence.forward(I18n.get("hud.gamemode.reignofnether.survival1") +
                                     getLockedString(), Style.EMPTY.withBold(true)),
+                            FormattedCharSequence.forward(I18n.get("hud.gamemode.reignofnether.survival4",
+                                    SurvivalClientEvents.difficulty, SurvivalClientEvents.getMinutesPerDay()), Style.EMPTY),
                             FormattedCharSequence.forward("", Style.EMPTY),
                             FormattedCharSequence.forward(I18n.get("hud.gamemode.reignofnether.survival2"), Style.EMPTY),
                             FormattedCharSequence.forward(I18n.get("hud.gamemode.reignofnether.survival3"), Style.EMPTY),
-                            FormattedCharSequence.forward(I18n.get("hud.gamemode.reignofnether.survival4",
-                                    SurvivalClientEvents.difficulty, SurvivalClientEvents.getMinutesPerDay()), Style.EMPTY),
                             FormattedCharSequence.forward("", Style.EMPTY),
                             FormattedCharSequence.forward(I18n.get("hud.gamemode.reignofnether.survival5"), Style.EMPTY),
                             FormattedCharSequence.forward(I18n.get("hud.gamemode.reignofnether.changemode"), Style.EMPTY)

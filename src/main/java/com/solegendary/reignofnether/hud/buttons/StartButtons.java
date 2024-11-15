@@ -28,7 +28,7 @@ public class StartButtons {
         () -> !TutorialClientEvents.isAtOrPastStage(TutorialStage.PLACE_WORKERS_B) || !PlayerClientEvents.canStartRTS,
         () -> true,
         () -> CursorClientEvents.setLeftClickAction(UnitAction.STARTRTS_VILLAGERS),
-        () -> { },
+        null,
         List.of(
             FormattedCharSequence.forward(I18n.get("hud.startbuttons.villagers.reignofnether.first"), Style.EMPTY),
             FormattedCharSequence.forward(I18n.get("hud.startbuttons.villagers.reignofnether.second"), Style.EMPTY)
@@ -44,7 +44,7 @@ public class StartButtons {
         () -> TutorialClientEvents.isEnabled() || !PlayerClientEvents.canStartRTS,
         () -> !TutorialClientEvents.isEnabled(),
         () -> CursorClientEvents.setLeftClickAction(UnitAction.STARTRTS_MONSTERS),
-        () -> { },
+        null,
         List.of(
             FormattedCharSequence.forward(I18n.get("hud.startbuttons.monsters.reignofnether.first"), Style.EMPTY),
             FormattedCharSequence.forward(I18n.get("hud.startbuttons.monsters.reignofnether.second"), Style.EMPTY)
@@ -60,7 +60,7 @@ public class StartButtons {
         () -> TutorialClientEvents.isEnabled() || !PlayerClientEvents.canStartRTS,
         () -> !TutorialClientEvents.isEnabled(),
         () -> CursorClientEvents.setLeftClickAction(UnitAction.STARTRTS_PIGLINS),
-        () -> { },
+        null,
         List.of(
             FormattedCharSequence.forward(I18n.get("hud.startbuttons.piglins.reignofnether.first"), Style.EMPTY),
             FormattedCharSequence.forward(I18n.get("hud.startbuttons.piglins.reignofnether.second"), Style.EMPTY)
