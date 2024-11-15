@@ -39,8 +39,6 @@ public class ClientGameModeHelper {
         return gameModeLocked ? " " + I18n.get("hud.gamemode.reignofnether.locked") : "";
     }
 
-    // TODO: on startRTS(), send a packet to everyone to set and lock the gamemode
-
     // all gamemodes are controlled by 1 button, cycled with right-click
     // left click provides functionality specific to the gamemode, eg. changing wave survival difficulty
     public static Button getButton() {

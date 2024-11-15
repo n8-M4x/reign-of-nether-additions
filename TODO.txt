@@ -65,7 +65,10 @@ Quality of Life Features
 [❌] Highlight portal in yellow if being built on overworld terrain
 
 [❌] Shift queueing movements and buildings (not just placement)
-
+    - Add index to sendCommand packets
+    - Add recursive field to UnitActionItem: nextActionItem
+    - Add end detections in goals for when to move to nextActionItem
+    - Add clientside checkpoints
 
 
 Balancing

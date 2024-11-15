@@ -33,7 +33,7 @@ public class SurvivalServerboundPacket {
     public boolean handle(Supplier<NetworkEvent.Context> ctx) {
         final var success = new AtomicBoolean(false);
         ctx.get().enqueueWork(() -> {
-            SurvivalServerEvents.start(difficulty);
+            SurvivalServerEvents.enable(difficulty);
             success.set(true);
         });
         ctx.get().setPacketHandled(true);
