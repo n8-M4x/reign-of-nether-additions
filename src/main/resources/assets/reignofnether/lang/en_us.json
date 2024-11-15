@@ -122,6 +122,12 @@
     "abilities.reignofnether.spin_webs.tooltip2": "field that decay after %d seconds.",
     "abilities.reignofnether.spin_webs.tooltip3": "Cannot be used while or recently mounted.",
     "abilities.reignofnether.spin_webs.error1": "Cannot use while mounted.",
+    "abilities.reignofnether.wither_cloud": "Wither Cloud",
+    "abilities.reignofnether.wither_cloud.tooltip1": "Causes the Wither Skeleton to release a cloud",
+    "abilities.reignofnether.wither_cloud.tooltip2": "of deadly wither around it for the next %d seconds.",
+    "abilities.reignofnether.bloodlust": "Bloodlust",
+    "abilities.reignofnether.bloodlust.tooltip1": "Pay %d life to gain 50%% faster attack speed ",
+    "abilities.reignofnether.bloodlust.tooltip2": "and 50%% faster movement for %d seconds.",
 
     "ability.reignofnether.enchant.error1": "Can only enchant your own units",
     "ability.reignofnether.enchant.error2": "Unit is out of range",
@@ -480,6 +486,9 @@
     "research.reignofnether.wither_clouds": "Wither Clouds",
     "research.reignofnether.wither_clouds.tooltip1": "Unlocks the ability for Wither Skeletons to produce ",
     "research.reignofnether.wither_clouds.tooltip2": "clouds of wither around them for a few seconds.",
+    "research.reignofnether.bloodlust": "Bloodlust",
+    "research.reignofnether.bloodlust.tooltip1": "Unlocks the ability for Brutes and Headhunters to trade ",
+    "research.reignofnether.bloodlust.tooltip2": "life for a temporary boost to attack and move speed.",
 
     "resources.reignofnether.food": "Food",
     "resources.reignofnether.wood": "Wood",

@@ -69,9 +69,14 @@ Bugfixes
 
 [❌] Save more often to prevent crashing affecting the game
 
+[❌] Separate night and 'until night' strings for polish
+
+
 
 Quality of Life Features
 ------------------------
+[❌] Added name checks to network packets to prevent exploits
+
 [❌] Limit ghast heights?
 
 [❌] Highlight portal in yellow if being built on overworld terrain
@@ -86,6 +91,8 @@ Quality of Life Features
     - The witch will splash a potion at her feet whenever it is off cooldown
 [❌] Witch harming potions can now be thrown by right-clicking an enemy
     - This will NOT be automatically used off cooldown
+
+
 
 Balancing
 ---------

@@ -6,8 +6,8 @@ public class MeleeAttackUnitGoal extends AbstractMeleeAttackUnitGoal {
     private final Mob mob;
     private int raiseArmTicks; // for zombies
 
-    public MeleeAttackUnitGoal(Mob mob, int attackInterval, boolean followingTargetEvenIfNotSeen) {
-        super(mob, attackInterval, followingTargetEvenIfNotSeen);
+    public MeleeAttackUnitGoal(Mob mob, boolean followingTargetEvenIfNotSeen) {
+        super(mob, followingTargetEvenIfNotSeen);
         this.mob = mob;
     }
 
