@@ -67,6 +67,8 @@ Bugfixes
 
 [❌] Hoglins can no longer spawn as neutral baby hoglins
 
+[❌] Save more often to prevent crashing affecting the game
+
 
 Quality of Life Features
 ------------------------

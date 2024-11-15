@@ -19,6 +19,7 @@ import com.solegendary.reignofnether.player.PlayerServerboundPacket;
 import com.solegendary.reignofnether.research.ResearchClientboundPacket;
 import com.solegendary.reignofnether.resources.ResourcesClientboundPacket;
 import com.solegendary.reignofnether.sounds.SoundClientboundPacket;
+import com.solegendary.reignofnether.survival.SurvivalClientboundPacket;
 import com.solegendary.reignofnether.survival.SurvivalServerboundPacket;
 import com.solegendary.reignofnether.tps.TPSClientBoundPacket;
 import com.solegendary.reignofnether.ability.AbilityClientboundPacket;
@@ -172,6 +173,12 @@ public final class PacketHandler {
                 .encoder(SurvivalServerboundPacket::encode)
                 .decoder(SurvivalServerboundPacket::new)
                 .consumer(SurvivalServerboundPacket::handle)
+                .add();
+
+        INSTANCE.messageBuilder(SurvivalClientboundPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(SurvivalClientboundPacket::encode)
+                .decoder(SurvivalClientboundPacket::new)
+                .consumer(SurvivalClientboundPacket::handle)
                 .add();
 
         INSTANCE.messageBuilder(VotePacket.class, index++, NetworkDirection.PLAY_TO_SERVER)

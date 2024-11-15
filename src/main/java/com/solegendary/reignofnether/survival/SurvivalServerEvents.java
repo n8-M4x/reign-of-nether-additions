@@ -17,6 +17,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -55,7 +56,7 @@ public class SurvivalServerEvents {
 
     @SubscribeEvent
     public static void onLevelTick(TickEvent.LevelTickEvent evt) {
-        if (evt.level.isClientSide() || evt.phase != TickEvent.Phase.END)
+        if (evt.phase != TickEvent.Phase.END || evt.level.isClientSide() || evt.level.dimension() != Level.OVERWORLD)
             return;
 
         serverLevel = (ServerLevel) evt.level;
@@ -136,9 +137,6 @@ public class SurvivalServerEvents {
         if (!isEnabled()) {
             reset();
             difficulty = diff;
-            PlayerServerEvents.sendMessageToAllPlayers(I18n.get("hud.gamemode.reignofnether.survival1"), true);
-            PlayerServerEvents.sendMessageToAllPlayers("Difficulty: " + difficulty.name() + " (Change with /rts-difficulty)");
-            PlayerServerEvents.sendMessageToAllPlayers("Time begins when the first building is placed");
             isEnabled = true;
             SurvivalClientboundPacket.enableAndSetDifficulty(difficulty);
         }

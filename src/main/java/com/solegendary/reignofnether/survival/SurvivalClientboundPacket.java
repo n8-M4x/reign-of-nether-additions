@@ -51,8 +51,7 @@ public class SurvivalClientboundPacket {
         ctx.get().enqueueWork(() -> {
             DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
                     () -> () -> {
-                        SurvivalClientEvents.difficulty = difficulty;
-                        SurvivalClientEvents.isEnabled = true;
+                        SurvivalClientEvents.enable(difficulty);
                         if (waveNumber > 0)
                             SurvivalClientEvents.waveNumber = waveNumber;
                         success.set(true);
