@@ -114,6 +114,12 @@ Languages
     "time.reignofnether.time_until_day": "%s until day",
     "time.reignofnether.time_until_night": "%s until night",
 
+Updated strings:
+    "units.monsters.reignofnether.husk.tooltip1": "A hardy variant of the zombie that is immune ",
+    "units.monsters.reignofnether.husk.tooltip2": "to burning from sunlight.",
+    "research.reignofnether.husks.tooltip1": "Transforms all of your zombies into husks, ",
+    "research.reignofnether.husks.tooltip2": "granting them immunity to sunlight.",
+
 New strings:
     "abilities.reignofnether.wither_cloud": "Wither Cloud",
     "abilities.reignofnether.wither_cloud.tooltip1": "Causes the Wither Skeleton to release a cloud",
@@ -124,3 +130,4 @@ New strings:
     "research.reignofnether.bloodlust": "Bloodlust",
     "research.reignofnether.bloodlust.tooltip1": "Unlocks the ability for Brutes and Headhunters to trade ",
     "research.reignofnether.bloodlust.tooltip2": "life for a temporary boost to attack and move speed.",
+

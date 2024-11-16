@@ -55,6 +55,8 @@ Balancing
 
 [❌] Solution to discourage rushing
     - villagers are most vulnerable due to their lategame nature
+    - copy the wc3 ability of turning villagers into temporary militia?
+        - give them a helmet and stone sword upgrade for +2 damage
 
 [❌] Lightning should only charge one creeper at a time
 
