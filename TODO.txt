@@ -81,24 +81,6 @@ Quality of Life Features
     - This will NOT be automatically used off cooldown
 
 
-
-Languages
----------
-"time.reignofnether.time_until" into two strings:
-    "time.reignofnether.time_until_day": "%s until day",
-    "time.reignofnether.time_until_night": "%s until night",
-
-New strings:
-    "abilities.reignofnether.wither_cloud": "Wither Cloud",
-    "abilities.reignofnether.wither_cloud.tooltip1": "Causes the Wither Skeleton to release a cloud",
-    "abilities.reignofnether.wither_cloud.tooltip2": "of deadly wither around it for the next %d seconds.",
-    "abilities.reignofnether.bloodlust": "Bloodlust",
-    "abilities.reignofnether.bloodlust.tooltip1": "Pay %d life to gain 50%% faster attack speed ",
-    "abilities.reignofnether.bloodlust.tooltip2": "and 50%% faster movement for %d seconds.",
-    "research.reignofnether.bloodlust": "Bloodlust",
-    "research.reignofnether.bloodlust.tooltip1": "Unlocks the ability for Brutes and Headhunters to trade ",
-    "research.reignofnether.bloodlust.tooltip2": "life for a temporary boost to attack and move speed.",
-
 Balancing
 ---------
 [✔] All bridges: +50 wood (ore for piglins)
@@ -122,3 +104,22 @@ Villagers
 [✔] Vindicators: -5 food, +5hp, -3s
 [✔] Pillager: -5 wood, -3s
 [✔] Iron Golem: -10hp, -0.05as
+
+
+
+Languages
+---------
+"time.reignofnether.time_until" into two strings:
+    "time.reignofnether.time_until_day": "%s until day",
+    "time.reignofnether.time_until_night": "%s until night",
+
+New strings:
+    "abilities.reignofnether.wither_cloud": "Wither Cloud",
+    "abilities.reignofnether.wither_cloud.tooltip1": "Causes the Wither Skeleton to release a cloud",
+    "abilities.reignofnether.wither_cloud.tooltip2": "of deadly wither around it for the next %d seconds.",
+    "abilities.reignofnether.bloodlust": "Bloodlust",
+    "abilities.reignofnether.bloodlust.tooltip1": "Pay %d life to gain 50%% faster attack speed ",
+    "abilities.reignofnether.bloodlust.tooltip2": "and 50%% faster movement for %d seconds.",
+    "research.reignofnether.bloodlust": "Bloodlust",
+    "research.reignofnether.bloodlust.tooltip1": "Unlocks the ability for Brutes and Headhunters to trade ",
+    "research.reignofnether.bloodlust.tooltip2": "life for a temporary boost to attack and move speed.",
