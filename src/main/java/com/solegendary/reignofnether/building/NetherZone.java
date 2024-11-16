@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.event.entity.item.ItemEvent;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -160,9 +161,11 @@ public class NetherZone {
             BlockState bs = NetherBlocks.getNetherBlock(level, bp);
             BlockState bsPlant = NetherBlocks.getNetherPlantBlock(level, bp.above());
             if (bs != null && !BuildingUtils.isPosPartOfAnyBuilding(level.isClientSide(), bp, true, (int) (maxRange * 2))) {
-                level.setBlockAndUpdate(bp, bs);
-                if (bsPlant != null)
+                if (bsPlant != null) {
+                    level.destroyBlock(bp.above(), false);
                     level.setBlockAndUpdate(bp.above(), bsPlant);
+                }
+                level.setBlockAndUpdate(bp, bs);
             }
         }
     }

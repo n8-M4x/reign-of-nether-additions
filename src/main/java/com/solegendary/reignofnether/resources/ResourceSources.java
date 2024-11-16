@@ -209,6 +209,13 @@ public class ResourceSources {
                     100,
                     ResourceName.FOOD
             ),
+            new ResourceSource("Shroomlight",
+                    List.of(Blocks.SHROOMLIGHT),
+                    List.of(Items.SHROOMLIGHT),
+                    TICKS_PER_SECOND * 10,
+                    120,
+                    ResourceName.FOOD
+            ),
             new ResourceSource("Extra large food item",
                     List.of(),
                     List.of(Items.COOKED_BEEF,  Items.COOKED_CHICKEN, Items.COOKED_PORKCHOP, Items.COOKED_RABBIT, Items.CHICKEN,

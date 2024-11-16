@@ -2,6 +2,7 @@ package com.solegendary.reignofnether.nether;
 
 import com.solegendary.reignofnether.registrars.BlockRegistrar;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
@@ -41,6 +42,13 @@ public class NetherBlocks {
 
     public static boolean isNetherBlock(Level level, BlockPos bp) {
         BlockState bs = level.getBlockState(bp);
+
+        if (bs.getBlock().getName().getContents() instanceof TranslatableContents contents &&
+            (contents.getKey().contains("blackstone") ||
+            contents.getKey().contains("nether_brick"))) {
+            return true;
+        }
+
         for (Map.Entry<Block, List<Block>> entrySet : MAPPINGS.entrySet())
             if (!bs.isAir() && bs.getBlock().equals(entrySet.getKey()))
                 return true;
@@ -169,7 +177,6 @@ public class NetherBlocks {
                 Blocks.COARSE_DIRT,
                 Blocks.DIRT_PATH,
                 Blocks.ROOTED_DIRT,
-                Blocks.FARMLAND,
                 Blocks.PODZOL,
                 Blocks.MUD,
                 Blocks.MOSS_BLOCK,
@@ -205,7 +212,8 @@ public class NetherBlocks {
                 Blocks.GRAVEL,
                 Blocks.SANDSTONE,
                 Blocks.CHISELED_SANDSTONE,
-                Blocks.RED_SANDSTONE
+                Blocks.RED_SANDSTONE,
+                Blocks.FARMLAND
             ));
         MAPPINGS.put(Blocks.CRIMSON_HYPHAE,
             List.of(
@@ -306,6 +314,16 @@ public class NetherBlocks {
                 Blocks.FLOWERING_AZALEA,
                 Blocks.SUGAR_CANE,
                 Blocks.CACTUS
+            ));
+        PLANT_MAPPINGS.put(Blocks.NETHER_WART,
+            List.of(
+                Blocks.WHEAT,
+                Blocks.CARROTS,
+                Blocks.POTATOES,
+                Blocks.BEETROOTS,
+                Blocks.PUMPKIN_STEM,
+                Blocks.MELON_STEM,
+                Blocks.SUGAR_CANE
             ));
     }
 }

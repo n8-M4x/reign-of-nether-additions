@@ -13,24 +13,38 @@ import java.util.function.Supplier;
 public class GameModeClientboundPacket {
 
     public GameMode gameMode;
+    public boolean disallowSurvival;
 
     // sets the gamemode of all players
     // unlocked and reset back to
     public static void setAndLockAllClientGameModes(GameMode mode) {
         PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(),
-                new GameModeClientboundPacket(mode));
+                new GameModeClientboundPacket(mode, false));
     }
 
-    public GameModeClientboundPacket(GameMode gameMode) {
+    public static void disallowSurvival() {
+        PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(),
+                new GameModeClientboundPacket(GameMode.NONE, true));
+    }
+
+    public static void allowSurvival() {
+        PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(),
+                new GameModeClientboundPacket(GameMode.NONE, false));
+    }
+
+    public GameModeClientboundPacket(GameMode gameMode, boolean disallowSurvival) {
         this.gameMode = gameMode;
+        this.disallowSurvival = disallowSurvival;
     }
 
     public GameModeClientboundPacket(FriendlyByteBuf buffer) {
         this.gameMode = buffer.readEnum(GameMode.class);
+        this.disallowSurvival = buffer.readBoolean();
     }
 
     public void encode(FriendlyByteBuf buffer) {
         buffer.writeEnum(this.gameMode);
+        buffer.writeBoolean(this.disallowSurvival);
     }
 
     // server-side packet-consuming functions
@@ -40,8 +54,17 @@ public class GameModeClientboundPacket {
         ctx.get().enqueueWork(() -> {
             DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
                     () -> () -> {
-                        ClientGameModeHelper.gameModeLocked = true;
-                        ClientGameModeHelper.gameMode = this.gameMode;
+                        if (gameMode != GameMode.NONE) {
+                            ClientGameModeHelper.gameModeLocked = true;
+                            ClientGameModeHelper.gameMode = this.gameMode;
+                        } else if (disallowSurvival) {
+                            ClientGameModeHelper.disallowSurvival = true;
+                            ClientGameModeHelper.gameModeLocked = true;
+                            ClientGameModeHelper.gameMode = GameMode.STANDARD;
+                        } else {
+                            ClientGameModeHelper.disallowSurvival = false;
+                            ClientGameModeHelper.gameModeLocked = false;
+                        }
                         success.set(true);
                     });
         });

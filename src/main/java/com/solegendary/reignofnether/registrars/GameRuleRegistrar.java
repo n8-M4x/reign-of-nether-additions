@@ -8,6 +8,7 @@ public class GameRuleRegistrar {
     public static GameRules.Key<GameRules.BooleanValue> LOG_FALLING;
     public static GameRules.Key<GameRules.BooleanValue> NEUTRAL_AGGRO;
     public static GameRules.Key<GameRules.IntegerValue> MAX_POPULATION;
+    public static GameRules.Key<GameRules.BooleanValue> DISALLOW_WAVE_SURVIVAL;
 
     public static void init() {
         // do cut trees convert their logs into falling logs?
@@ -21,6 +22,10 @@ public class GameRuleRegistrar {
         // set hard cap on population (max even with infinite houses)
         MAX_POPULATION = GameRules.register("maxPopulation", GameRules.Category.MISC,
                 GameRules.IntegerValue.create(ResourceCosts.DEFAULT_MAX_POPULATION)
+        );
+        // prevent clients from joining an RTS match on wave survival mode
+        DISALLOW_WAVE_SURVIVAL = GameRules.register("disallowWaveSurvival", GameRules.Category.MISC,
+                GameRules.BooleanValue.create(false)
         );
     }
 }

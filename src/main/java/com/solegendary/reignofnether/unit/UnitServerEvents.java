@@ -80,8 +80,6 @@ public class UnitServerEvents {
     // max possible pop you can have regardless of buildings, adjustable via /gamerule maxPopulation
     public static int maxPopulation = ResourceCosts.DEFAULT_MAX_POPULATION;
 
-    private static ServerLevel serverLevel = null;
-
     private static final List<UnitActionItem> unitActionQueue = Collections.synchronizedList(new ArrayList<>());
     private static final ArrayList<LivingEntity> allUnits = new ArrayList<>();
 
@@ -95,32 +93,27 @@ public class UnitServerEvents {
 
     @SubscribeEvent
     public static void saveUnits(ServerStoppingEvent evt) {
-        if (serverLevel == null) {
+        ServerLevel level = evt.getServer().getLevel(Level.OVERWORLD);
+        if (level == null)
             return;
-        }
 
-        UnitSaveData data = UnitSaveData.getInstance(serverLevel);
+        UnitSaveData data = UnitSaveData.getInstance(level);
         data.units.clear();
         getAllUnits().forEach(e -> {
             if (e instanceof Unit unit) {
-                UUID ownerUUID = null;
-                GameProfile profile = serverLevel.getServer().getProfileCache().get(unit.getOwnerName()).orElse(null);
+                GameProfile profile = level.getServer().getProfileCache().get(unit.getOwnerName()).orElse(null);
                 if (profile != null) {
-                    ownerUUID = profile.getId();
-                    e.getPersistentData().putUUID("OwnerUUID", ownerUUID);
+                    e.getPersistentData().putUUID("OwnerUUID",  profile.getId());
                 } else {
                     System.out.println("Could not find UUID for owner name: " + unit.getOwnerName());
                 }
-
                 // Save unit data as usual
                 data.units.add(new UnitSave(e.getName().getString(), unit.getOwnerName(), e.getStringUUID()));
-                System.out.println(
-                    "saved unit in serverevents: " + unit.getOwnerName() + "|" + e.getName().getString() + "|"
-                        + e.getId());
             }
         });
         data.save();
-        serverLevel.getDataStorage().save();
+        level.getDataStorage().save();
+        ReignOfNether.LOGGER.info("Saved " + getAllUnits().size() + " units");
     }
 
 
@@ -430,8 +423,7 @@ public class UnitServerEvents {
         if (evt.phase != TickEvent.Phase.END || evt.level.isClientSide() || evt.level.dimension() != Level.OVERWORLD) {
             return;
         }
-
-        serverLevel = (ServerLevel) evt.level;
+        ServerLevel serverLevel = (ServerLevel) evt.level;
 
         unitSyncTicks -= 1;
         if (unitSyncTicks <= 0) {

@@ -109,7 +109,9 @@ public abstract class Building {
     private final long TICKS_TO_SPAWN_ANIMALS_MAX = 1800; // how often we attempt to spawn animals around each
     private long ticksToSpawnAnimals = 0; // spawn once soon after placement
     private final int MAX_ANIMALS = 8;
-    private final int ANIMAL_SPAWN_RANGE = 70; // block range to check and spawn animals in
+    private final int ANIMAL_SPAWN_BLOCK_RANGE = 70; // block range to check and spawn animals in
+    private final int ANIMAL_SPAWN_RANGE_MIN = 15; // block range to check and spawn animals in
+    private final int ANIMAL_SPAWN_RANGE_MAX = 80; // block range to check and spawn animals in
     protected long tickAgeAfterBuilt = 0; // not saved
     protected long tickAge = 0; // not saved
 
@@ -636,7 +638,7 @@ public abstract class Building {
             FrozenChunkClientboundPacket.setBuildingBuiltServerside(this.originPos);
             if (isCapitol) {
                 for (int i = 0; i < 3; i++)
-                    spawnHuntableAnimalsNearby(ANIMAL_SPAWN_RANGE / 2);
+                    spawnHuntableAnimalsNearby(ANIMAL_SPAWN_BLOCK_RANGE / 2);
             }
         } else {
             TutorialClientEvents.updateStage();
@@ -687,7 +689,7 @@ public abstract class Building {
             ticksToSpawnAnimals += 1;
             if (ticksToSpawnAnimals >= TICKS_TO_SPAWN_ANIMALS_MAX) {
                 ticksToSpawnAnimals = 0;
-                spawnHuntableAnimalsNearby(ANIMAL_SPAWN_RANGE);
+                spawnHuntableAnimalsNearby(ANIMAL_SPAWN_BLOCK_RANGE);
             }
         }
         if (isBuilt) {
@@ -785,6 +787,8 @@ public abstract class Building {
         if (level.isClientSide()) {
             return;
         }
+        int retries = 0;
+        final int MAX_RETRIES = 2;
 
         int numNearbyAnimals = MiscUtil.getEntitiesWithinRange(new Vector3d(centrePos.getX(),
                 centrePos.getY(),
@@ -827,12 +831,20 @@ public abstract class Building {
             spawnBp = new BlockPos(x, y, z);
             spawnBs = level.getBlockState(spawnBp);
             spawnAttempts += 1;
-            if (spawnAttempts > 25) {
-                ReignOfNether.LOGGER.warn("Gave up trying to find a suitable animal spawn!");
-                return;
+            if (spawnAttempts > 20) {
+                if (retries < MAX_RETRIES) {
+                    spawnAttempts = 0;
+                    retries += 1;
+                    range -= 25;
+                } else {
+                    ReignOfNether.LOGGER.warn("Gave up trying to find a suitable animal spawn!");
+                    return;
+                }
             }
         } while (!spawnBs.getMaterial().isSolid() || spawnBs.getMaterial() == Material.LEAVES
-            || spawnBs.getMaterial() == Material.WOOD || spawnBp.distSqr(centrePos) < 225
+            || spawnBs.getMaterial() == Material.WOOD
+            || spawnBp.distSqr(centrePos) < ANIMAL_SPAWN_RANGE_MIN * ANIMAL_SPAWN_RANGE_MIN
+            || spawnBp.distSqr(centrePos) > range * range
             || BuildingUtils.isPosInsideAnyBuilding(level.isClientSide(), spawnBp)
             || BuildingUtils.isPosInsideAnyBuilding(level.isClientSide(), spawnBp.above()));
 

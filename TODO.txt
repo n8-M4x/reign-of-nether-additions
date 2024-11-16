@@ -4,51 +4,32 @@
 
 - Done and tested
 [✔] Done and tested
-[🟡] Partially done, only has a workaround and/or needs testing
+[🟡] Partially done and/or needs testing
 [❌] Not done, including unmerged PRs
 
 Features
 --------
-[❌] Wave Survival
-    - Start anywhere, set time to morning
-    - Whenever night begins, spawn wave of enemies to attack move your base
-
-    - play a random cave ambience sound at the start of each night and title function
-    - start off doing only monster enemies
-    - lose if your capitol dies
-    - need to make sure enemies don't spawn too close to your buildings
-    - might need improved pathfinding
-        - for now, just keep repeating attack move commands
-        - can use boobcat's pathfinding improvements for enemies by default
-    - each day length depends on difficulty
-        - 10mins - easy (same as vanilla length)
+[🟡] Wave Survival
+    - Designed to be played on vanilla generated worlds
+    - Whenever night begins, a wave of enemies will spawn to attack your base
+    - No win condition... just keep going until you die
+    - Your capitol being destroyed is an instant loss
+    - base day length depends on difficulty
+        - 10mins - easy
         - 8mins - medium
         - 6mins - hard
-    - nights last forever until you clear the wave
-    - add button to look for few remaining units (similar to idle villagers button)
+    - nights last forever until you clear the wave, but the next day becomes longer or shorter
+        depending on how long it took you to clear the wave
 
-    WAVE DESIGN
+    DESIGN NOTES
+    - might need improved pathfinding first :(
     - Each night is either piglin, illager or monster
-        - Piglins get popup portals that continuously send units
-            - medium sized wave from each portal at start (smaller than an illager wave) and
-            - must be destroyed before the wave ends
-            - cannot be damaged while building, builds extra fast
-            - at least 1 portal targets the capitol
         - Monsters attack from all directions randomly at random targets
-        - Illagers attack in a large group always focusing the capitol
+        - Illagers attack in a large group from one direction
+        - Piglins get popup portals that continuously send units
+            - each portal spawns a small wave to and must be destroyed before the wave ends
         - can't be the same faction twice in a row
         - as days pass, waves get larger (balanced by population value)
-
-    ANTI-CHEESING
-    - Give enemies all frostwalker to allow islands
-        - But won't work on sky maps
-    - Prevent leaving one enemy alive to farm resources forever
-        - At least some proportion of enemies try to focus workers
-        - X enemies or less remaining, all enemies focus on workers
-
-    VANILLA WORLD COMPATIBILITY
-    - Players are forced to expand further to keep getting resources, but always have to protect their capitol
-
 
 
 [🟡] Bloodlust ability
@@ -60,31 +41,38 @@ Features
 
 Bugfixes
 --------
-[🟡] Can't exit an ally's garrison
-
-[❌] Tall grass and barrier blocks are now ignored by the cursor
+[🟡] Fixed being unable to exit an ally's garrison
 
 [✔] Hoglins can no longer spawn as neutral baby hoglins from spawn eggs
 
-[❌] Save more often to prevent crashing affecting the game
+[🟡] Reworked unit and building data saving when the server shuts down
+    - This should reduce the issue of losing control of units/buildings when the server crashes
 
-[✔] Separate night and 'until night' strings for polish
+[🟡] Piglins can now build on all types of blackstone and nether brick
 
+[🟡] Farmland and overworld crops convert into soulsand and nether wart respectively
+    - Excludes solid crop blocks like melons and pumpkins
+    - Plant blocks replaced by nether blocks no longer drop items
+
+[🟡] Fixed crash related to attacking buildings (again)
+
+[✔] Shroomlight is now gatherable for 120 food
+
+[✔] Various minor language fixes and additions
 
 
 Quality of Life Features
 ------------------------
+[🟡] Added a gamemode selector next to faction selction buttons
+    - Used to swap between Standard, Wave Survival and future gamemodes
+    - Once a player joins the match, the game mode they chose is locked for everyone until /rts-reset is used
+    - Mapmakers can use /gamerule disallowWaveSurvival to prevent players from choosing wave survival
+
 [🟡] Added name checks to network packets to prevent exploits
 
-[❌] Limit ghast heights?
+[🟡] If animals can't spawn at the required range around your capitol, spawning is reattempted at a closer range
 
 [✔] Portals being placed on overworld terrain show a yellow indicator
-
-[❌] Shift queueing movements and buildings (not just placement)
-    - Add index to sendCommand packets
-    - Add recursive field to UnitActionItem: nextActionItem
-    - Add end detections in goals for when to move to nextActionItem
-    - Add clientside checkpoints
 
 [🟡] Witch potions can now be thrown by right-clicking a unit
     - Right-clicking a friendly unit throws a regen potion
@@ -119,7 +107,7 @@ Balancing
 
 Piglins
 [✔] Bastion: -20% build time
-[❌] All piglin units now move at regular speed on soulsand
+[✔] All piglin units now move at regular speed on soulsand
 [✔] Ghasts are now immune to knockback
 [✔] Brute Shields now make brutes immune to knockback when active
 

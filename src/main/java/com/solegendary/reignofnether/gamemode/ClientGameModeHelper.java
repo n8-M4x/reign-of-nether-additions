@@ -15,12 +15,16 @@ public class ClientGameModeHelper {
 
     public static GameMode gameMode = GameMode.STANDARD;
     public static boolean gameModeLocked = false; // locked with startRTS() in any gamemode, unlocked with /rts-reset
+    public static boolean disallowSurvival = false;
 
     public static void cycleGameMode() {
         if (gameModeLocked)
             return;
         switch (gameMode) {
-            case STANDARD -> gameMode = GameMode.SURVIVAL;
+            case STANDARD -> {
+                if (!disallowSurvival)
+                    gameMode = GameMode.SURVIVAL;
+            }
             case SURVIVAL -> gameMode = GameMode.STANDARD;
             default -> gameMode = GameMode.STANDARD;
         }
@@ -112,7 +116,7 @@ public class ClientGameModeHelper {
                             FormattedCharSequence.forward(I18n.get("hud.gamemode.reignofnether.changemode"), Style.EMPTY)
                     )
             );
-            case SANDBOX -> null;
+            default -> null;
         };
         if (button != null)
             button.tooltipOffsetY = 45;

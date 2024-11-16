@@ -24,7 +24,7 @@ public class SurvivalClientboundPacket {
                 new SurvivalClientboundPacket(diff, 0));
     }
 
-    public static void enableAndSetDifficulty(WaveDifficulty diff, int waveNum) {
+    public static void setWaveNumber(int waveNum) {
         PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(),
                 new SurvivalClientboundPacket(WaveDifficulty.EASY, waveNum));
     }

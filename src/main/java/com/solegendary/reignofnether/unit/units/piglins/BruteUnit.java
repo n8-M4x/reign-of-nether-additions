@@ -17,6 +17,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -31,6 +32,7 @@ import net.minecraft.world.entity.monster.piglin.PiglinBrute;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -157,6 +159,11 @@ public class BruteUnit extends PiglinBrute implements Unit, AttackerUnit {
             this.abilityButtons.add(toggleShield.getButton(Keybindings.keyQ));
             this.abilityButtons.add(bloodlust.getButton(Keybindings.keyW));
         }
+    }
+
+    @Override
+    protected boolean onSoulSpeedBlock() {
+        return false;
     }
 
     @Override

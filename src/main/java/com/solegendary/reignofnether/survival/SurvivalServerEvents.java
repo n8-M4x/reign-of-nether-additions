@@ -109,8 +109,6 @@ public class SurvivalServerEvents {
         lastEnemyCount = enemyCount;
     }
 
-    // TODO: change these to GUI buttons
-
     @SubscribeEvent
     public static void onRegisterCommand(RegisterCommandsEvent evt) {
         evt.getDispatcher().register(Commands.literal("debug-spawn")

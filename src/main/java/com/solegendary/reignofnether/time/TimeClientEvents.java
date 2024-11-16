@@ -135,11 +135,10 @@ public class TimeClientEvents {
             String dayStr = " (%s)".formatted(I18n.get(isDay ? "time.reignofnether.day" : "time.reignofnether.night"));
             String timeStr = get12HourTimeStr(serverTime) + dayStr;
 
-
             FormattedCharSequence timeUntilStr =
                 FormattedCharSequence.forward(
-                        isDay ? I18n.get("time.reignofnether.time_until_day", getTimeUntilStr(serverTime, DAWN)) :
-                                I18n.get("time.reignofnether.time_until_night", getTimeUntilStr(serverTime, DUSK)),
+                        isDay ? I18n.get("time.reignofnether.time_until_day", getTimeUntilStr(serverTime, DUSK)) :
+                                I18n.get("time.reignofnether.time_until_night", getTimeUntilStr(serverTime, DAWN)),
                         Style.EMPTY);
 
             FormattedCharSequence gameLengthStr = FormattedCharSequence.forward("", Style.EMPTY);

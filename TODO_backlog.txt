@@ -1,13 +1,6 @@
 
-[✔] Done and tested
-[🟡] Partially done, only has a workaround and/or needs testing
-[❌] Not done, including unmerged PRs
-
-
 Features
 --------
-
-
 
 [❌] King of the Beacon
     - simple pyramid made of 4 layers + beacon block (9x9 minimum)
@@ -32,10 +25,20 @@ Bugfixes
 
 [❌] Must restart client when switching languages for it to take effect
 
+[❌] Tall grass and barrier blocks are now ignored by the cursor
+
 
 
 Quality of Life Features
 ------------------------
+
+[❌] Limit ghast heights?
+
+[❌] Shift queueing movements and buildings (not just placement)
+    - Add index to sendCommand packets
+    - Add recursive field to UnitActionItem: nextActionItem
+    - Add end detections in goals for when to move to nextActionItem
+    - Add clientside checkpoints
 
 [❌] Flatten terrain ability
     - Require that villagers work on it like a building
