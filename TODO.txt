@@ -95,6 +95,7 @@ Piglins
 
 Monsters
 [✔] Dark Watchtower: -25 ore
+[✔] Husks: -5hp
 [✔] Skeletons & Strays: -10 food, +10 wood
 [✔] Night now begins 10 mins after game start
     - This reverses the change from 1.0.5 which was made before Sculk Catalysts

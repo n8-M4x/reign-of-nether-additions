@@ -441,7 +441,7 @@
     "research.reignofnether.hoglin_cavalry.tooltip1": "Unlocks the ability for headhunters to mount hoglins.",
     "research.reignofnether.husks": "Husks",
     "research.reignofnether.husks.tooltip1": "Transforms all of your zombies into husks, ",
-    "research.reignofnether.husks.tooltip2": "granting them +%d health and immunity to sunlight.",
+    "research.reignofnether.husks.tooltip2": "granting them immunity to sunlight.",
     "research.reignofnether.husks.tooltip3": "Requires a Graveyard.",
     "research.reignofnether.lightning_rod": "Lightning Rod",
     "research.reignofnether.lightning_rod.tooltip1": "Adds a lightning rod to this lab that can be activated ",

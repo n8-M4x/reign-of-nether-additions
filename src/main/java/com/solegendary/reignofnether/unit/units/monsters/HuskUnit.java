@@ -115,7 +115,7 @@ public class HuskUnit extends Husk implements Unit, AttackerUnit {
 
     final static public float attackDamage = 3.0f;
     final static public float attacksPerSecond = 0.6f;
-    final static public float maxHealth = 45.0f;
+    final static public float maxHealth = 40.0f;
     final static public float armorValue = 0.0f;
     final static public float movementSpeed = 0.28f;
     final static public float attackRange = 2; // only used by ranged units or melee building attackers

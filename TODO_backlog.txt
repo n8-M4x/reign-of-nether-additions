@@ -54,7 +54,7 @@ Balancing
 ---------
 
 [❌] Solution to discourage rushing
-    - allow villagers to shoot out of garrisons?
+    - villagers are most vulnerable due to their lategame nature
 
 [❌] Lightning should only charge one creeper at a time
 
