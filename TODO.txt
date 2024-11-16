@@ -31,6 +31,9 @@ Features
         - can't be the same faction twice in a row
         - as days pass, waves get larger (balanced by population value)
 
+    [❌] Disallow messing with time of day during survival
+
+
 
 [🟡] Bloodlust ability
     - Unlockable active ability for Brutes and Headhunters

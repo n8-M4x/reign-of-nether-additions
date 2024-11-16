@@ -246,7 +246,8 @@ public class PlayerClientEvents {
         BuildingClientEvents.getBuildings().clear();
         ResourcesClientEvents.resourcesList.clear();
         ClientGameModeHelper.gameMode = GameMode.STANDARD;
-        ClientGameModeHelper.gameModeLocked = false;
+        if (!ClientGameModeHelper.disallowSurvival)
+            ClientGameModeHelper.gameModeLocked = false;
     }
 
     public static void setRTSLock(boolean lock) {

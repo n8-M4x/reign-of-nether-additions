@@ -23,8 +23,10 @@ public class SoundClientEvents {
 
     public static void playSoundForPlayer(SoundAction soundAction) {
         Minecraft MC = Minecraft.getInstance();
-        if (MC.player != null)
+        if (MC.player != null) {
+            System.out.println("Playing sound: " + getSoundEvent(soundAction).getLocation().getNamespace());
             MC.player.playSound(getSoundEvent(soundAction), 1.2f, 1.0f);
+        }
     }
 
     private static SoundEvent getSoundEvent(SoundAction soundAction) {

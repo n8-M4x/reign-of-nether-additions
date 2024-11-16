@@ -9,6 +9,7 @@ import com.solegendary.reignofnether.registrars.GameRuleRegistrar;
 import com.solegendary.reignofnether.sounds.SoundAction;
 import com.solegendary.reignofnether.sounds.SoundClientboundPacket;
 import com.solegendary.reignofnether.time.TimeUtils;
+import com.solegendary.reignofnether.unit.UnitAction;
 import com.solegendary.reignofnether.unit.UnitServerEvents;
 import com.solegendary.reignofnether.unit.interfaces.Unit;
 import com.solegendary.reignofnether.util.MiscUtil;
@@ -33,6 +34,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 public class SurvivalServerEvents {
 
@@ -77,8 +80,7 @@ public class SurvivalServerEvents {
         }
 
         // TODO: add or subtract penalty time based on how fast the wave was cleared
-        if (bonusDayTicks > 0) {
-            ((ServerLevel) evt.level).setDayTime(TimeUtils.DAWN + 100);
+        if (bonusDayTicks > 0 && TimeUtils.isDay(evt.level.getDayTime())) {
             bonusDayTicks -= 4;
         }
 
@@ -93,6 +95,10 @@ public class SurvivalServerEvents {
         if (lastTime <= TimeUtils.DUSK + 100 && normTime > TimeUtils.DUSK + 100) {
             startNextWave((ServerLevel) evt.level);
         }
+        if (lastTime <= TimeUtils.DAWN && normTime > TimeUtils.DAWN) {
+            PlayerServerEvents.sendMessageToAllPlayers(I18n.get("survival.reignofnether.dawn"), true);
+        }
+
         else if (!TimeUtils.isDay(normTime) && isWaveInProgress()) {
             ((ServerLevel) evt.level).setDayTime(TimeUtils.DUSK + 6000);
             ticksToClearLastWave += 4;
@@ -101,9 +107,9 @@ public class SurvivalServerEvents {
         int enemyCount = getCurrentEnemies().size();
         if (enemyCount < lastEnemyCount && enemyCount <= 3) {
             if (enemyCount == 0)
-                PlayerServerEvents.sendMessageToAllPlayers(enemyCount + " enemies remain.");
-            else
                 endCurrentWave((ServerLevel) evt.level);
+            else
+                PlayerServerEvents.sendMessageToAllPlayers(enemyCount + " enemies remain.");
         }
         lastTime = time;
         lastEnemyCount = enemyCount;
@@ -188,7 +194,7 @@ public class SurvivalServerEvents {
     }
 
     public static long getDayLength() {
-        return 24000 - getDifficultyTimeModifier();
+        return 12000 - getDifficultyTimeModifier();
     }
 
     public static void setToStartingTime() {
@@ -220,34 +226,42 @@ public class SurvivalServerEvents {
     // triggered when last enemy is killed
     public static void endCurrentWave(ServerLevel level) {
         nextWave = Wave.getWave(nextWave.number + 1);
-        PlayerServerEvents.sendMessageToAllPlayers("Your enemies have been defeated... for now.", true);
+        PlayerServerEvents.sendMessageToAllPlayers("Your enemies have been defeated... for now.", false);
 
         // set bonusDayTicks to pause daytime based on ticksToClearLastWave - up to a maximum of getDayLength()
-        // fast-forward day time if the player took too long (to a max of 35s before the next night)
-        long ticksToClearInv = Math.max(-getDayLength()/2 + 700, 24000 - ticksToClearLastWave);
+        // fast-forward day time if the player took too long (to a max of 30s before the next night)
 
-        if (ticksToClearInv > 0) {
-            bonusDayTicks = ticksToClearInv;
-            PlayerServerEvents.sendMessageToAllPlayers(I18n.get("survival.reignofnether.dawn"), true);
-            PlayerServerEvents.sendMessageToAllPlayers("Their swift defeat gives you more time to prepare (+" +
-                    TimeUtils.getTimeStrFromTicks(ticksToClearInv) + ")", true);
-            level.setDayTime(TimeUtils.DAWN + 10);
+        if (ticksToClearLastWave < getDayLength()) {
+            bonusDayTicks = getDayLength() - ticksToClearLastWave;
+            level.setDayTime(TimeUtils.DAWN - 200);
 
+            CompletableFuture.delayedExecutor(5, TimeUnit.SECONDS).execute(() -> {
+                if (bonusDayTicks >= 200) {
+                    PlayerServerEvents.sendMessageToAllPlayers("Their swift defeat gives you more time to prepare today (+" +
+                            TimeUtils.getTimeStrFromTicks(bonusDayTicks) + ")", true);
+                }
+            });
         } else {
-            PlayerServerEvents.sendMessageToAllPlayers("The prolonged battle means the next night comes sooner (-" +
-                    TimeUtils.getTimeStrFromTicks(Math.abs(ticksToClearInv)) + ")", true);
-            level.setDayTime(TimeUtils.DAWN - ticksToClearInv);
+            long penaltyTicks = Math.min(-getDayLength() + 600, getDayLength() - ticksToClearLastWave) ;
+
+            CompletableFuture.delayedExecutor(5, TimeUnit.SECONDS).execute(() -> {
+                if (penaltyTicks >= 200) {
+                    PlayerServerEvents.sendMessageToAllPlayers("The prolonged battle means the next night comes sooner (" +
+                            TimeUtils.getTimeStrFromTicks(Math.abs(penaltyTicks)) + ")", true);
+                }
+            });
+            level.setDayTime(TimeUtils.DAWN - penaltyTicks);
         }
         ticksToClearLastWave = 0;
     }
 
-    private static final int MONSTER_MAX_SPAWN_RANGE = 60;
-    private static final int MONSTER_MIN_SPAWN_RANGE = 40;
+    private static final int MONSTER_MAX_SPAWN_RANGE = 120;
+    private static final int MONSTER_MIN_SPAWN_RANGE = 90;
 
     public static void spawnMonsterWave(ServerLevel level) {
         Random random = new Random();
         List<Building> buildings = BuildingServerEvents.getBuildings();
-        int remainingPop = 1;//nextWave.population;
+        int remainingPop = nextWave.population;
         if (buildings.isEmpty())
             return;
 
@@ -311,10 +325,10 @@ public class SurvivalServerEvents {
                 }
                 BotControls.startingCommand(entity, MONSTER_OWNER_NAME);
                 if (entity instanceof Unit unit)
-                    nextWave.population -= unit.getPopCost();
+                    remainingPop -= unit.getPopCost();
             }
 
-        } while (nextWave.population > 0);
+        } while (remainingPop > 0);
 
     }
 

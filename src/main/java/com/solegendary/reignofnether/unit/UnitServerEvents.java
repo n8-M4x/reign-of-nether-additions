@@ -544,11 +544,11 @@ public class UnitServerEvents {
                 Entity entity = entityType.create(level);
                 if (entity != null) {
                     entity.moveTo(pos.getX() + i, pos.getY(), pos.getZ());
-                    level.addFreshEntity(entity);
                     entities.add(entity);
                     if (entity instanceof Unit unit) {
                         unit.setOwnerName(ownerName);
                     }
+                    level.addFreshEntity(entity);
                 }
             }
         }
