@@ -1,9 +1,11 @@
 package com.solegendary.reignofnether.unit.packets;
 
+import com.solegendary.reignofnether.ReignOfNether;
 import com.solegendary.reignofnether.unit.UnitAction;
 import com.solegendary.reignofnether.unit.UnitServerEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -63,15 +65,27 @@ public class UnitActionServerboundPacket {
             if (this.action == UnitAction.DEBUG2) {
                 UnitServerEvents.debug2();
             }
-            UnitServerEvents.addActionItem(
-                this.ownerName,
-                this.action,
-                this.unitId,
-                this.unitIds,
-                this.preselectedBlockPos,
-                this.selectedBuildingPos
-            );
-            success.set(true);
+
+            ServerPlayer player = ctx.get().getSender();
+            if (player == null) {
+                ReignOfNether.LOGGER.warn("Sender for unit action packet was null");
+                success.set(false);
+            }
+            else if (!player.getName().getString().equals(ownerName)) {
+                ReignOfNether.LOGGER.warn("Tried to process packet from " + player.getName() + " for " + ownerName);
+                success.set(false);
+            }
+            else {
+                UnitServerEvents.addActionItem(
+                        this.ownerName,
+                        this.action,
+                        this.unitId,
+                        this.unitIds,
+                        this.preselectedBlockPos,
+                        this.selectedBuildingPos
+                );
+                success.set(true);
+            }
         });
         ctx.get().setPacketHandled(true);
         return success.get();

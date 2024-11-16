@@ -34,6 +34,7 @@ import com.solegendary.reignofnether.util.MiscUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.*;
@@ -723,9 +724,12 @@ public class UnitServerEvents {
 
     @SubscribeEvent
     public static void onLivingKnockBack(LivingKnockBackEvent evt) {
-        if (knockbackIgnoreIds.removeIf(i -> i == evt.getEntity().getId())) {
+        if (evt.getEntity() instanceof GhastUnit)
             evt.setCanceled(true);
-        }
+        else if (evt.getEntity() instanceof BruteUnit bruteUnit && bruteUnit.isHoldingUpShield)
+            evt.setCanceled(true);
+        else if (knockbackIgnoreIds.removeIf(i -> i == evt.getEntity().getId()))
+            evt.setCanceled(true);
     }
 
     // make creepers explode from other explosions, like TNT

@@ -282,6 +282,17 @@ public class BuildingClientEvents {
 
         float r = valid ? 0 : 1.0f;
         float g = valid ? 1.0f : 0;
+
+        // highlight yellow if we are placing a portal on overworld terrain
+        if (valid) {
+            String buildingName = buildingToPlace.getName().toLowerCase();
+            if (buildingName.contains("portal") &&
+                !buildingName.contains("central_portal") &&
+                !isOnNetherBlocks(blocksToDraw, originPos)) {
+                r = 0.5f;
+                g = 0.5f;
+            }
+        }
         ResourceLocation rl = new ResourceLocation("forge:textures/white.png");
         AABB aabb = new AABB(minX, minY, minZ, maxX, minY, maxZ);
         MyRenderer.drawLineBox(matrix, aabb, r, g, 0, 0.5f);

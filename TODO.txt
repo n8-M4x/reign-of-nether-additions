@@ -51,12 +51,11 @@ Features
 
 
 
-[❌] Bloodlust ability
+[🟡] Bloodlust ability
     - Unlockable active ability for Brutes and Headhunters
     - Researched at the Fortress (250 all resources, 150s)
-    - When used, instantly trades 10hp for 10s of +50% attack speed and +25% movement speed
-    - Headhunters cannot use it while mounted
-    - Remember that Piglins heal at a rate of 1hp per 8s while standing on Nether terrain
+    - When used, instantly trades 10hp for 10s of +50% attack speed and +50% movement speed
+    - Headhunters cannot bloodlust while mounted
 
 
 Bugfixes
@@ -65,21 +64,21 @@ Bugfixes
 
 [❌] Tall grass and barrier blocks are now ignored by the cursor
 
-[❌] Hoglins can no longer spawn as neutral baby hoglins
+[✔] Hoglins can no longer spawn as neutral baby hoglins from spawn eggs
 
 [❌] Save more often to prevent crashing affecting the game
 
-[❌] Separate night and 'until night' strings for polish
+[✔] Separate night and 'until night' strings for polish
 
 
 
 Quality of Life Features
 ------------------------
-[❌] Added name checks to network packets to prevent exploits
+[🟡] Added name checks to network packets to prevent exploits
 
 [❌] Limit ghast heights?
 
-[❌] Highlight portal in yellow if being built on overworld terrain
+[✔] Portals being placed on overworld terrain show a yellow indicator
 
 [❌] Shift queueing movements and buildings (not just placement)
     - Add index to sendCommand packets
@@ -87,24 +86,42 @@ Quality of Life Features
     - Add end detections in goals for when to move to nextActionItem
     - Add clientside checkpoints
 
-[❌] Witch regen potions can now be auto-cast with right-click
-    - The witch will splash a potion at her feet whenever it is off cooldown
-[❌] Witch harming potions can now be thrown by right-clicking an enemy
+[🟡] Witch potions can now be thrown by right-clicking a unit
+    - Right-clicking a friendly unit throws a regen potion
+    - Right-clicking an enemy unit throws a harming potion
+    - Only one potion is thrown at a time if multiple witches are selected
     - This will NOT be automatically used off cooldown
 
 
 
+Languages
+---------
+"time.reignofnether.time_until" into two strings:
+    "time.reignofnether.time_until_day": "%s until day",
+    "time.reignofnether.time_until_night": "%s until night",
+
+New strings:
+    "abilities.reignofnether.wither_cloud": "Wither Cloud",
+    "abilities.reignofnether.wither_cloud.tooltip1": "Causes the Wither Skeleton to release a cloud",
+    "abilities.reignofnether.wither_cloud.tooltip2": "of deadly wither around it for the next %d seconds.",
+    "abilities.reignofnether.bloodlust": "Bloodlust",
+    "abilities.reignofnether.bloodlust.tooltip1": "Pay %d life to gain 50%% faster attack speed ",
+    "abilities.reignofnether.bloodlust.tooltip2": "and 50%% faster movement for %d seconds.",
+    "research.reignofnether.bloodlust": "Bloodlust",
+    "research.reignofnether.bloodlust.tooltip1": "Unlocks the ability for Brutes and Headhunters to trade ",
+    "research.reignofnether.bloodlust.tooltip2": "life for a temporary boost to attack and move speed.",
+
 Balancing
 ---------
 [✔] All bridges: +50 wood (ore for piglins)
-[❌] Random damage dealt to garrisoned units by explosions has been halved
+[🟡] Random damage dealt to garrisoned units by explosions has been halved
     - This affects creepers and ghasts
 
 Piglins
 [✔] Bastion: -20% build time
 [❌] All piglin units now move at regular speed on soulsand
-[❌] Ghasts are now immune to knockback
-[❌] Brute Shields now make brutes immune to knockback when active
+[✔] Ghasts are now immune to knockback
+[✔] Brute Shields now make brutes immune to knockback when active
 
 Monsters
 [✔] Dark Watchtower: -25 ore
@@ -114,7 +131,6 @@ Monsters
 
 Villagers
 [✔] Watchtower: -25 ore
-
 [✔] Vindicators: -5 food, +5hp, -3s
 [✔] Pillager: -5 wood, -3s
-[❌] Iron Golem: -10hp, -1dmg
+[✔] Iron Golem: -10hp, -0.05as
