@@ -58,10 +58,8 @@ Balancing
     - copy the wc3 ability of turning villagers into temporary militia?
         - give them a helmet and stone sword upgrade for +2 damage
 
-[❌] Lightning should only charge one creeper at a time
-
-[❌] - Upgrade gives stimpacks (-10hp for 10s of double attack speed and speed buff, cant be used while mounted)
-
+[❌] Implement damage dropoffs to buildings for charged creepers
+    - and provide a radius indicator for them when hovering over explode
 
 
 
