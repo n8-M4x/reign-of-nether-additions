@@ -11,6 +11,7 @@ public class SurvivalClientEvents {
     public static int waveNumber = 1;
     public static boolean isEnabled = false;
     public static WaveDifficulty difficulty = WaveDifficulty.EASY;
+    public static long bonusTicks = 0;
 
     private static Minecraft MC = Minecraft.getInstance();
 

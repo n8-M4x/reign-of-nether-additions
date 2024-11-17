@@ -55,6 +55,9 @@ public class SurvivalServerEvents {
     private static long ticksToClearLastWave = 0;
     private static long bonusDayTicks = 0;
 
+    public static int PERIODIC_COMMAND_TICKS_MAX = 100;
+    public static int periodicCommandTicks = 0;
+
     private static ServerLevel serverLevel = null;
 
     @SubscribeEvent
@@ -82,6 +85,11 @@ public class SurvivalServerEvents {
         // TODO: add or subtract penalty time based on how fast the wave was cleared
         if (bonusDayTicks > 0 && TimeUtils.isDay(evt.level.getDayTime())) {
             bonusDayTicks -= 4;
+            if (bonusDayTicks < 0)
+                bonusDayTicks = 0;
+            if (ticks % 20 == 0)
+                SurvivalClientboundPacket.setBonusTicks(bonusDayTicks);
+            setToStartingTime();
         }
 
         if (lastTime <= TimeUtils.DUSK - 600 && normTime > TimeUtils.DUSK - 600) {
@@ -95,8 +103,10 @@ public class SurvivalServerEvents {
         if (lastTime <= TimeUtils.DUSK + 100 && normTime > TimeUtils.DUSK + 100) {
             startNextWave((ServerLevel) evt.level);
         }
-        if (lastTime <= TimeUtils.DAWN && normTime > TimeUtils.DAWN) {
+        if (lastTime <= TimeUtils.DAWN && normTime > TimeUtils.DAWN && nextWave.number > 1) {
             PlayerServerEvents.sendMessageToAllPlayers(I18n.get("survival.reignofnether.dawn"), true);
+            SoundClientboundPacket.playSoundForAllPlayers(SoundAction.ALLY);
+            setToStartingTime();
         }
 
         else if (!TimeUtils.isDay(normTime) && isWaveInProgress()) {
@@ -108,8 +118,19 @@ public class SurvivalServerEvents {
         if (enemyCount < lastEnemyCount && enemyCount <= 3) {
             if (enemyCount == 0)
                 endCurrentWave((ServerLevel) evt.level);
-            else
+            else if (enemyCount == 1) {
+                PlayerServerEvents.sendMessageToAllPlayers(enemyCount + " enemy remains.");
+            } else {
                 PlayerServerEvents.sendMessageToAllPlayers(enemyCount + " enemies remain.");
+            }
+        }
+        if (periodicCommandTicks > 0) {
+            periodicCommandTicks -= 1;
+            if (periodicCommandTicks <= 0) {
+                periodicCommandTicks = PERIODIC_COMMAND_TICKS_MAX;
+                for (Entity enemy : enemies)
+                    BotControls.periodicCommand(enemy, MONSTER_OWNER_NAME);
+            }
         }
         lastTime = time;
         lastEnemyCount = enemyCount;
@@ -156,8 +177,11 @@ public class SurvivalServerEvents {
 
     @SubscribeEvent
     public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent evt) {
-        if (isEnabled())
+        if (isEnabled()) {
             SurvivalClientboundPacket.enableAndSetDifficulty(difficulty);
+            SurvivalClientboundPacket.setWaveNumber(nextWave.number);
+            SurvivalClientboundPacket.setBonusTicks(bonusDayTicks);
+        }
     }
 
     @SubscribeEvent
@@ -224,12 +248,12 @@ public class SurvivalServerEvents {
     // triggered when last enemy is killed
     public static void endCurrentWave(ServerLevel level) {
         nextWave = Wave.getWave(nextWave.number + 1);
-        PlayerServerEvents.sendMessageToAllPlayers("Your enemies have been defeated... for now.", false);
+        SurvivalClientboundPacket.setWaveNumber(nextWave.number);
+        PlayerServerEvents.sendMessageToAllPlayers("Your enemies have been defeated... for now.", true);
         SoundClientboundPacket.playSoundForAllPlayers(SoundAction.ALLY);
 
         // set bonusDayTicks to pause daytime based on ticksToClearLastWave - up to a maximum of getDayLength()
-        // fast-forward day time if the player took too long (to a max of 30s before the next night)
-
+        // fast-forward day time if the player took too long (to a max of 35s before the next night)
         if (ticksToClearLastWave < getDayLength()) {
             bonusDayTicks = getDayLength() - ticksToClearLastWave;
             level.setDayTime(TimeUtils.DAWN - 200);
@@ -237,17 +261,17 @@ public class SurvivalServerEvents {
             CompletableFuture.delayedExecutor(5, TimeUnit.SECONDS).execute(() -> {
                 if (bonusDayTicks >= 200) {
                     PlayerServerEvents.sendMessageToAllPlayers("Their swift defeat gives you more time to prepare today (+" +
-                            TimeUtils.getTimeStrFromTicks(bonusDayTicks) + ")", true);
+                            TimeUtils.getTimeStrFromTicks(bonusDayTicks) + ")", false);
                     SoundClientboundPacket.playSoundForAllPlayers(SoundAction.CHAT);
                 }
             });
         } else {
-            long penaltyTicks = Math.min(-getDayLength() + 600, getDayLength() - ticksToClearLastWave) ;
+            long penaltyTicks = Math.max(-getDayLength() + 700, getDayLength() - ticksToClearLastWave) ;
 
             CompletableFuture.delayedExecutor(5, TimeUnit.SECONDS).execute(() -> {
                 if (penaltyTicks >= 200) {
                     PlayerServerEvents.sendMessageToAllPlayers("The prolonged battle means the next night comes sooner (" +
-                            TimeUtils.getTimeStrFromTicks(Math.abs(penaltyTicks)) + ")", true);
+                            TimeUtils.getTimeStrFromTicks(Math.abs(penaltyTicks)) + ")", false);
                     SoundClientboundPacket.playSoundForAllPlayers(SoundAction.CHAT);
                 }
             });

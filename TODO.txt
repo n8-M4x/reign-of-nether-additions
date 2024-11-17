@@ -31,7 +31,9 @@ Features
         - can't be the same faction twice in a row
         - as days pass, waves get larger (balanced by population value)
 
-    [❌] Disallow messing with time of day during survival
+    [❌] Save on exit
+    [❌] Units sometimes get stuck without walking across water
+    [❌] Units sometimes spawn above water without creating ice
 
 
 
@@ -137,4 +139,4 @@ New strings:
     "research.reignofnether.bloodlust": "Bloodlust",
     "research.reignofnether.bloodlust.tooltip1": "Unlocks the ability for Brutes and Headhunters to trade ",
     "research.reignofnether.bloodlust.tooltip2": "life for a temporary boost to attack and move speed.",
-
+    "time.reignofnether.survival_wave": "Survival Wave: %s",

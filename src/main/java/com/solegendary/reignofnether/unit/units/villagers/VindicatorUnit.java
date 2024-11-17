@@ -125,7 +125,7 @@ public class VindicatorUnit extends Vindicator implements Unit, AttackerUnit {
 
     final static public float attackDamage = 6.0f;
     final static public float attacksPerSecond = 0.5f;
-    final static public float maxHealth = 60.0f;
+    final static public float maxHealth = 65.0f;
     final static public float armorValue = 0.0f;
     final static public float movementSpeed = 0.28f;
     final static public float attackRange = 2; // only used by ranged units or melee building attackers

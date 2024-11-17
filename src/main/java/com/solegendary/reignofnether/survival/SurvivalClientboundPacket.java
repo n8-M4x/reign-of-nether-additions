@@ -1,10 +1,6 @@
 package com.solegendary.reignofnether.survival;
 
-import com.solegendary.reignofnether.player.PlayerAction;
-import com.solegendary.reignofnether.player.PlayerClientEvents;
-import com.solegendary.reignofnether.player.PlayerClientboundPacket;
 import com.solegendary.reignofnether.registrars.PacketHandler;
-import com.solegendary.reignofnether.unit.UnitClientEvents;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
@@ -18,30 +14,39 @@ public class SurvivalClientboundPacket {
 
     WaveDifficulty difficulty;
     int waveNumber;
+    long bonusTicks;
 
     public static void enableAndSetDifficulty(WaveDifficulty diff) {
         PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(),
-                new SurvivalClientboundPacket(diff, 0));
+                new SurvivalClientboundPacket(diff, 0, 0L));
     }
 
     public static void setWaveNumber(int waveNum) {
         PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(),
-                new SurvivalClientboundPacket(WaveDifficulty.EASY, waveNum));
+                new SurvivalClientboundPacket(WaveDifficulty.EASY, waveNum, 0L));
     }
 
-    public SurvivalClientboundPacket(WaveDifficulty difficulty, int waveNumber) {
+    public static void setBonusTicks(long ticks) {
+        PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(),
+                new SurvivalClientboundPacket(WaveDifficulty.EASY, 0, ticks));
+    }
+
+    public SurvivalClientboundPacket(WaveDifficulty difficulty, int waveNumber, long bonusTicks) {
         this.difficulty = difficulty;
         this.waveNumber = waveNumber;
+        this.bonusTicks = bonusTicks;
     }
 
     public SurvivalClientboundPacket(FriendlyByteBuf buffer) {
         this.difficulty = buffer.readEnum(WaveDifficulty.class);
         this.waveNumber = buffer.readInt();
+        this.bonusTicks = buffer.readLong();
     }
 
     public void encode(FriendlyByteBuf buffer) {
         buffer.writeEnum(this.difficulty);
         buffer.writeInt(this.waveNumber);
+        buffer.writeLong(this.bonusTicks);
     }
 
     // server-side packet-consuming functions
@@ -51,9 +56,12 @@ public class SurvivalClientboundPacket {
         ctx.get().enqueueWork(() -> {
             DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
                     () -> () -> {
-                        SurvivalClientEvents.enable(difficulty);
                         if (waveNumber > 0)
                             SurvivalClientEvents.waveNumber = waveNumber;
+                        else if (bonusTicks > 0)
+                            SurvivalClientEvents.bonusTicks = bonusTicks;
+                        else
+                            SurvivalClientEvents.enable(difficulty);
                         success.set(true);
                     });
         });

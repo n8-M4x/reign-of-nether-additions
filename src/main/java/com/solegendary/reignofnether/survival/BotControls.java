@@ -18,19 +18,26 @@ import java.util.List;
 // only used serverside
 public class BotControls {
 
+
+
     // done on spawn
     public static void startingCommand(Entity entity, String ownerName) {
         if (entity instanceof AttackerUnit unit) {
             ((Unit) unit).resetBehaviours();
-
-            if (entity instanceof ZombieUnit ||
-                entity instanceof ZombiePiglinUnit)
-                attackMoveNearestBuilding(unit, ownerName);
+            attackMoveNearestBuilding(unit, ownerName);
         }
     }
 
-    // done every few ticks
-    public static void reactionCommand(Entity entity, String ownerName) {
+    // done every X ticks
+    public static void periodicCommand(Entity entity, String ownerName) {
+        if (entity instanceof AttackerUnit unit) {
+            ((Unit) unit).resetBehaviours();
+            attackMoveNearestBuilding(unit, ownerName);
+        }
+    }
+
+    // done when attacked
+    public static void retaliateCommand(Entity entity, Entity attacker, String ownerName) {
 
     }
 
