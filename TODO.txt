@@ -44,6 +44,8 @@ Features
 
 Bugfixes
 --------
+[🟡] Mangrove roots are now gatherable (same value as logs)
+
 [🟡] Fixed being unable to exit an ally's garrison
 
 [✔] Hoglins can no longer spawn as neutral baby hoglins from spawn eggs
@@ -70,6 +72,8 @@ Quality of Life Features
     - Used to swap between Standard, Wave Survival and future gamemodes
     - Once a player joins the match, the game mode they chose is locked for everyone until /rts-reset is used
     - Mapmakers can use /gamerule disallowWaveSurvival to prevent players from choosing wave survival
+
+[🟡] Added sounds when you make or disband an alliance
 
 [🟡] Added name checks to network packets to prevent exploits
 

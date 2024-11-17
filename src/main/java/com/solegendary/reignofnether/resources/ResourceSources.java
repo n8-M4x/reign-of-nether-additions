@@ -286,6 +286,13 @@ public class ResourceSources {
                     15,
                     ResourceName.WOOD
             ),
+            new ResourceSource("Roots",
+                    List.of(Blocks.MUDDY_MANGROVE_ROOTS, Blocks.MANGROVE_ROOTS),
+                    List.of(Items.MUDDY_MANGROVE_ROOTS, Items.MANGROVE_ROOTS),
+                    TICKS_PER_SECOND * 12,
+                    15,
+                    ResourceName.WOOD
+            ),
             new ResourceSource("Nether Logs",
                     List.of(Blocks.CRIMSON_STEM, Blocks.WARPED_STEM, Blocks.CRIMSON_HYPHAE, Blocks.WARPED_HYPHAE,
                             BlockRegistrar.FALLING_WARPED_STEM.get(),
@@ -296,7 +303,7 @@ public class ResourceSources {
                     17,
                     ResourceName.WOOD
             ),
-            new ResourceSource("Leaves", // can't actually gather but can be targeted to begin wood gathering
+            new ResourceSource("Leaves",
                     List.of(Blocks.ACACIA_LEAVES, Blocks.AZALEA_LEAVES, Blocks.BIRCH_LEAVES, Blocks.FLOWERING_AZALEA_LEAVES, Blocks.JUNGLE_LEAVES, Blocks.DARK_OAK_LEAVES,
                             Blocks.MANGROVE_LEAVES, Blocks.OAK_LEAVES, Blocks.SPRUCE_LEAVES, BlockRegistrar.DECAYABLE_NETHER_WART_BLOCK.get(), BlockRegistrar.DECAYABLE_NETHER_WART_BLOCK.get()),
                     List.of(Items.ACACIA_LEAVES, Items.AZALEA_LEAVES, Items.BIRCH_LEAVES, Items.FLOWERING_AZALEA_LEAVES, Items.JUNGLE_LEAVES, Items.DARK_OAK_LEAVES,

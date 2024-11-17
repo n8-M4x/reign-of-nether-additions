@@ -5,11 +5,9 @@ import com.solegendary.reignofnether.building.Building;
 import com.solegendary.reignofnether.building.BuildingServerEvents;
 import com.solegendary.reignofnether.building.BuildingUtils;
 import com.solegendary.reignofnether.player.PlayerServerEvents;
-import com.solegendary.reignofnether.registrars.GameRuleRegistrar;
 import com.solegendary.reignofnether.sounds.SoundAction;
 import com.solegendary.reignofnether.sounds.SoundClientboundPacket;
 import com.solegendary.reignofnether.time.TimeUtils;
-import com.solegendary.reignofnether.unit.UnitAction;
 import com.solegendary.reignofnether.unit.UnitServerEvents;
 import com.solegendary.reignofnether.unit.interfaces.Unit;
 import com.solegendary.reignofnether.util.MiscUtil;
@@ -24,12 +22,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,11 +86,11 @@ public class SurvivalServerEvents {
 
         if (lastTime <= TimeUtils.DUSK - 600 && normTime > TimeUtils.DUSK - 600) {
             PlayerServerEvents.sendMessageToAllPlayers(I18n.get("survival.reignofnether.dusksoon"), true);
-            SoundClientboundPacket.playSoundOnClient(SoundAction.USE_PORTAL);
+            SoundClientboundPacket.playSoundForAllPlayers(SoundAction.RANDOM_CAVE_AMBIENCE);
         }
         if (lastTime <= TimeUtils.DUSK && normTime > TimeUtils.DUSK) {
             PlayerServerEvents.sendMessageToAllPlayers(I18n.get("survival.reignofnether.dusk"), true);
-            SoundClientboundPacket.playSoundOnClient(SoundAction.RANDOM_CAVE_AMBIENCE);
+            SoundClientboundPacket.playSoundForAllPlayers(SoundAction.RANDOM_CAVE_AMBIENCE);
         }
         if (lastTime <= TimeUtils.DUSK + 100 && normTime > TimeUtils.DUSK + 100) {
             startNextWave((ServerLevel) evt.level);
@@ -216,8 +216,6 @@ public class SurvivalServerEvents {
         return !getCurrentEnemies().isEmpty();
     }
 
-
-
     // triggered at nightfall
     public static void startNextWave(ServerLevel level) {
         spawnMonsterWave(level);
@@ -227,6 +225,7 @@ public class SurvivalServerEvents {
     public static void endCurrentWave(ServerLevel level) {
         nextWave = Wave.getWave(nextWave.number + 1);
         PlayerServerEvents.sendMessageToAllPlayers("Your enemies have been defeated... for now.", false);
+        SoundClientboundPacket.playSoundForAllPlayers(SoundAction.ALLY);
 
         // set bonusDayTicks to pause daytime based on ticksToClearLastWave - up to a maximum of getDayLength()
         // fast-forward day time if the player took too long (to a max of 30s before the next night)
@@ -239,6 +238,7 @@ public class SurvivalServerEvents {
                 if (bonusDayTicks >= 200) {
                     PlayerServerEvents.sendMessageToAllPlayers("Their swift defeat gives you more time to prepare today (+" +
                             TimeUtils.getTimeStrFromTicks(bonusDayTicks) + ")", true);
+                    SoundClientboundPacket.playSoundForAllPlayers(SoundAction.CHAT);
                 }
             });
         } else {
@@ -248,6 +248,7 @@ public class SurvivalServerEvents {
                 if (penaltyTicks >= 200) {
                     PlayerServerEvents.sendMessageToAllPlayers("The prolonged battle means the next night comes sooner (" +
                             TimeUtils.getTimeStrFromTicks(Math.abs(penaltyTicks)) + ")", true);
+                    SoundClientboundPacket.playSoundForAllPlayers(SoundAction.CHAT);
                 }
             });
             level.setDayTime(TimeUtils.DAWN - penaltyTicks);

@@ -14,6 +14,7 @@ import com.solegendary.reignofnether.resources.ResourcesClientEvents;
 import com.solegendary.reignofnether.unit.UnitClientEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
@@ -209,7 +210,9 @@ public class PlayerClientEvents {
     // disallow opening the creative menu while orthoview is enabled
     @SubscribeEvent
     public static void onScreenOpen(ScreenEvent.Opening evt) {
-        if (OrthoviewClientEvents.isEnabled() && evt.getScreen() instanceof CreativeModeInventoryScreen) {
+        if (OrthoviewClientEvents.isEnabled() &&
+            (evt.getScreen() instanceof CreativeModeInventoryScreen ||
+            evt.getScreen() instanceof InventoryScreen)) {
             evt.setCanceled(true);
         }
     }
