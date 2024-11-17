@@ -33,12 +33,10 @@ Features
 
     [❌] Save on exit
     [❌] Units sometimes get stuck without walking across water
-    [❌] Units sometimes spawn above water without creating ice
-        - due to kelp
 
     [❌] Cave sounds are localised in the world
-
-    [❌] Penalty ticks not working
+    [❌] Check that defeat doesn't bug out the world
+        - should unlock gamemode?
 
 
 
