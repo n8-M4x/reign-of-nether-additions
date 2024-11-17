@@ -1,9 +1,12 @@
 package com.solegendary.reignofnether.survival;
 
+import com.mojang.brigadier.context.ParsedArgument;
+import com.mojang.brigadier.context.ParsedCommandNode;
 import com.solegendary.reignofnether.ReignOfNether;
 import com.solegendary.reignofnether.building.Building;
 import com.solegendary.reignofnether.building.BuildingServerEvents;
 import com.solegendary.reignofnether.building.BuildingUtils;
+import com.solegendary.reignofnether.player.PlayerClientboundPacket;
 import com.solegendary.reignofnether.player.PlayerServerEvents;
 import com.solegendary.reignofnether.sounds.SoundAction;
 import com.solegendary.reignofnether.sounds.SoundClientboundPacket;
@@ -12,6 +15,7 @@ import com.solegendary.reignofnether.unit.UnitServerEvents;
 import com.solegendary.reignofnether.unit.interfaces.Unit;
 import com.solegendary.reignofnether.util.MiscUtil;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -23,6 +27,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
@@ -33,6 +38,7 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -82,7 +88,7 @@ public class SurvivalServerEvents {
             return;
         }
 
-        // TODO: add or subtract penalty time based on how fast the wave was cleared
+        // add extra time based on how fast the wave was cleared
         if (bonusDayTicks > 0 && TimeUtils.isDay(evt.level.getDayTime())) {
             bonusDayTicks -= 4;
             if (bonusDayTicks < 0)
@@ -93,18 +99,18 @@ public class SurvivalServerEvents {
         }
 
         if (lastTime <= TimeUtils.DUSK - 600 && normTime > TimeUtils.DUSK - 600) {
-            PlayerServerEvents.sendMessageToAllPlayers(I18n.get("survival.reignofnether.dusksoon"), true);
+            PlayerServerEvents.sendMessageToAllPlayers("survival.reignofnether.dusksoon", true);
             SoundClientboundPacket.playSoundForAllPlayers(SoundAction.RANDOM_CAVE_AMBIENCE);
         }
         if (lastTime <= TimeUtils.DUSK && normTime > TimeUtils.DUSK) {
-            PlayerServerEvents.sendMessageToAllPlayers(I18n.get("survival.reignofnether.dusk"), true);
+            PlayerServerEvents.sendMessageToAllPlayers("survival.reignofnether.dusk", true);
             SoundClientboundPacket.playSoundForAllPlayers(SoundAction.RANDOM_CAVE_AMBIENCE);
         }
         if (lastTime <= TimeUtils.DUSK + 100 && normTime > TimeUtils.DUSK + 100) {
             startNextWave((ServerLevel) evt.level);
         }
         if (lastTime <= TimeUtils.DAWN && normTime > TimeUtils.DAWN && nextWave.number > 1) {
-            PlayerServerEvents.sendMessageToAllPlayers(I18n.get("survival.reignofnether.dawn"), true);
+            PlayerServerEvents.sendMessageToAllPlayers("survival.reignofnether.dawn", true);
             SoundClientboundPacket.playSoundForAllPlayers(SoundAction.ALLY);
             setToStartingTime();
         }
@@ -119,9 +125,9 @@ public class SurvivalServerEvents {
             if (enemyCount == 0)
                 endCurrentWave((ServerLevel) evt.level);
             else if (enemyCount == 1) {
-                PlayerServerEvents.sendMessageToAllPlayers(enemyCount + " enemy remains.");
+                PlayerServerEvents.sendMessageToAllPlayers("survival.reignofnether.remaining_enemies_one");
             } else {
-                PlayerServerEvents.sendMessageToAllPlayers(enemyCount + " enemies remain.");
+                PlayerServerEvents.sendMessageToAllPlayers("survival.reignofnether.remaining_enemies", false, enemyCount);
             }
         }
         if (periodicCommandTicks > 0) {
@@ -134,6 +140,20 @@ public class SurvivalServerEvents {
         }
         lastTime = time;
         lastEnemyCount = enemyCount;
+    }
+
+    @SubscribeEvent
+    public static void onCommandUsed(CommandEvent evt) {
+        List<ParsedCommandNode<CommandSourceStack>> nodes = evt.getParseResults().getContext().getNodes();
+        if (nodes.size() >= 2 &&
+                nodes.get(0).getNode().getName().equals("time") &&
+                (nodes.get(1).getNode().getName().equals("add") ||
+                nodes.get(1).getNode().getName().equals("set"))) {
+
+            Map<String, ParsedArgument<CommandSourceStack, ?>> args = evt.getParseResults().getContext().getArguments();
+            if (args.containsKey("time"))
+                bonusDayTicks = 0;
+        }
     }
 
     @SubscribeEvent
@@ -249,7 +269,7 @@ public class SurvivalServerEvents {
     public static void endCurrentWave(ServerLevel level) {
         nextWave = Wave.getWave(nextWave.number + 1);
         SurvivalClientboundPacket.setWaveNumber(nextWave.number);
-        PlayerServerEvents.sendMessageToAllPlayers("Your enemies have been defeated... for now.", true);
+        PlayerServerEvents.sendMessageToAllPlayers("survival.reignofnether.wave_cleared", true);
         SoundClientboundPacket.playSoundForAllPlayers(SoundAction.ALLY);
 
         // set bonusDayTicks to pause daytime based on ticksToClearLastWave - up to a maximum of getDayLength()
@@ -260,8 +280,8 @@ public class SurvivalServerEvents {
 
             CompletableFuture.delayedExecutor(5, TimeUnit.SECONDS).execute(() -> {
                 if (bonusDayTicks >= 200) {
-                    PlayerServerEvents.sendMessageToAllPlayers("Their swift defeat gives you more time to prepare today (+" +
-                            TimeUtils.getTimeStrFromTicks(bonusDayTicks) + ")", false);
+                    PlayerServerEvents.sendMessageToAllPlayers("survival.reignofnether.time_bonus", false,
+                            TimeUtils.getTimeStrFromTicks(bonusDayTicks));
                     SoundClientboundPacket.playSoundForAllPlayers(SoundAction.CHAT);
                 }
             });
@@ -270,8 +290,8 @@ public class SurvivalServerEvents {
 
             CompletableFuture.delayedExecutor(5, TimeUnit.SECONDS).execute(() -> {
                 if (penaltyTicks >= 200) {
-                    PlayerServerEvents.sendMessageToAllPlayers("The prolonged battle means the next night comes sooner (" +
-                            TimeUtils.getTimeStrFromTicks(Math.abs(penaltyTicks)) + ")", false);
+                    PlayerServerEvents.sendMessageToAllPlayers("survival.reignofnether.time_penalty", false,
+                            TimeUtils.getTimeStrFromTicks(Math.abs(penaltyTicks)));
                     SoundClientboundPacket.playSoundForAllPlayers(SoundAction.CHAT);
                 }
             });
@@ -286,7 +306,7 @@ public class SurvivalServerEvents {
     public static void spawnMonsterWave(ServerLevel level) {
         Random random = new Random();
         List<Building> buildings = BuildingServerEvents.getBuildings();
-        int remainingPop = nextWave.population;
+        int remainingPop = nextWave.population * PlayerServerEvents.rtsPlayers.size();
         if (buildings.isEmpty())
             return;
 

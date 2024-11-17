@@ -578,7 +578,7 @@ public class PlayerServerEvents {
             rtsPlayers.removeIf(rtsPlayer -> {
                 if (rtsPlayer.name.equals(playerName)) {
                     sendMessageToAllPlayers(playerName + " has " + reason + " and is defeated!", true);
-                    sendMessageToAllPlayers("There are " + (rtsPlayers.size() - 1) + " RTS player(s) remaining");
+                    sendMessageToAllPlayers("server.reignofnether.players_remaining", false, (rtsPlayers.size() - 1));
 
                     PlayerClientboundPacket.defeat(playerName);
 
@@ -618,14 +618,14 @@ public class PlayerServerEvents {
                 if (remainingPlayers.equals(factionGroup)) {
                     // Declare victory for all players in the faction group
                     for (String winner : remainingPlayers) {
-                        sendMessageToAllPlayers(winner + " and their allies are victorious!", true);
+                        sendMessageToAllPlayers("server.reignofnether.victory_alliance", true, winner);
                         PlayerClientboundPacket.victory(winner);
                     }
                 }
             } else if (rtsPlayers.size() == 1) {
                 // Single remaining player - declare victory
                 RTSPlayer winner = rtsPlayers.get(0);
-                sendMessageToAllPlayers(winner.name + " is victorious!", true);
+                sendMessageToAllPlayers("server.reignofnether.victory", true, winner.name);
                 PlayerClientboundPacket.victory(winner.name);
             }
         }

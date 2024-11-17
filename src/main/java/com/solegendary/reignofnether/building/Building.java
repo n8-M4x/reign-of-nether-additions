@@ -32,6 +32,7 @@ import com.solegendary.reignofnether.util.MiscUtil;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
@@ -527,7 +528,7 @@ public abstract class Building {
 
         if (!this.level.isClientSide() && isRTSPlayer(this.ownerName)) {
             if (BuildingUtils.getTotalCompletedBuildingsOwned(false, this.ownerName) == 0) {
-                PlayerServerEvents.defeat(this.ownerName, "server.reignofnether.lost_buildings");
+                PlayerServerEvents.defeat(this.ownerName, Component.translatable("server.reignofnether.lost_buildings").getString());
             } else if (this.isCapitol) {
                 if (FogOfWarServerEvents.isEnabled()) {
                     sendMessageToAllPlayers("server.reignofnether.lost_capitol",
@@ -536,7 +537,7 @@ public abstract class Building {
                             PlayerServerEvents.TICKS_TO_REVEAL / ResourceCost.TICKS_PER_SECOND
                     );
                 } else if (SurvivalServerEvents.isEnabled()) {
-                    PlayerServerEvents.defeat(this.ownerName, "server.reignofnether.lost_capitol_defeat");
+                    PlayerServerEvents.defeat(this.ownerName, Component.translatable("server.reignofnether.lost_capitol_defeat").getString());
                 }
             }
         }

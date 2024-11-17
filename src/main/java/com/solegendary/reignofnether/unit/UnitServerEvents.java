@@ -33,6 +33,7 @@ import com.solegendary.reignofnether.util.Faction;
 import com.solegendary.reignofnether.util.MiscUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -308,7 +309,7 @@ public class UnitServerEvents {
                 .size();
             if (unitsOwned == 0 && isRTSPlayer(unit.getOwnerName())
                 && BuildingUtils.getTotalCompletedBuildingsOwned(false, unit.getOwnerName()) == 0) {
-                PlayerServerEvents.defeat(unit.getOwnerName(), "server.reignofnether.lost_all");
+                PlayerServerEvents.defeat(unit.getOwnerName(), Component.translatable("server.reignofnether.lost_all").getString());
             }
         }
     }

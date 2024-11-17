@@ -65,7 +65,7 @@ Bugfixes
 
 [✔] Shroomlight is now gatherable for 120 food
 
-[✔] Various minor language fixes and additions
+[✔] Various language fixes and additions
 
 
 Quality of Life Features
@@ -119,7 +119,7 @@ Villagers
 
 Languages
 ---------
-"time.reignofnether.time_until" into two strings:
+Split "time.reignofnether.time_until" into two strings:
     "time.reignofnether.time_until_day": "%s until day",
     "time.reignofnether.time_until_night": "%s until night",
 
@@ -140,3 +140,11 @@ New strings:
     "research.reignofnether.bloodlust.tooltip1": "Unlocks the ability for Brutes and Headhunters to trade ",
     "research.reignofnether.bloodlust.tooltip2": "life for a temporary boost to attack and move speed.",
     "time.reignofnether.survival_wave": "Survival Wave: %s",
+    "server.reignofnether.surrendered": "surrendered",
+    "server.reignofnether.victory_alliance": "%s and their allies are victorious!",
+    "server.reignofnether.victory": "%s is victorious!"
+    "survival.reignofnether.wave_cleared": "Your enemies have been defeated... for now.",
+    "survival.reignofnether.time_bonus": "Their swift defeat grants more time today (+%s)",
+    "survival.reignofnether.time_penalty": "The prolonged battle brings the next night closer (-%s)",
+    "survival.reignofnether.remaining_enemies_one": "1 enemy remains",
+    "survival.reignofnether.remaining_enemies": "%d enemies remain",
