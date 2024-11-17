@@ -6,7 +6,7 @@ public class CreeperAttackUnitGoal extends AbstractMeleeAttackUnitGoal {
     private final CreeperUnit creeperUnit;
 
     public CreeperAttackUnitGoal(CreeperUnit creeperUnit, int attackInterval, boolean followingTargetEvenIfNotSeen) {
-        super(creeperUnit, attackInterval, followingTargetEvenIfNotSeen);
+        super(creeperUnit, followingTargetEvenIfNotSeen);
         this.creeperUnit = creeperUnit;
     }
 

@@ -39,8 +39,15 @@ public class RangedAttackBuildingGoal<T extends net.minecraft.world.entity.Mob> 
         if (this.buildingTarget != null && !buildingTarget.getBlocks().isEmpty()) {
             Random rand = new Random();
             List<BuildingBlock> nonAirBlocks = buildingTarget.getBlocks().stream().filter(b -> b.isPlaced(this.mob.level)).toList();
-            BuildingBlock block = nonAirBlocks.get(rand.nextInt(nonAirBlocks.size()));
-            this.blockTarget = block.getBlockPos();
+
+            int bound = nonAirBlocks.size();
+            if (bound > 0) {
+                int randIndex = rand.nextInt(bound);
+                BuildingBlock block = nonAirBlocks.get(randIndex);
+                this.blockTarget = block.getBlockPos();
+            } else {
+                this.blockTarget = null;
+            }
         }
     }
 

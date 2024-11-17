@@ -154,7 +154,7 @@ public class Portal extends ProductionBuilding implements NetherConvertingBuildi
             netherConversionZone = nz;
             if (!level.isClientSide()) {
                 BuildingServerEvents.netherZones.add(netherConversionZone);
-                BuildingServerEvents.saveNetherZones();
+                BuildingServerEvents.saveNetherZones((ServerLevel) level);
             }
         }
     }

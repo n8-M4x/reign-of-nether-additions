@@ -9,6 +9,7 @@ import com.solegendary.reignofnether.keybinds.Keybinding;
 import com.solegendary.reignofnether.keybinds.Keybindings;
 import com.solegendary.reignofnether.research.ResearchClient;
 import com.solegendary.reignofnether.research.researchItems.ResearchAdvancedPortals;
+import com.solegendary.reignofnether.research.researchItems.ResearchBloodlust;
 import com.solegendary.reignofnether.resources.ResourceCost;
 import com.solegendary.reignofnether.resources.ResourceCosts;
 import com.solegendary.reignofnether.unit.units.monsters.WardenProd;
@@ -58,7 +59,8 @@ public class Fortress extends ProductionBuilding implements GarrisonableBuilding
 
         if (level.isClientSide())
             this.productionButtons = Arrays.asList(
-                ResearchAdvancedPortals.getStartButton(this, Keybindings.keyQ)
+                ResearchAdvancedPortals.getStartButton(this, Keybindings.keyQ),
+                ResearchBloodlust.getStartButton(this, Keybindings.keyW)
             );
     }
 

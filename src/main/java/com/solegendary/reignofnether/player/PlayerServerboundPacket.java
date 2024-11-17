@@ -1,12 +1,19 @@
 package com.solegendary.reignofnether.player;
 
+import com.solegendary.reignofnether.gamemode.ClientGameModeHelper;
+import com.solegendary.reignofnether.gamemode.GameMode;
+import com.solegendary.reignofnether.gamemode.GameModeClientboundPacket;
+import com.solegendary.reignofnether.gamemode.GameModeServerboundPacket;
 import com.solegendary.reignofnether.hud.HudClientEvents;
 import com.solegendary.reignofnether.registrars.PacketHandler;
+import com.solegendary.reignofnether.survival.SurvivalClientEvents;
+import com.solegendary.reignofnether.survival.SurvivalServerboundPacket;
 import com.solegendary.reignofnether.util.Faction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent;
@@ -74,6 +81,9 @@ public class PlayerServerboundPacket {
                 case NONE -> null;
             };
             PacketHandler.INSTANCE.sendToServer(new PlayerServerboundPacket(playerAction, MC.player.getId(), x, y, z));
+            GameModeServerboundPacket.setAndLockAllClientGameModes(ClientGameModeHelper.gameMode);
+            if (ClientGameModeHelper.gameMode == GameMode.SURVIVAL)
+                SurvivalServerboundPacket.startSurvivalMode(SurvivalClientEvents.difficulty);
         }
     }
 
@@ -161,7 +171,7 @@ public class PlayerServerboundPacket {
                     PlayerServerEvents.startRTS(this.playerId, new Vec3(this.x, this.y, this.z), Faction.MONSTERS);
                 case START_RTS_PIGLINS ->
                     PlayerServerEvents.startRTS(this.playerId, new Vec3(this.x, this.y, this.z), Faction.PIGLINS);
-                case DEFEAT -> PlayerServerEvents.defeat(this.playerId, "surrendered");
+                case DEFEAT -> PlayerServerEvents.defeat(this.playerId, Component.translatable("server.reignofnether.surrendered").getString());
                 case RESET_RTS -> PlayerServerEvents.resetRTS();
                 case LOCK_RTS -> PlayerServerEvents.setRTSLock(true);
                 case UNLOCK_RTS -> PlayerServerEvents.setRTSLock(false);

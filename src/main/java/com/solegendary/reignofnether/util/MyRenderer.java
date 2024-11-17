@@ -380,7 +380,7 @@ public class MyRenderer {
     public static void renderTooltip(PoseStack poseStack, List<FormattedCharSequence> tooltipLines, int mouseX, int mouseY) {
         if (MC.screen != null && tooltipLines != null && tooltipLines.size() > 0) {
             if (mouseY < MC.screen.height / 2)
-                mouseY += 20;
+                mouseY += 25;
             MC.screen.renderTooltip(poseStack, tooltipLines, mouseX, mouseY - (9 * (tooltipLines.size() - 1)), MC.font);
         }
     }

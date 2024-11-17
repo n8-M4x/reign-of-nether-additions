@@ -35,9 +35,9 @@ public class UsePortalGoal extends MoveToTargetBlockGoal {
                 // teleport to destination
                 if (portal.destination != null && buildingTarget.isBuilt) {
                     BlockPos bp = portal.destination;
-                    SoundClientboundPacket.playSoundOnClient(SoundAction.USE_PORTAL, bp);
+                    SoundClientboundPacket.playSoundForAllPlayers(SoundAction.USE_PORTAL, bp);
                     mob.teleportTo(bp.getX() + 0.5f, bp.getY() + 0.5f, bp.getZ() + 0.5f);
-                    SoundClientboundPacket.playSoundOnClient(SoundAction.USE_PORTAL, portal.destination);
+                    SoundClientboundPacket.playSoundForAllPlayers(SoundAction.USE_PORTAL, portal.destination);
                 }
                 this.stopUsingPortal();
             }

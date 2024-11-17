@@ -184,8 +184,8 @@ public class SpiderUnit extends Spider implements Unit, AttackerUnit, Convertabl
             AttackerUnit.tick(this);
 
             // apply slowness level 2 during daytime for a short time repeatedly
-            if (tickCount % 4 == 0 && !this.level.isClientSide() && this.level.isDay() && !NightUtils.isInRangeOfNightSource(this.getEyePosition(), false))
-                this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 10, 1));
+            if (tickCount % 10 == 0 && !this.level.isClientSide() && this.level.isDay() && !NightUtils.isInRangeOfNightSource(this.getEyePosition(), false))
+                this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 15, 1));
 
             for (Ability ability : abilities)
                 if (ability instanceof SpinWebs spinWebs)
@@ -206,7 +206,7 @@ public class SpiderUnit extends Spider implements Unit, AttackerUnit, Convertabl
         this.usePortalGoal = new UsePortalGoal(this);
         this.moveGoal = new MoveToTargetBlockGoal(this, false, 0);
         this.targetGoal = new SelectedTargetGoal<>(this, true, true);
-        this.attackGoal = new MeleeAttackUnitGoal(this, getAttackCooldown(), false);
+        this.attackGoal = new MeleeAttackUnitGoal(this, false);
         this.attackBuildingGoal = new MeleeAttackBuildingGoal(this);
     }
 

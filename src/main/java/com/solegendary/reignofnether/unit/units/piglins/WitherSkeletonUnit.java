@@ -207,7 +207,7 @@ public class WitherSkeletonUnit extends WitherSkeleton implements Unit, Attacker
         this.moveGoal = new MoveToTargetBlockGoal(this, false, 0);
         this.targetGoal = new SelectedTargetGoal<>(this, true, true);
         this.garrisonGoal = new GarrisonGoal(this);
-        this.attackGoal = new MeleeAttackUnitGoal(this, getAttackCooldown(), false);
+        this.attackGoal = new MeleeAttackUnitGoal(this, false);
         this.returnResourcesGoal = new ReturnResourcesGoal(this);
         this.attackBuildingGoal = new MeleeAttackBuildingGoal(this);
     }

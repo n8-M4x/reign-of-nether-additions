@@ -1,90 +1,152 @@
 
-1.19.2-1.0.8
+1.19.2-1.0.9
 -------------
-
-Tthings to regression test once PRs are merged
-- /gamerule neutralAggro still works
-- cycling unit groups with tab and shift tab
-- clock times are still accurate for when undead start/stop burning
-
 
 - Done and tested
 [✔] Done and tested
-[🟡] Partially done, only has a workaround and/or needs testing
+[🟡] Partially done and/or needs testing
 [❌] Not done, including unmerged PRs
 
 Features
 --------
-[✔] Alliance System (Thanks to @Boobcat)
-    - /ally <player name> to send an alliance request to another player
-    - /allyconfirm <requester name> to accept an alliance request
-    - /disband <player name> to end an alliance
-    - Allies are shown as blue in unit/building highlights and the minimap
-    - Allies win and lose together
-    - Allying a player will not automatically ally you with their allies
-    - Effects that don't friendly fire like creepers should also not affect allies
-    - You can still force attack allies using A + left-click
+[🟡] Wave Survival
+    - Designed to be played on vanilla generated worlds
+    - Whenever night begins, a wave of enemies will spawn to attack your base
+    - No win condition... just keep going until you die
+    - Your capitol being destroyed is an instant loss
+    - base day length depends on difficulty
+        - 10mins - easy
+        - 8mins - medium
+        - 6mins - hard
+    - nights last forever until you clear the wave, but the next day becomes longer or shorter
+        depending on how long it took you to clear the wave
 
-[✔] Translation Compatibility (Thanks to @Promethia)
-    - Added language support for:
-        - Danish (da_dk)
-        - Polish (pl_pl)
-        - Russian (ru_ru)
-        - Ukrainian (uk_ua)
-        - Brazilian Portuguese (pt_br)
-        - Chinese (Simplified) (zh_cn)
-        - Chinese (Traditional) (zh_tw)
+    DESIGN NOTES
+    - might need improved pathfinding first :(
+    - Each night is either piglin, illager or monster
+        - Monsters attack from all directions randomly at random targets
+        - Illagers attack in a large group from one direction
+        - Piglins get popup portals that continuously send units
+            - each portal spawns a small wave to and must be destroyed before the wave ends
+        - can't be the same faction twice in a row
+        - as days pass, waves get larger (balanced by population value)
 
-    - Some languages may not yet have support for Alliances since it was just added
-    - If a string in your language is not available, it will default to English
-    - Due to an unforseen bug, you must restart your client when switching languages for it to take effect
-    - If you would like to contribute translations, please see the #localisation channel and the pinned post
+    [❌] Save on exit
+    [❌] Units sometimes get stuck without walking across water
+
+    [❌] Cave sounds are localised in the world
+    [❌] Check that defeat doesn't bug out the world
+        - should unlock gamemode?
+
+
+
+
+[🟡] Bloodlust ability
+    - Unlockable active ability for Brutes and Headhunters
+    - Researched at the Fortress (250 all resources, 150s)
+    - When used, instantly trades 10hp for 10s of +50% attack speed and +50% movement speed
+    - Headhunters cannot bloodlust while mounted
+
 
 Bugfixes
 --------
-[✔] Fixed workers not actually working if they were too far out of view
-[✔] Fixed crash related to Hiding Leaves
-[✔] Fixed crash related to Ranged units attacking buildings
-[✔] Fixed crash related to pressing Tab on neutral units
-[✔] Fixed enchantment icons
-[✔] The clock button no longer shows up in unexpected places like the title screen
-[✔] Fixed issue of being kicked from a server when switching instances (eg. between a game and lobby)
-[✔] Spider webs no longer stay forever if the spider dies before they decay
-[✔] Leaving F12 will now more reliably set you to spectator mode if you were in spectator previously
+[🟡] Mangrove roots are now gatherable (same value as logs)
+
+[🟡] Fixed being unable to exit an ally's garrison
+
+[✔] Hoglins can no longer spawn as neutral baby hoglins from spawn eggs
+
+[🟡] Reworked unit and building data saving when the server shuts down
+    - This should reduce the issue of losing control of units/buildings when the server crashes
+
+[🟡] Piglins can now build on all types of blackstone and nether brick
+
+[🟡] Farmland and overworld crops convert into soulsand and nether wart respectively
+    - Excludes solid crop blocks like melons and pumpkins
+    - Plant blocks replaced by nether blocks no longer drop items
+
+[🟡] Fixed crash related to attacking buildings (again)
+
+[✔] Shroomlight is now gatherable for 120 food
+
+[✔] Various language fixes and additions
+
 
 Quality of Life Features
 ------------------------
-[✔] The world gen datapack is now hardcoded into the mod by default. As a reminder, this means:
-    - Ores are generated on the surface
-    - Flattened biome heights
-    - 4x normal randomTickSpeed
-    - No caves, mountains, jungles or other difficult biomes
-    - No insomnia
-    - No weather
-[✔] Improved performance for all units and buildings
-[✔] The thereisnospoon cheatcode to modify max population is now /gamerule maxPopulation <value>
-    - this also means it is saved to the game world
-[✔] Added saved UUID data for all units
-[✔] Added gamerules to /rts-help
+[🟡] Added a gamemode selector next to faction selction buttons
+    - Used to swap between Standard, Wave Survival and future gamemodes
+    - Once a player joins the match, the game mode they chose is locked for everyone until /rts-reset is used
+    - Mapmakers can use /gamerule disallowWaveSurvival to prevent players from choosing wave survival
+
+[🟡] Added sounds when you make or disband an alliance
+
+[🟡] Added name checks to network packets to prevent exploits
+
+[🟡] If animals can't spawn at the required range around your capitol, spawning is reattempted at a closer range
+
+[✔] Portals being placed on overworld terrain show a yellow indicator
+
+[🟡] Witch potions can now be thrown by right-clicking a unit
+    - Right-clicking a friendly unit throws a regen potion
+    - Right-clicking an enemy unit throws a harming potion
+    - Only one potion is thrown at a time if multiple witches are selected
+    - This will NOT be automatically used off cooldown
 
 
 Balancing
 ---------
-[✔] All build times with 2+ workers are slower (you need +1 worker to achieve previous speeds)
-    - Capitol build speeds have been sped up to compensate
+[✔] All bridges: +50 wood (ore for piglins)
+[🟡] Random damage dealt to garrisoned units by explosions has been halved
+    - This affects creepers and ghasts
 
 Piglins
-[✔] Wither Skeleton Death Cloud: Duration +2s, Cooldown +5s
-    - Is now a one-click-one-use ability
-[✔] Melee units attacking a Wither Skeleton now get withered for 2 seconds (4 damage total)
+[✔] Bastion: -20% build time
+[✔] All piglin units now move at regular speed on soulsand
+[✔] Ghasts are now immune to knockback
+[✔] Brute Shields now make brutes immune to knockback when active
+
+Monsters
+[✔] Dark Watchtower: -25 ore
+[✔] Husks: -5hp
+[✔] Skeletons & Strays: -10 food, +10 wood
+[✔] Night now begins 10 mins after game start
+    - This reverses the change from 1.0.5 which was made before Sculk Catalysts
 
 Villagers
-[✔] Golem Smithing Upgrade: +50 ore, +30s
-[✔] Vindicators and Pillagers: -5 food
-[✔] Blacksmith: -150 wood, +150 ore
-[✔] Libraries now only require a Barracks to be built instead of an Arcane Tower
-[✔] Library: -50 wood, +10% build time
-[✔] Grand Library Upgrade: +100 wood, -250 ore, +20s
-[✔] Swapped Maiming and Sharpness Enchantment costs and requirements (Sharpness is now level II)
-[✔] Enchant Maiming: -5 wood, -15 ore
-[✔] Enchant Multishot: -10 wood, -5 ore
+[✔] Watchtower: -25 ore
+[✔] Vindicators: -5 food, +5hp, -3s
+[✔] Pillager: -5 wood, -3s
+[✔] Iron Golem: -10hp, -0.05as
+
+
+
+Languages
+---------
+Split "time.reignofnether.time_until" into two strings:
+    "time.reignofnether.time_until_day": "%s until day",
+    "time.reignofnether.time_until_night": "%s until night",
+
+Updated strings:
+    "units.monsters.reignofnether.husk.tooltip1": "A hardy variant of the zombie that is immune ",
+    "units.monsters.reignofnether.husk.tooltip2": "to burning from sunlight.",
+    "research.reignofnether.husks.tooltip1": "Transforms all of your zombies into husks, ",
+    "research.reignofnether.husks.tooltip2": "granting them immunity to sunlight.",
+
+New strings:
+    "abilities.reignofnether.wither_cloud": "Wither Cloud",
+    "abilities.reignofnether.wither_cloud.tooltip1": "Causes the Wither Skeleton to release a cloud",
+    "abilities.reignofnether.wither_cloud.tooltip2": "of deadly wither around it for the next %d seconds.",
+    "abilities.reignofnether.bloodlust": "Bloodlust",
+    "abilities.reignofnether.bloodlust.tooltip1": "Pay %d life to gain 50%% faster attack speed ",
+    "abilities.reignofnether.bloodlust.tooltip2": "and 50%% faster movement for %d seconds.",
+    "research.reignofnether.bloodlust": "Bloodlust",
+    "research.reignofnether.bloodlust.tooltip1": "Unlocks the ability for Brutes and Headhunters to trade ",
+    "research.reignofnether.bloodlust.tooltip2": "life for a temporary boost to attack and move speed.",
+    "time.reignofnether.survival_wave": "Survival Wave: %s",
+    "server.reignofnether.surrendered": "surrendered",
+    "server.reignofnether.victory_alliance": "%s and their allies are victorious!",
+    "server.reignofnether.victory": "%s is victorious!"
+    "survival.reignofnether.wave_cleared": "Your enemies have been defeated... for now.",
+    "survival.reignofnether.remaining_enemies_one": "1 enemy remains",
+    "survival.reignofnether.remaining_enemies": "%d enemies remain",

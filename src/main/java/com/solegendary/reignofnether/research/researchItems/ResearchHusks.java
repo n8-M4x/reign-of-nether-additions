@@ -75,12 +75,7 @@ public class ResearchHusks extends ProductionItem {
                 ResourceCosts.getFormattedTime(cost),
                 FormattedCharSequence.forward("", Style.EMPTY),
                 FormattedCharSequence.forward(I18n.get("research.reignofnether.husks.tooltip1"), Style.EMPTY),
-                FormattedCharSequence.forward(
-                    I18n.get("research.reignofnether.husks.tooltip2",
-                        (int) (HuskUnit.maxHealth - ZombieUnit.maxHealth)
-                    ),
-                    Style.EMPTY
-                ),
+                FormattedCharSequence.forward(I18n.get("research.reignofnether.husks.tooltip2"), Style.EMPTY),
                 FormattedCharSequence.forward("", Style.EMPTY),
                 FormattedCharSequence.forward(I18n.get("research.reignofnether.husks.tooltip3"), Style.EMPTY)
             )
