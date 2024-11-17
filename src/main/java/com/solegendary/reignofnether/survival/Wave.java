@@ -79,14 +79,15 @@ public class Wave {
         new Wave(8, 40, 4),
         new Wave(9, 45, 5),
         new Wave(10, 50, 5),
-        new Wave(13, 60, 5),
-        new Wave(14, 70, 5),
-        new Wave(15, 85, 5),
-
-        new Wave(16, 100, 5),
-        new Wave(17, 120, 5),
-        new Wave(18, 140, 5),
-        new Wave(19, 165, 5),
-        new Wave(20, 190, 5)
+        new Wave(11, 60, 5),
+        new Wave(12, 70, 5),
+        new Wave(13, 85, 5),
+        new Wave(14, 100, 5),
+        new Wave(15, 120, 5),
+        new Wave(16, 140, 5),
+        new Wave(17, 165, 5),
+        new Wave(18, 190, 5),
+        new Wave(19, 220, 5),
+        new Wave(20, 250, 5)
     );
 }
