@@ -11,6 +11,7 @@ import com.solegendary.reignofnether.orthoview.OrthoviewClientEvents;
 import com.solegendary.reignofnether.registrars.SoundRegistrar;
 import com.solegendary.reignofnether.research.ResearchClient;
 import com.solegendary.reignofnether.resources.ResourcesClientEvents;
+import com.solegendary.reignofnether.survival.SurvivalClientEvents;
 import com.solegendary.reignofnether.unit.UnitClientEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
@@ -249,6 +250,7 @@ public class PlayerClientEvents {
         BuildingClientEvents.getBuildings().clear();
         ResourcesClientEvents.resourcesList.clear();
         ClientGameModeHelper.gameMode = GameMode.STANDARD;
+        SurvivalClientEvents.reset();
         if (!ClientGameModeHelper.disallowSurvival)
             ClientGameModeHelper.gameModeLocked = false;
     }

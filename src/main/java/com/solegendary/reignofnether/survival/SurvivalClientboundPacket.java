@@ -12,41 +12,36 @@ import java.util.function.Supplier;
 
 public class SurvivalClientboundPacket {
 
+    SurvivalSyncAction action;
     WaveDifficulty difficulty;
     int waveNumber;
-    long bonusTicks;
 
     public static void enableAndSetDifficulty(WaveDifficulty diff) {
         PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(),
-                new SurvivalClientboundPacket(diff, 0, 0L));
+                new SurvivalClientboundPacket(SurvivalSyncAction.ENABLE_AND_SET_DIFFICULTY, diff, 0, 0L));
     }
 
     public static void setWaveNumber(int waveNum) {
         PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(),
-                new SurvivalClientboundPacket(WaveDifficulty.EASY, waveNum, 0L));
+                new SurvivalClientboundPacket(SurvivalSyncAction.SET_WAVE_NUMBER, WaveDifficulty.EASY, waveNum, 0L));
     }
 
-    public static void setBonusTicks(long ticks) {
-        PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(),
-                new SurvivalClientboundPacket(WaveDifficulty.EASY, 0, ticks));
-    }
-
-    public SurvivalClientboundPacket(WaveDifficulty difficulty, int waveNumber, long bonusTicks) {
+    public SurvivalClientboundPacket(SurvivalSyncAction action, WaveDifficulty difficulty, int waveNumber, long bonusTicks) {
+        this.action = action;
         this.difficulty = difficulty;
         this.waveNumber = waveNumber;
-        this.bonusTicks = bonusTicks;
     }
 
     public SurvivalClientboundPacket(FriendlyByteBuf buffer) {
+        this.action = buffer.readEnum(SurvivalSyncAction.class);
         this.difficulty = buffer.readEnum(WaveDifficulty.class);
         this.waveNumber = buffer.readInt();
-        this.bonusTicks = buffer.readLong();
     }
 
     public void encode(FriendlyByteBuf buffer) {
+        buffer.writeEnum(this.action);
         buffer.writeEnum(this.difficulty);
         buffer.writeInt(this.waveNumber);
-        buffer.writeLong(this.bonusTicks);
     }
 
     // server-side packet-consuming functions
@@ -56,12 +51,10 @@ public class SurvivalClientboundPacket {
         ctx.get().enqueueWork(() -> {
             DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
                     () -> () -> {
-                        if (waveNumber > 0)
-                            SurvivalClientEvents.waveNumber = waveNumber;
-                        else if (bonusTicks > 0)
-                            SurvivalClientEvents.bonusTicks = bonusTicks;
-                        else
-                            SurvivalClientEvents.enable(difficulty);
+                        switch (action) {
+                            case ENABLE_AND_SET_DIFFICULTY -> SurvivalClientEvents.enable(difficulty);
+                            case SET_WAVE_NUMBER -> SurvivalClientEvents.waveNumber = waveNumber;
+                        }
                         success.set(true);
                     });
         });

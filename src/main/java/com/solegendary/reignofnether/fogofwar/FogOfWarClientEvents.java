@@ -152,6 +152,7 @@ public class FogOfWarClientEvents {
                     if (!fogEnableWarningSent) {
                         fogEnableWarningSent = true;
                         MC.player.sendSystemMessage(Component.literal(""));
+                        MC.player.sendSystemMessage(Component.translatable("fogofwar.reignofnether.warning").withStyle(Style.EMPTY.withBold(true)));
                         MC.player.sendSystemMessage(Component.translatable("fogofwar.reignofnether.experimental"));
                         MC.player.sendSystemMessage(Component.literal(""));
                         MC.player.sendSystemMessage(Component.translatable("fogofwar.reignofnether.optifine_crash"));

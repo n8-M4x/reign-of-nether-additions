@@ -136,16 +136,12 @@ public class TimeClientEvents {
             String dayStr = " (%s)".formatted(I18n.get(isDay ? "time.reignofnether.day" : "time.reignofnether.night"));
             String timeStr = get12HourTimeStr(serverTime) + dayStr;
 
-            String bonusTimeStr = "";
-            if (SurvivalClientEvents.isEnabled && SurvivalClientEvents.bonusTicks > 0)
-                bonusTimeStr = " (+" + getTimeStrFromTicks(SurvivalClientEvents.bonusTicks) + ")";
-
             FormattedCharSequence timeUntilStr =
                 FormattedCharSequence.forward(
                     isDay ? I18n.get("time.reignofnether.time_until_night",
-                        getTimeUntilStr(serverTime, DUSK)) + bonusTimeStr :
+                        getTimeUntilStr(serverTime, DUSK)) :
                         I18n.get("time.reignofnether.time_until_day",
-                        getTimeUntilStr(serverTime, DAWN)) + bonusTimeStr,
+                        getTimeUntilStr(serverTime, DAWN)),
                     Style.EMPTY);
 
             FormattedCharSequence gameLengthStr = FormattedCharSequence.forward("", Style.EMPTY);

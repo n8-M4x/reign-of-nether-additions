@@ -34,6 +34,12 @@ Features
     [❌] Save on exit
     [❌] Units sometimes get stuck without walking across water
     [❌] Units sometimes spawn above water without creating ice
+        - due to kelp
+
+    [❌] Cave sounds are localised in the world
+
+    [❌] Penalty ticks not working
+
 
 
 
@@ -144,7 +150,5 @@ New strings:
     "server.reignofnether.victory_alliance": "%s and their allies are victorious!",
     "server.reignofnether.victory": "%s is victorious!"
     "survival.reignofnether.wave_cleared": "Your enemies have been defeated... for now.",
-    "survival.reignofnether.time_bonus": "Their swift defeat grants more time today (+%s)",
-    "survival.reignofnether.time_penalty": "The prolonged battle brings the next night closer (-%s)",
     "survival.reignofnether.remaining_enemies_one": "1 enemy remains",
     "survival.reignofnether.remaining_enemies": "%d enemies remain",

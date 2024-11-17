@@ -765,8 +765,6 @@
     "survival.reignofnether.dusk": "Night falls...",
     "survival.reignofnether.dusksoon": "Sunlight is fading.",
     "survival.reignofnether.wave_cleared": "Your enemies have been defeated... for now.",
-    "survival.reignofnether.time_bonus": "Their swift defeat grants more time today (+%s)",
-    "survival.reignofnether.time_penalty": "The prolonged battle brings the next night closer (-%s)",
     "survival.reignofnether.remaining_enemies_one": "1 enemy remains",
     "survival.reignofnether.remaining_enemies": "%d enemies remain",
 
@@ -788,7 +786,7 @@
     "hud.gamemode.reignofnether.survival1": "WAVE SURVIVAL",
     "hud.gamemode.reignofnether.survival2": "Survive increasingly more difficult nights, ",
     "hud.gamemode.reignofnether.survival3": "solo or with allies.",
-    "hud.gamemode.reignofnether.survival4": "%s (%smins per day)",
+    "hud.gamemode.reignofnether.survival4": "%s (%s mins per day)",
     "hud.gamemode.reignofnether.survival5": "Left-click to change difficulty",
     "hud.gamemode.reignofnether.koth1": "KING OF THE BEACON",
     "hud.gamemode.reignofnether.koth2": "Fight for control of a central beacon. Upgrade it for ",
