@@ -5,6 +5,7 @@ import com.solegendary.reignofnether.ReignOfNether;
 import com.solegendary.reignofnether.ability.Ability;
 import com.solegendary.reignofnether.attackwarnings.AttackWarningClientEvents;
 import com.solegendary.reignofnether.building.*;
+import com.solegendary.reignofnether.gamemode.ClientGameModeHelper;
 import com.solegendary.reignofnether.guiscreen.TopdownGui;
 import com.solegendary.reignofnether.hud.buttons.ActionButtons;
 import com.solegendary.reignofnether.hud.buttons.StartButtons;
@@ -949,29 +950,28 @@ public class HudClientEvents {
                             }
                         }
                     }
+                }
+                if (resName == ResourceName.FOOD) {
+                    numWorkersAssigned += numWorkersHunting;
+                }
 
-                    if (resName == ResourceName.FOOD) {
-                        numWorkersAssigned += numWorkersHunting;
-                    }
-
-                    hudZones.add(MyRenderer.renderIconFrameWithBg(evt.getPoseStack(),
+                hudZones.add(MyRenderer.renderIconFrameWithBg(evt.getPoseStack(),
                         new ResourceLocation(ReignOfNether.MOD_ID, "textures/hud/icon_frame.png"),
                         blitX + 69,
                         blitY,
                         iconFrameSize,
                         iconBgColour
-                    ));
+                ));
 
-                    GuiComponent.drawCenteredString(evt.getPoseStack(),
+                GuiComponent.drawCenteredString(evt.getPoseStack(),
                         MC.font,
                         String.valueOf(numWorkersAssigned),
                         blitX + 69 + (iconFrameSize / 2),
                         blitY + (iconSize / 2) + 1,
                         0xFFFFFF
-                    );
+                );
 
-                    blitY += iconFrameSize - 1;
-                }
+                blitY += iconFrameSize - 1;
             }
 
             blitY = resourceBlitYStart;
@@ -1086,6 +1086,16 @@ public class HudClientEvents {
         // Start buttons (spectator only)
         // ------------------------------
         if (!PlayerClientEvents.isRTSPlayer && !PlayerClientEvents.rtsLocked) {
+            Button gamemodeButton = ClientGameModeHelper.getButton();
+            if (gamemodeButton != null && !gamemodeButton.isHidden.get() && !TutorialClientEvents.isEnabled()) {
+                gamemodeButton.render(evt.getPoseStack(),
+                        screenWidth - (StartButtons.ICON_SIZE * 8),
+                        StartButtons.ICON_SIZE / 2,
+                        mouseX,
+                        mouseY
+                );
+                renderedButtons.add(gamemodeButton);
+            }
             if (!StartButtons.villagerStartButton.isHidden.get()) {
                 StartButtons.villagerStartButton.render(evt.getPoseStack(),
                     screenWidth - (StartButtons.ICON_SIZE * 6),

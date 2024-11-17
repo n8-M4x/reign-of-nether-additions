@@ -83,7 +83,7 @@ public class CentralPortal extends ProductionBuilding implements NetherConvertin
             netherConversionZone = nz;
             if (!level.isClientSide()) {
                 BuildingServerEvents.netherZones.add(netherConversionZone);
-                BuildingServerEvents.saveNetherZones();
+                BuildingServerEvents.saveNetherZones((ServerLevel) level);
             }
         }
     }

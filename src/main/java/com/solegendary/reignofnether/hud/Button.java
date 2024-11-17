@@ -34,6 +34,7 @@ public class Button {
     int iconSize;
     public static int iconFrameSize = 22;
     public static int iconFrameSelectedSize = 24;
+    public int tooltipOffsetY = 0;
 
     public ResourceLocation iconResource;
     public ResourceLocation bgIconResource = null; // for rendering a background icon (eg. for mounted unit passengers)
@@ -177,7 +178,12 @@ public class Button {
         }
 
         // user is holding click or hotkey down over the button and render frame if so
-        if (isEnabled.get() && (isSelected.get() || (hotkey != null && hotkey.isDown()) || (isMouseOver(mouseX, mouseY) && MiscUtil.isLeftClickDown(MC)))) {
+        if (isEnabled.get() &&
+            (isSelected.get() || (hotkey != null && hotkey.isDown()) || (isMouseOver(mouseX, mouseY) &&
+                    ((MiscUtil.isLeftClickDown(MC) && onLeftClick != null) ||
+                    (MiscUtil.isRightClickDown(MC) && onRightClick != null))
+            ))) {
+
             ResourceLocation iconFrameSelectedResource = new ResourceLocation(ReignOfNether.MOD_ID, "textures/hud/icon_frame_selected.png");
             MyRenderer.renderIcon(
                     poseStack,
@@ -209,7 +215,7 @@ public class Button {
     }
 
     public void renderTooltip(PoseStack poseStack, int mouseX, int mouseY) {
-        MyRenderer.renderTooltip(poseStack, tooltipLines, mouseX, mouseY);
+        MyRenderer.renderTooltip(poseStack, tooltipLines, mouseX, mouseY + tooltipOffsetY);
     }
 
     public boolean isMouseOver(int mouseX, int mouseY) {

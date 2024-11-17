@@ -10,6 +10,8 @@ import com.solegendary.reignofnether.building.BuildingServerboundPacket;
 import com.solegendary.reignofnether.fogofwar.FogOfWarServerboundPacket;
 import com.solegendary.reignofnether.fogofwar.FrozenChunkClientboundPacket;
 import com.solegendary.reignofnether.fogofwar.FrozenChunkServerboundPacket;
+import com.solegendary.reignofnether.gamemode.GameModeClientboundPacket;
+import com.solegendary.reignofnether.gamemode.GameModeServerboundPacket;
 import com.solegendary.reignofnether.guiscreen.TopdownGuiServerboundPacket;
 import com.solegendary.reignofnether.fogofwar.FogOfWarClientboundPacket;
 import com.solegendary.reignofnether.player.PlayerClientboundPacket;
@@ -17,6 +19,8 @@ import com.solegendary.reignofnether.player.PlayerServerboundPacket;
 import com.solegendary.reignofnether.research.ResearchClientboundPacket;
 import com.solegendary.reignofnether.resources.ResourcesClientboundPacket;
 import com.solegendary.reignofnether.sounds.SoundClientboundPacket;
+import com.solegendary.reignofnether.survival.SurvivalClientboundPacket;
+import com.solegendary.reignofnether.survival.SurvivalServerboundPacket;
 import com.solegendary.reignofnether.tps.TPSClientBoundPacket;
 import com.solegendary.reignofnether.ability.AbilityClientboundPacket;
 import com.solegendary.reignofnether.tutorial.TutorialClientboundPacket;
@@ -152,7 +156,31 @@ public final class PacketHandler {
                 .decoder(AllianceClientboundRemovePacket::new)
                 .consumer(AllianceClientboundRemovePacket::handle)
                 .add();
-      
+
+        INSTANCE.messageBuilder(GameModeServerboundPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(GameModeServerboundPacket::encode)
+                .decoder(GameModeServerboundPacket::new)
+                .consumer(GameModeServerboundPacket::handle)
+                .add();
+
+        INSTANCE.messageBuilder(GameModeClientboundPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(GameModeClientboundPacket::encode)
+                .decoder(GameModeClientboundPacket::new)
+                .consumer(GameModeClientboundPacket::handle)
+                .add();
+
+        INSTANCE.messageBuilder(SurvivalServerboundPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(SurvivalServerboundPacket::encode)
+                .decoder(SurvivalServerboundPacket::new)
+                .consumer(SurvivalServerboundPacket::handle)
+                .add();
+
+        INSTANCE.messageBuilder(SurvivalClientboundPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(SurvivalClientboundPacket::encode)
+                .decoder(SurvivalClientboundPacket::new)
+                .consumer(SurvivalClientboundPacket::handle)
+                .add();
+
         INSTANCE.messageBuilder(VotePacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
                 .encoder(VotePacket::encode)
                 .decoder(VotePacket::new)

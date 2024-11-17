@@ -12,6 +12,7 @@ import com.solegendary.reignofnether.unit.UnitClientEvents;
 import com.solegendary.reignofnether.unit.interfaces.Unit;
 import com.solegendary.reignofnether.unit.units.piglins.WitherSkeletonUnit;
 import com.solegendary.reignofnether.util.MyRenderer;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
@@ -51,11 +52,11 @@ public class WitherCloud extends Ability {
                 () -> UnitClientEvents.sendUnitCommand(UnitAction.WITHER_CLOUD),
                 null,
                 List.of(
-                        FormattedCharSequence.forward("Death Cloud", Style.EMPTY),
+                        FormattedCharSequence.forward(I18n.get("abilities.reignofnether.wither_cloud"), Style.EMPTY),
                         FormattedCharSequence.forward("\uE004  " + CD_MAX_SECONDS + "s", MyRenderer.iconStyle),
                         FormattedCharSequence.forward("", Style.EMPTY),
-                        FormattedCharSequence.forward("Causes the Wither Skeleton to release a cloud", Style.EMPTY),
-                        FormattedCharSequence.forward("of deadly wither around it for the next " + DURATION_SECONDS + " seconds.", Style.EMPTY)
+                        FormattedCharSequence.forward(I18n.get("abilities.reignofnether.wither_cloud.tooltip1"), Style.EMPTY),
+                        FormattedCharSequence.forward(I18n.get("abilities.reignofnether.wither_cloud.tooltip2", DURATION_SECONDS), Style.EMPTY)
                 ),
                 this
         );

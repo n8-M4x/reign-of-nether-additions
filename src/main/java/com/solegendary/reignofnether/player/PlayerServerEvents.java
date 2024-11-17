@@ -2,7 +2,6 @@ package com.solegendary.reignofnether.player;
 
 import com.mojang.brigadier.context.ParsedArgument;
 import com.mojang.brigadier.context.ParsedCommandNode;
-import com.mojang.datafixers.util.Pair;
 import com.solegendary.reignofnether.alliance.AllianceSystem;
 import com.solegendary.reignofnether.ReignOfNether;
 import com.solegendary.reignofnether.alliance.AllyCommand;
@@ -71,7 +70,7 @@ public class PlayerServerEvents {
     public static boolean rtsLocked = false; // can players join as RTS players or not?
     public static boolean rtsSyncingEnabled = true; // will logging in players sync units and buildings?
 
-    private static final int MONSTER_START_TIME_OF_DAY = 6500; // 6500 = noon, 12500 = dusk
+    private static final int MONSTER_START_TIME_OF_DAY = 500; // 500 = dawn, 6500 = noon, 12500 = dusk
 
     public static final int ORTHOVIEW_PLAYER_BASE_Y = 85;
 
@@ -579,7 +578,7 @@ public class PlayerServerEvents {
             rtsPlayers.removeIf(rtsPlayer -> {
                 if (rtsPlayer.name.equals(playerName)) {
                     sendMessageToAllPlayers(playerName + " has " + reason + " and is defeated!", true);
-                    sendMessageToAllPlayers("There are " + (rtsPlayers.size() - 1) + " RTS player(s) remaining");
+                    sendMessageToAllPlayers("server.reignofnether.players_remaining", false, (rtsPlayers.size() - 1));
 
                     PlayerClientboundPacket.defeat(playerName);
 
@@ -619,14 +618,14 @@ public class PlayerServerEvents {
                 if (remainingPlayers.equals(factionGroup)) {
                     // Declare victory for all players in the faction group
                     for (String winner : remainingPlayers) {
-                        sendMessageToAllPlayers(winner + " and their allies are victorious!", true);
+                        sendMessageToAllPlayers("server.reignofnether.victory_alliance", true, winner);
                         PlayerClientboundPacket.victory(winner);
                     }
                 }
             } else if (rtsPlayers.size() == 1) {
                 // Single remaining player - declare victory
                 RTSPlayer winner = rtsPlayers.get(0);
-                sendMessageToAllPlayers(winner.name + " is victorious!", true);
+                sendMessageToAllPlayers("server.reignofnether.victory", true, winner.name);
                 PlayerClientboundPacket.victory(winner.name);
             }
         }
@@ -675,8 +674,7 @@ public class PlayerServerEvents {
                 setRTSLock(false);
             AllianceSystem.resetAllAlliances();
             if (SurvivalServerEvents.isEnabled()) {
-                SurvivalServerEvents.resetWaves();
-                SurvivalServerEvents.setEnabled(false);
+                SurvivalServerEvents.reset();
             }
         }
     }

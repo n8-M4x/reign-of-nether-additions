@@ -56,8 +56,9 @@ public class ClientLevelMixin {
             cancellable = true
     )
     public void playSeededSound(@Nullable Player pPlayer, double pX, double pY, double pZ, SoundEvent pSoundEvent, SoundSource pSoundSource, float pVolume, float pPitch, long pSeed, CallbackInfo ci) {
-        if (!OrthoviewClientEvents.isEnabled())
+        if (!OrthoviewClientEvents.isEnabled() || SoundClientEvents.STATIC_SOUNDS.contains(pSoundEvent))
             return;
+
         ci.cancel();
         if (pSoundEvent.equals(SoundEvents.WARDEN_HEARTBEAT))
             return;
@@ -79,8 +80,9 @@ public class ClientLevelMixin {
     )
     private void playSound(double pX, double pY, double pZ, SoundEvent pSoundEvent, SoundSource pSoundSource,
                            float pVolume, float pPitch, boolean pDistanceDelay, long pSeed, CallbackInfo ci) {
-        if (!OrthoviewClientEvents.isEnabled())
+        if (!OrthoviewClientEvents.isEnabled() || SoundClientEvents.STATIC_SOUNDS.contains(pSoundEvent))
             return;
+
         ci.cancel();
         if (pSoundEvent.equals(SoundEvents.WARDEN_HEARTBEAT))
             return;

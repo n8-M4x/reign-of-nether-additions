@@ -152,15 +152,14 @@ public class FogOfWarClientEvents {
                     if (!fogEnableWarningSent) {
                         fogEnableWarningSent = true;
                         MC.player.sendSystemMessage(Component.literal(""));
-                        MC.player.sendSystemMessage(Component.literal("[WARNING]").withStyle(Style.EMPTY.withBold(true)));
-                        MC.player.sendSystemMessage(Component.literal(
-                        "You are about to enable fog of war for all players. This is an experimental feature with several issues:"));
+                        MC.player.sendSystemMessage(Component.translatable("fogofwar.reignofnether.warning").withStyle(Style.EMPTY.withBold(true)));
+                        MC.player.sendSystemMessage(Component.translatable("fogofwar.reignofnether.experimental"));
                         MC.player.sendSystemMessage(Component.literal(""));
-                        MC.player.sendSystemMessage(Component.literal("- ALL PLAYERS WITH OPTIFINE WILL CRASH"));
-                        MC.player.sendSystemMessage(Component.literal("- May cause chunk rendering bugs"));
-                        MC.player.sendSystemMessage(Component.literal("- Ups CPU usage (lower chunk render distance to help)"));
+                        MC.player.sendSystemMessage(Component.translatable("fogofwar.reignofnether.optifine_crash"));
+                        MC.player.sendSystemMessage(Component.translatable("fogofwar.reignofnether.chunk_bugs"));
+                        MC.player.sendSystemMessage(Component.translatable("fogofwar.reignofnether.cpu_usage"));
                         MC.player.sendSystemMessage(Component.literal(""));
-                        MC.player.sendSystemMessage(Component.literal("Use /rts-fog enable again to confirm."));
+                        MC.player.sendSystemMessage(Component.translatable("fogofwar.reignofnether.to_confirm"));
                         MC.player.sendSystemMessage(Component.literal(""));
                     } else {
                         setServerFog(true);

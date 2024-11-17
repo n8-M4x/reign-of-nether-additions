@@ -51,6 +51,7 @@ public enum UnitAction {
     SACRIFICE,
     WITHER_CLOUD,
     SPIN_WEBS,
+    BLOOD_LUST,
 
     ENCHANT_MULTISHOT,
     ENCHANT_MAIMING,

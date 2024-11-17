@@ -1,13 +1,8 @@
 package com.solegendary.reignofnether.sounds;
 
 import com.solegendary.reignofnether.registrars.PacketHandler;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
@@ -20,29 +15,37 @@ public class SoundClientboundPacket {
 
     SoundAction soundAction;
     BlockPos bp;
+    String playerName;
 
-    public static void playSoundOnClient(SoundAction soundAction, BlockPos bp) {
+    public static void playSoundForAllPlayers(SoundAction soundAction, BlockPos bp) {
         PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(),
-                new SoundClientboundPacket(soundAction, bp));
+                new SoundClientboundPacket(soundAction, bp, ""));
     }
-    public static void playSoundOnClient(SoundAction soundAction) {
+    public static void playSoundForAllPlayers(SoundAction soundAction) {
         PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(),
-                new SoundClientboundPacket(soundAction, new BlockPos(0,0,0)));
+                new SoundClientboundPacket(soundAction, new BlockPos(0,0,0), ""));
+    }
+    public static void playSoundForPlayer(SoundAction soundAction, String name) {
+        PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(),
+                new SoundClientboundPacket(soundAction, new BlockPos(0,0,0), name));
     }
 
-    public SoundClientboundPacket(SoundAction soundAction, BlockPos bp) {
+    public SoundClientboundPacket(SoundAction soundAction, BlockPos bp, String playerName) {
         this.soundAction = soundAction;
         this.bp = bp;
+        this.playerName = playerName;
     }
 
     public SoundClientboundPacket(FriendlyByteBuf buffer) {
         this.soundAction = buffer.readEnum(SoundAction.class);
         this.bp = buffer.readBlockPos();
+        this.playerName = buffer.readUtf();
     }
 
     public void encode(FriendlyByteBuf buffer) {
         buffer.writeEnum(this.soundAction);
         buffer.writeBlockPos(this.bp);
+        buffer.writeUtf(this.playerName);
     }
 
     // server-side packet-consuming functions
@@ -52,8 +55,12 @@ public class SoundClientboundPacket {
         ctx.get().enqueueWork(() -> {
             DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
                     () -> () -> {
-                        if (bp.equals(new BlockPos(0,0,0)))
-                            SoundClientEvents.playSoundForPlayer(soundAction);
+                        if (bp.equals(new BlockPos(0,0,0))) {
+                            if (playerName.isBlank())
+                                SoundClientEvents.playSoundForAllPlayers(soundAction);
+                            else
+                                SoundClientEvents.playSoundForPlayer(soundAction, playerName);
+                        }
                         else
                             SoundClientEvents.playSoundForAction(soundAction, bp);
                         success.set(true);

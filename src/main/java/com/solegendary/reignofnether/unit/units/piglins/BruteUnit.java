@@ -1,6 +1,7 @@
 package com.solegendary.reignofnether.unit.units.piglins;
 
 import com.solegendary.reignofnether.ability.Ability;
+import com.solegendary.reignofnether.ability.abilities.Bloodlust;
 import com.solegendary.reignofnether.ability.abilities.ToggleShield;
 import com.solegendary.reignofnether.hud.AbilityButton;
 import com.solegendary.reignofnether.keybinds.Keybindings;
@@ -16,6 +17,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,6 +32,7 @@ import net.minecraft.world.entity.monster.piglin.PiglinBrute;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -101,7 +104,6 @@ public class BruteUnit extends PiglinBrute implements Unit, AttackerUnit {
     public float getUnitArmorValue() {return armorValue;}
     public int getPopCost() {return popCost;}
     public boolean getWillRetaliate() {return willRetaliate;}
-    public int getAttackCooldown() {return (int) (20 / attacksPerSecond);}
     public float getAttacksPerSecond() {return attacksPerSecond;}
     public float getAggroRange() {return aggroRange;}
     public boolean getAggressiveWhenIdle() {return aggressiveWhenIdle && !isVehicle();}
@@ -116,6 +118,13 @@ public class BruteUnit extends PiglinBrute implements Unit, AttackerUnit {
 
     // endregion
 
+    public int getAttackCooldown() {
+        if (bloodlustTicks > 0)
+            return (int) (20 / (attacksPerSecond * BLOODLUST_MULTIPLIER));
+        return (int) (20 / attacksPerSecond);
+    }
+
+    final static public float BLOODLUST_MULTIPLIER = 1.5f;
     final static public float SHIELD_MOVE_MULTIPLIER = 0.5f;
 
     final static public float attackDamage = 5.0f;
@@ -131,6 +140,8 @@ public class BruteUnit extends PiglinBrute implements Unit, AttackerUnit {
     final static public int popCost = ResourceCosts.BRUTE.population;
     public int maxResources = 100;
 
+    public int bloodlustTicks = 0;
+
     public boolean isHoldingUpShield = false;
 
     private final List<AbilityButton> abilityButtons = new ArrayList<>();
@@ -140,11 +151,19 @@ public class BruteUnit extends PiglinBrute implements Unit, AttackerUnit {
     public BruteUnit(EntityType<? extends PiglinBrute> entityType, Level level) {
         super(entityType, level);
 
-        ToggleShield ab1 = new ToggleShield(this);
-        this.abilities.add(ab1);
+        ToggleShield toggleShield = new ToggleShield(this);
+        this.abilities.add(toggleShield);
+        Bloodlust bloodlust = new Bloodlust(this);
+        this.abilities.add(bloodlust);
         if (level.isClientSide()) {
-            this.abilityButtons.add(ab1.getButton(Keybindings.keyQ));
+            this.abilityButtons.add(toggleShield.getButton(Keybindings.keyQ));
+            this.abilityButtons.add(bloodlust.getButton(Keybindings.keyW));
         }
+    }
+
+    @Override
+    protected boolean onSoulSpeedBlock() {
+        return false;
     }
 
     @Override
@@ -176,6 +195,9 @@ public class BruteUnit extends PiglinBrute implements Unit, AttackerUnit {
         super.tick();
         Unit.tick(this);
         AttackerUnit.tick(this);
+
+        if (bloodlustTicks > 0)
+            bloodlustTicks -= 1;
     }
 
     public void initialiseGoals() {
@@ -183,7 +205,7 @@ public class BruteUnit extends PiglinBrute implements Unit, AttackerUnit {
         this.moveGoal = new MoveToTargetBlockGoal(this, false, 0);
         this.targetGoal = new SelectedTargetGoal<>(this, true, true);
         this.garrisonGoal = new GarrisonGoal(this);
-        this.attackGoal = new MeleeAttackUnitGoal(this, getAttackCooldown(), false);
+        this.attackGoal = new MeleeAttackUnitGoal(this, false);
         this.attackBuildingGoal = new MeleeAttackBuildingGoal(this);
         this.returnResourcesGoal = new ReturnResourcesGoal(this);
 

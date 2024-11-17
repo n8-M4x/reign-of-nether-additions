@@ -34,7 +34,11 @@ public class FogOfWarServerEvents {
 
     public static void setEnabled(boolean value) {
         enabled = value;
-        sendMessageToAllPlayers((enabled ? "Enabled" : "Disabled") + " fog of war for all players", true);
+        if (enabled)
+            sendMessageToAllPlayers("server.reignofnether.enabled_fog_of_war", true);
+        else
+            sendMessageToAllPlayers("server.reignofnether.disabled_fog_of_war", true);
+
         syncClientFog();
     }
 

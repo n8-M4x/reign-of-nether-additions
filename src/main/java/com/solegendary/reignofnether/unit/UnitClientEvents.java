@@ -2,6 +2,8 @@ package com.solegendary.reignofnether.unit;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Vector3d;
+import com.solegendary.reignofnether.ability.abilities.ThrowLingeringHarmingPotion;
+import com.solegendary.reignofnether.ability.abilities.ThrowLingeringRegenPotion;
 import com.solegendary.reignofnether.alliance.AllianceSystem;
 import com.solegendary.reignofnether.building.*;
 import com.solegendary.reignofnether.building.buildings.shared.AbstractBridge;
@@ -29,10 +31,7 @@ import com.solegendary.reignofnether.unit.units.monsters.ZoglinUnit;
 import com.solegendary.reignofnether.unit.units.piglins.BruteUnit;
 import com.solegendary.reignofnether.unit.units.piglins.GhastUnit;
 import com.solegendary.reignofnether.unit.units.piglins.HoglinUnit;
-import com.solegendary.reignofnether.unit.units.villagers.EvokerUnit;
-import com.solegendary.reignofnether.unit.units.villagers.IronGolemUnit;
-import com.solegendary.reignofnether.unit.units.villagers.RavagerUnit;
-import com.solegendary.reignofnether.unit.units.villagers.VindicatorUnit;
+import com.solegendary.reignofnether.unit.units.villagers.*;
 import com.solegendary.reignofnether.util.Faction;
 import com.solegendary.reignofnether.util.MiscUtil;
 import com.solegendary.reignofnether.util.MyMath;
@@ -242,7 +241,11 @@ public class UnitClientEvents {
     private static void resolveMoveAction() {
         // follow friendly unit
         if (preselectedUnits.size() == 1 && !targetingSelf()) {
-            sendUnitCommand(UnitAction.FOLLOW);
+            if (hudSelectedEntity instanceof WitchUnit witchUnit) {
+                sendUnitCommand(UnitAction.THROW_LINGERING_REGEN_POTION);
+            } else {
+                sendUnitCommand(UnitAction.FOLLOW);
+            }
         }
         // move to ground pos (disabled during camera manip)
         else if (!Keybindings.altMod.isDown() && selectedUnits.size() > 0 && MC.level != null) {
@@ -395,6 +398,7 @@ public class UnitClientEvents {
     /**
      * Add and update entities from clientside action
      */
+
     @SubscribeEvent
     public static void onEntityJoin(EntityJoinLevelEvent evt) {
         Entity entity = evt.getEntity();
@@ -515,7 +519,11 @@ public class UnitClientEvents {
                      getPlayerToEntityRelationship(preselectedUnits.get(0)) == Relationship.HOSTILE ||
                      ResourceSources.isHuntableAnimal(preselectedUnits.get(0)))) {
 
-                    sendUnitCommand(UnitAction.ATTACK);
+                     if (hudSelectedEntity instanceof WitchUnit witchUnit) {
+                         sendUnitCommand(UnitAction.THROW_LINGERING_HARMING_POTION);
+                     } else {
+                         sendUnitCommand(UnitAction.ATTACK);
+                     }
                 }
                 // right click -> attack unfriendly building
                 else if (hudSelectedEntity instanceof AttackerUnit &&

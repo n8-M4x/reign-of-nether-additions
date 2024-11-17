@@ -35,8 +35,8 @@ public class Wave {
     }
 
     private static final List<EntityType<? extends Mob>> TIER_1_UNITS = List.of(
-            EntityRegistrar.ZOMBIE_UNIT.get(),
-            EntityRegistrar.ZOMBIE_PIGLIN_UNIT.get()
+            EntityRegistrar.ZOMBIE_PIGLIN_UNIT.get(),
+            EntityRegistrar.ZOMBIE_UNIT.get()
     );
     private static final List<EntityType<? extends Mob>> TIER_2_UNITS = List.of(
             EntityRegistrar.HUSK_UNIT.get(),
@@ -75,6 +75,12 @@ public class Wave {
         new Wave(12, 60, 4),
         new Wave(13, 65, 5),
         new Wave(14, 70, 5),
-        new Wave(15, 75, 5)
+        new Wave(15, 75, 5),
+
+        new Wave(16, 85, 5),
+        new Wave(17, 100, 5),
+        new Wave(18, 120, 5),
+        new Wave(19, 145, 5),
+        new Wave(20, 175, 5)
     );
 }
