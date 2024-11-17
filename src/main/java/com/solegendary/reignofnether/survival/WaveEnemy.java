@@ -4,7 +4,10 @@ import com.solegendary.reignofnether.building.Building;
 import com.solegendary.reignofnether.building.BuildingServerEvents;
 import com.solegendary.reignofnether.unit.UnitAction;
 import com.solegendary.reignofnether.unit.UnitServerEvents;
+import com.solegendary.reignofnether.unit.goals.MeleeAttackBuildingGoal;
+import com.solegendary.reignofnether.unit.goals.MeleeAttackUnitGoal;
 import com.solegendary.reignofnether.unit.interfaces.AttackerUnit;
+import com.solegendary.reignofnether.unit.interfaces.RangedAttackerUnit;
 import com.solegendary.reignofnether.unit.interfaces.Unit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -36,8 +39,15 @@ public class WaveEnemy {
     public void tick(long ticksToAdd) {
         ticks += ticksToAdd;
 
+        boolean isAttacking = unit.getTargetGoal().getTarget() != null;
+        if (!isAttacking &&
+            unit instanceof AttackerUnit aUnit &&
+            aUnit.getAttackBuildingGoal() instanceof MeleeAttackBuildingGoal mabg &&
+            mabg.isAttacking())
+            isAttacking = true;
+
         BlockPos onPos = getEntity().getOnPos();
-        if (onPos.equals(lastOnPos))
+        if (onPos.equals(lastOnPos) && !isAttacking)
             idleTicks += ticksToAdd;
         else
             idleTicks = 0;

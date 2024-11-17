@@ -81,7 +81,8 @@ public class SurvivalServerEvents {
             SoundClientboundPacket.playSoundForAllPlayers(SoundAction.RANDOM_CAVE_AMBIENCE);
             setToStartingNightTime();
         }
-        if (lastTime <= TimeUtils.DUSK + 100 && normTime > TimeUtils.DUSK + 100) {
+        if (lastTime <= TimeUtils.DUSK + getDifficultyTimeModifier() + 100 &&
+            normTime > TimeUtils.DUSK + getDifficultyTimeModifier() + 100) {
             startNextWave((ServerLevel) evt.level);
         }
         if (lastTime <= TimeUtils.DAWN && normTime > TimeUtils.DAWN && nextWave.number > 1) {
@@ -102,7 +103,7 @@ public class SurvivalServerEvents {
         for (WaveEnemy enemy : enemies)
             enemy.tick(TICK_INTERVAL);
 
-        lastTime = time;
+        lastTime = normTime;
         lastEnemyCount = enemyCount;
     }
 
@@ -195,7 +196,7 @@ public class SurvivalServerEvents {
     }
 
     public static void setToStartingNightTime() {
-        serverLevel.setDayTime(TimeUtils.DAWN + getDifficultyTimeModifier());
+        serverLevel.setDayTime(TimeUtils.DUSK + getDifficultyTimeModifier());
     }
 
     public static boolean isEnabled() { return isEnabled; }
@@ -267,7 +268,7 @@ public class SurvivalServerEvents {
                     || BuildingUtils.isPosInsideAnyBuilding(level.isClientSide(), spawnBp)
                     || BuildingUtils.isPosInsideAnyBuilding(level.isClientSide(), spawnBp.above()));
 
-            EntityType<? extends Mob> monsterType = Wave.getRandomUnitOfTier(1);
+            EntityType<? extends Mob> monsterType = nextWave.getRandomUnitOfTier();
 
             if (spawnBs.getMaterial().isLiquid())
                 spawnBp = spawnBp.above();
@@ -279,7 +280,7 @@ public class SurvivalServerEvents {
             for (Entity entity : entities) {
                 if (spawnBs.getMaterial().isLiquid()) {
 
-                    level.setBlockAndUpdate(spawnBp, Blocks.ICE.defaultBlockState());
+                    level.setBlockAndUpdate(spawnBp, Blocks.FROSTED_ICE.defaultBlockState());
 
                     List<BlockPos> bps = List.of(spawnBp.north(), spawnBp.east(), spawnBp.south(), spawnBp.west(),
                             spawnBp.north().east(),
@@ -293,7 +294,7 @@ public class SurvivalServerEvents {
                         if (bs.getMaterial().isLiquid() ||
                             bs.getMaterial() == Material.WATER_PLANT ||
                             bs.getMaterial() == Material.REPLACEABLE_WATER_PLANT)
-                            level.setBlockAndUpdate(bp, Blocks.ICE.defaultBlockState());
+                            level.setBlockAndUpdate(bp, Blocks.FROSTED_ICE.defaultBlockState());
                     }
                 }
                 if (entity instanceof Unit unit)
