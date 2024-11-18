@@ -18,6 +18,11 @@ Features
 
     - REMEMBER TO LOCK THIS BEFORE RELEASE!
 
+
+[🟡] Wave Survival (Alpha Test)
+    - Disabled in the main release, see #wavesurvivalalphatest for a test jar
+    - This will be updated over the upcoming weeks until it's ready for full release
+
 [✔] Bloodlust ability
     - Unlockable active ability for Brutes and Headhunters
     - Researched at the Fortress (250 all resources, 150s)
@@ -43,10 +48,6 @@ Bugfixes
 
 Quality of Life Features
 ------------------------
-[✔] Added a gamemode selector next to faction selction buttons
-    - Used to swap between Standard, Wave Survival and future gamemodes
-    - Once a player joins the match, the game mode they chose is locked for everyone until /rts-reset is used
-    - Mapmakers can use /gamerule disallowWaveSurvival to prevent players from choosing wave survival
 [✔] Removing control groups now requires SHIFT + right-click
 [✔] RTS data now saves every 60 seconds to reduce chance of losing unit/building control on a server crash
 [✔] Added sounds when you make or disband an alliance
