@@ -5,6 +5,7 @@ import com.solegendary.reignofnether.building.Building;
 import com.solegendary.reignofnether.building.BuildingServerEvents;
 import com.solegendary.reignofnether.building.BuildingUtils;
 import com.solegendary.reignofnether.player.PlayerServerEvents;
+import com.solegendary.reignofnether.player.RTSPlayer;
 import com.solegendary.reignofnether.sounds.SoundAction;
 import com.solegendary.reignofnether.sounds.SoundClientboundPacket;
 import com.solegendary.reignofnether.time.TimeUtils;
@@ -178,12 +179,14 @@ public class SurvivalServerEvents {
         }
     }
 
+    // standard vanilla length is 20mins for a full day/night cycle (24000)
+    // 1min == 1200, but is applied twice per cycle (dawn and dusk), so effectively 1min == 600
     public static long getDifficultyTimeModifier() {
         return switch (difficulty) {
-            default -> 0; // 10mins each day/night
-            case MEDIUM -> 2400; // 8mins each day/night
-            case HARD -> 4800; // 6mins each day/night
-            case EXTREME -> 7200; // 4mins each day/night
+            default -> 3000; // 15mins per day
+            case MEDIUM -> 4800; // 12mins per day
+            case HARD -> 6600; // 9mins per day
+            case EXTREME -> 8400; // 6mins per day
         };
     }
 
@@ -202,8 +205,10 @@ public class SurvivalServerEvents {
     public static boolean isEnabled() { return isEnabled; }
 
     public static boolean isStarted() {
-        return !BuildingServerEvents.getBuildings().isEmpty() &&
-                !PlayerServerEvents.rtsPlayers.isEmpty();
+        for (RTSPlayer player : PlayerServerEvents.rtsPlayers)
+            if (BuildingUtils.getTotalCompletedBuildingsOwned(false, player.name) > 0)
+                return true;
+        return false;
     }
 
     public static List<WaveEnemy> getCurrentEnemies() {
