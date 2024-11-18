@@ -11,7 +11,8 @@ Features
 --------
 [🟡] Wave Survival
     [🟡] Save on exit
-    [❌] Units sometimes get stuck without walking across water
+    [❌] Frostwalker sometimes doesn't work (because of kelp?)
+    [❌] Frostwalker doesn't work on lava
     [❌] Cave sounds are localised in the world
     [❌] Check that defeat doesn't bug out the world
 
