@@ -100,8 +100,12 @@ public class SpinWebs extends Ability {
 
     @Override
     public void use(Level level, Unit unitUsing, BlockPos targetBp) {
+        if (!isOffCooldown())
+            return;
 
-        if (!level.isClientSide() && !((LivingEntity) unitUsing).isVehicle()) {
+        boolean isVehicle = ((LivingEntity) unitUsing).isVehicle();
+
+        if (!level.isClientSide() && !isVehicle) {
             BlockPos limitedBp = MyMath.getXZRangeLimitedBlockPos(((LivingEntity) unitUsing).getOnPos(), targetBp, range);
 
             BlockPos originBp = MiscUtil.getHighestNonAirBlock(level, limitedBp, true);
@@ -119,14 +123,16 @@ public class SpinWebs extends Ability {
                     webs.add(new WebBlock(bp.above().above()));
             }
         } else if (level.isClientSide()) {
-            if (((LivingEntity) unitUsing).isVehicle()) {
+            if (isVehicle) {
                 HudClientEvents.showTemporaryMessage(I18n.get("abilities.reignofnether.spin_webs.error1"));
                 return;
             }
         }
-        this.setToMaxCooldown();
-        if (!level.isClientSide())
-            AbilityClientboundPacket.sendSetCooldownPacket(((Entity) unitUsing).getId(), action, cooldownMax);
+        if (!isVehicle) {
+            this.setToMaxCooldown();
+            if (!level.isClientSide())
+                AbilityClientboundPacket.sendSetCooldownPacket(((Entity) unitUsing).getId(), action, cooldownMax);
+        }
     }
 
     public void tick(Level level) {

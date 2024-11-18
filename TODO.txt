@@ -44,23 +44,22 @@ Bugfixes
 
 Quality of Life Features
 ------------------------
-[🟡] Added a gamemode selector next to faction selction buttons
+[✔] Added a gamemode selector next to faction selction buttons
     - Used to swap between Standard, Wave Survival and future gamemodes
     - Once a player joins the match, the game mode they chose is locked for everyone until /rts-reset is used
     - Mapmakers can use /gamerule disallowWaveSurvival to prevent players from choosing wave survival
-[🟡] Removing control groups now requires SHIFT + right-click
-[🟡] RTS data now saves every 60 seconds to reduce chance of losing unit/building control on a server crash
-[🟡] Added sounds when you make or disband an alliance
-[🟡] Added name checks to network packets to prevent exploits
-[🟡] If animals can't spawn at the required range around your capitol, spawning is reattempted at a closer range
+[✔] Removing control groups now requires SHIFT + right-click
+[✔] RTS data now saves every 60 seconds to reduce chance of losing unit/building control on a server crash
+[✔] Added sounds when you make or disband an alliance
+[✔] Added name checks to network packets to prevent exploits
+[✔] If animals can't spawn at the required range around your capitol, spawning is reattempted at a closer range
 [✔] Portals being placed on overworld terrain show a yellow indicator
 
-[🟡] Workers no longer collide with other units
-[❌] Spider Webs can now be autocast by right-clicking it
+[✔] Workers no longer collide with other units
+[✔] Spider Webs can now be autocast by right-clicking it
     - When active, the first unit they attack will be webbed if off cooldown
-    - need to send serverbound packet for this
 
-[🟡] Witch potions can now be thrown by right-clicking a unit
+[✔] Witch potions can now be thrown by right-clicking a unit
     - Right-clicking a friendly unit throws a regen potion
     - Right-clicking an enemy unit throws a harming potion
     - Only one potion is thrown at a time if multiple witches are selected
