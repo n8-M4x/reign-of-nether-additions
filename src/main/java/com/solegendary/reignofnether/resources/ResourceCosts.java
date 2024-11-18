@@ -52,11 +52,11 @@ public class ResourceCosts {
 
     // Villagers
     public static ResourceCost VILLAGER = ResourceCost.Unit(50,0,0,15,1);
-    public static ResourceCost IRON_GOLEM = ResourceCost.Unit(0,50,200,40,4);
+    public static ResourceCost IRON_GOLEM = ResourceCost.Unit(0,50,250,45,4);
     public static ResourceCost PILLAGER = ResourceCost.Unit(120,80,0,32,3);
     public static ResourceCost VINDICATOR = ResourceCost.Unit(170,0,0,32,3);
-    public static ResourceCost WITCH = ResourceCost.Unit(100,100,100,35,3);
-    public static ResourceCost EVOKER = ResourceCost.Unit(150,0,150,35,3);
+    public static ResourceCost WITCH = ResourceCost.Unit(90,90,90,35,3);
+    public static ResourceCost EVOKER = ResourceCost.Unit(150,0,120,35,3);
     public static ResourceCost RAVAGER = ResourceCost.Unit(400,50,150,60,7);
 
     // Piglins
@@ -96,7 +96,7 @@ public class ResourceCosts {
     public static ResourceCost LIBRARY = ResourceCost.Building(0,300,100, 0);
     public static ResourceCost WATCHTOWER = ResourceCost.Building(0,100,75, 0);
     public static ResourceCost CASTLE = ResourceCost.Building(0,400,300, 0);
-    public static ResourceCost IRON_GOLEM_BUILDING = ResourceCost.Building(0,50,200, 0);
+    public static ResourceCost IRON_GOLEM_BUILDING = ResourceCost.Building(0,50,250, 0);
 
     // Piglins
     public static ResourceCost CENTRAL_PORTAL = ResourceCost.Building(0,300,150, 10);

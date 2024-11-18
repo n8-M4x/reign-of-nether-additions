@@ -89,6 +89,7 @@ Villagers
 [✔] Watchtower: -25 ore
 [✔] Vindicators: -5 food, +5hp, -3s
 [✔] Pillager: -5 wood, -3s
-[✔] Evoker Fangs: -1s cd
-[✔] Iron Golem: -10hp, -0.05as
+[✔] Witch: -10 all resources
+[✔] Evoker: -30 ore
+[✔] Iron Golem: +50 ore, +5s (including when built by workers)
 

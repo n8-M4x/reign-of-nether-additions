@@ -57,7 +57,7 @@ public class IronGolemBuilding extends Building {
         this.woodCost = cost.wood;
         this.oreCost = cost.ore;
         this.popSupply = cost.population;
-        this.buildTimeModifier = 3f;
+        this.buildTimeModifier = 3.4f;
 
         this.startingBlockTypes.add(Blocks.JUNGLE_FENCE);
     }
