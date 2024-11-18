@@ -232,10 +232,9 @@ public class SpiderUnit extends Spider implements Unit, AttackerUnit, Convertabl
     @Override
     public boolean doHurtTarget(@NotNull Entity pEntity) {
         if (super.doHurtTarget(pEntity)) {
-            if (pEntity instanceof Unit unit)
-                for (Ability ability : abilities)
-                    if (ability instanceof SpinWebs spinWebs && spinWebs.autocast && spinWebs.isOffCooldown())
-                        spinWebs.use(this.level, this, ((Entity) unit).getOnPos());
+            for (Ability ability : abilities)
+                if (ability instanceof SpinWebs spinWebs && spinWebs.autocast && spinWebs.isOffCooldown())
+                    spinWebs.use(this.level, this, pEntity.getOnPos());
             return true;
         } else {
             return false;
