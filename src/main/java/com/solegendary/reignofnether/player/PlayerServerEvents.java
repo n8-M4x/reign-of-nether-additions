@@ -625,7 +625,7 @@ public class PlayerServerEvents {
             } else if (rtsPlayers.size() == 1) {
                 // Single remaining player - declare victory
                 RTSPlayer winner = rtsPlayers.get(0);
-                sendMessageToAllPlayers("server.reignofnether.victory", true, winner.name);
+                sendMessageToAllPlayers("server.reignofnether.victorious", true, winner.name);
                 PlayerClientboundPacket.victory(winner.name);
             }
         }

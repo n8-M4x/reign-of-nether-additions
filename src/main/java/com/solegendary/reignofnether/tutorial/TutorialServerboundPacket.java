@@ -42,7 +42,6 @@ public class TutorialServerboundPacket {
         ctx.get().enqueueWork(() -> {
             switch (action) {
                 case SAVE_STAGE -> TutorialServerEvents.saveStage(stage);
-
                 case SET_DAY_TIME -> TutorialServerEvents.setDayTime();
                 case SET_NIGHT_TIME -> TutorialServerEvents.setNightTime();
                 case SPAWN_ANIMALS -> TutorialServerEvents.spawnAnimals();

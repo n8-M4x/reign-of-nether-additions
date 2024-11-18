@@ -86,11 +86,11 @@ public class Bloodlust extends Ability {
 
         if (unit instanceof HeadhunterUnit headhunterUnit) {
             headhunterUnit.bloodlustTicks = duration;
-            headhunterUnit.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, duration, 1));
+            headhunterUnit.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, duration, 0));
 
         } else if (unit instanceof BruteUnit bruteUnit) {
             bruteUnit.bloodlustTicks = duration;
-            bruteUnit.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, duration, 1));
+            bruteUnit.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, duration, 0));
         }
     }
 

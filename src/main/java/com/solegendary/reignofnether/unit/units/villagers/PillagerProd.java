@@ -51,11 +51,6 @@ public class PillagerProd extends ProductionItem {
             FormattedCharSequence.forward("", Style.EMPTY),
             FormattedCharSequence.forward(I18n.get("units.villagers.reignofnether.pillager.tooltip1"), Style.EMPTY)
         ));
-        if (ResearchClient.hasResearch(ResearchPillagerCrossbows.itemName)) {
-            tooltipLines.add(FormattedCharSequence.forward("", Style.EMPTY));
-            tooltipLines.add(FormattedCharSequence.forward(I18n.get("units.villagers.reignofnether.pillager.tooltip2"), Style.EMPTY.withBold(true)));
-        }
-
         return new Button(
             PillagerProd.itemName,
             14,

@@ -16,10 +16,17 @@ Features
     - instead of scaffolding underneath, place some other brick blocks
     - add a UI later to show the effects, for now just have a number next to name showing how much ore to next tier)
 
-
+[❌] Mapmaker mode:
+    - Provide a bunch of neutral buildings to place
+        - Tavern to recruit mercenaries
+        - Healing fountain
+        - Mini beacon
 
 Bugfixes
 --------
+
+[❌] With high lag, units waiting to be queued at 99% become uncancellable
+    - https://discord.com/channels/1294953087567663135/1306165740730322986
 
 [❌] Central portals sometimes do not ignite (and this somehow makes grunts spawn underground)
 
@@ -57,15 +64,8 @@ Balancing
     - villagers are most vulnerable due to their lategame nature
     - copy the wc3 ability of turning villagers into temporary militia?
         - give them a helmet and stone sword upgrade for +2 damage
+        - turn back on isPushable
 
 [❌] Implement damage dropoffs to buildings for charged creepers
     - and provide a radius indicator for them when hovering over explode
-
-
-
-
-
-
-
-
 

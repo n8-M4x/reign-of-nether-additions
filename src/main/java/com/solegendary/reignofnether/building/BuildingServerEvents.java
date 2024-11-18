@@ -69,6 +69,22 @@ public class BuildingServerEvents {
 
     public static final Random random = new Random();
 
+    private static final int SAVE_TICKS_MAX = 1200;
+    private static int saveTicks = 0;
+    @SubscribeEvent
+    public static void onServerTick(TickEvent.ServerTickEvent evt) {
+        if (evt.phase != TickEvent.Phase.END)
+            return;
+        saveTicks += 1;
+        if (saveTicks >= SAVE_TICKS_MAX) {
+            ServerLevel level = evt.getServer().getLevel(Level.OVERWORLD);
+            if (level != null) {
+                saveBuildings(level);
+                saveTicks = 0;
+            }
+        }
+    }
+
     public static void saveBuildings(ServerLevel level) {
         BuildingSaveData buildingData = BuildingSaveData.getInstance(serverLevel);
         buildingData.buildings.clear();
@@ -168,7 +184,7 @@ public class BuildingServerEvents {
     }
 
     @SubscribeEvent
-    public static void onServerStop(ServerStoppingEvent evt) {
+    public static void onServerStopping(ServerStoppingEvent evt) {
         ServerLevel level = evt.getServer().getLevel(Level.OVERWORLD);
         if (level != null) {
             saveNetherZones(level);

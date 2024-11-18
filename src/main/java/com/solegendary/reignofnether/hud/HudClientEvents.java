@@ -164,7 +164,6 @@ public class HudClientEvents {
         ItemStack itemStack = ((LivingEntity) entity).getItemBySlot(EquipmentSlot.HEAD);
 
         if (itemStack.getItem() instanceof BannerItem) {
-            entity.setItemSlot(EquipmentSlot.HEAD, itemStack);
             name += " " + I18n.get("units.reignofnether.captain");
         }
         if (entity.getPassengers().size() == 1) {
@@ -1086,6 +1085,7 @@ public class HudClientEvents {
         // Start buttons (spectator only)
         // ------------------------------
         if (!PlayerClientEvents.isRTSPlayer && !PlayerClientEvents.rtsLocked) {
+            /*
             Button gamemodeButton = ClientGameModeHelper.getButton();
             if (gamemodeButton != null && !gamemodeButton.isHidden.get() && !TutorialClientEvents.isEnabled()) {
                 gamemodeButton.render(evt.getPoseStack(),
@@ -1096,6 +1096,7 @@ public class HudClientEvents {
                 );
                 renderedButtons.add(gamemodeButton);
             }
+             */
             if (!StartButtons.villagerStartButton.isHidden.get()) {
                 StartButtons.villagerStartButton.render(evt.getPoseStack(),
                     screenWidth - (StartButtons.ICON_SIZE * 6),

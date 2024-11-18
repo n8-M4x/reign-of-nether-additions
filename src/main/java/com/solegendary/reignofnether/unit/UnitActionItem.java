@@ -57,7 +57,6 @@ public class UnitActionItem {
         BlockPos preselectedBlockPos,
         BlockPos selectedBuildingPos
     ) {
-
         this.ownerName = ownerName;
         this.action = action;
         this.unitId = unitId;
@@ -283,6 +282,11 @@ public class UnitActionItem {
                     if (unit instanceof ConvertableUnit cUnit) {
                         cUnit.setShouldDiscard(true);
                     }
+                }
+                case AUTOCAST -> {
+                    for (Ability ability : unit.getAbilities())
+                        if (ability.canAutocast)
+                            ability.autocast = !ability.autocast;
                 }
 
                 // any other Ability not explicitly defined here

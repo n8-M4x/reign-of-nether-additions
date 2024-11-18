@@ -16,10 +16,10 @@ public class SurvivalClientEvents {
 
     public static int getMinutesPerDay() {
         return switch (SurvivalClientEvents.difficulty) {
-            case EASY -> 20;
-            case MEDIUM -> 16;
-            case HARD -> 12;
-            case EXTREME -> 8;
+            case EASY -> 15;
+            case MEDIUM -> 12;
+            case HARD -> 9;
+            case EXTREME -> 6;
         };
     }
 

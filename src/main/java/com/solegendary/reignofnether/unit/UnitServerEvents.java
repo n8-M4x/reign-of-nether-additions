@@ -92,21 +92,44 @@ public class UnitServerEvents {
 
     public static final ArrayList<UnitSave> savedUnits = new ArrayList<>();
 
-    @SubscribeEvent
-    public static void saveUnits(ServerStoppingEvent evt) {
-        ServerLevel level = evt.getServer().getLevel(Level.OVERWORLD);
-        if (level == null)
-            return;
 
+    private static final int SAVE_TICKS_MAX = 1200;
+    private static int saveTicks = 0;
+    @SubscribeEvent
+    public static void onServerTick(TickEvent.ServerTickEvent evt) {
+        if (evt.phase != TickEvent.Phase.END)
+            return;
+        saveTicks += 1;
+        if (saveTicks >= SAVE_TICKS_MAX) {
+            ServerLevel level = evt.getServer().getLevel(Level.OVERWORLD);
+            if (level != null) {
+                saveUnits(level);
+                saveTicks = 0;
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onServerStopping(ServerStoppingEvent evt) {
+        ServerLevel level = evt.getServer().getLevel(Level.OVERWORLD);
+        if (level != null)
+            saveUnits(level);
+    }
+
+    public static void saveUnits(ServerLevel level) {
         UnitSaveData data = UnitSaveData.getInstance(level);
         data.units.clear();
         getAllUnits().forEach(e -> {
             if (e instanceof Unit unit) {
-                GameProfile profile = level.getServer().getProfileCache().get(unit.getOwnerName()).orElse(null);
-                if (profile != null) {
-                    e.getPersistentData().putUUID("OwnerUUID",  profile.getId());
-                } else {
-                    System.out.println("Could not find UUID for owner name: " + unit.getOwnerName());
+                try {
+                    GameProfile profile = level.getServer().getProfileCache().get(unit.getOwnerName()).orElse(null);
+                    if (profile != null) {
+                        e.getPersistentData().putUUID("OwnerUUID",  profile.getId());
+                    } else {
+                        ReignOfNether.LOGGER.warn("Could not find UUID for owner name: " + unit.getOwnerName());
+                    }
+                } catch (IllegalArgumentException ex) {
+                    ReignOfNether.LOGGER.warn("Failed to add UUID to unit data: " + ex.getMessage());
                 }
                 // Save unit data as usual
                 data.units.add(new UnitSave(e.getName().getString(), unit.getOwnerName(), e.getStringUUID()));
@@ -116,7 +139,6 @@ public class UnitServerEvents {
         level.getDataStorage().save();
         ReignOfNether.LOGGER.info("Saved " + getAllUnits().size() + " units");
     }
-
 
     @SubscribeEvent
     public static void loadUnits(ServerStartedEvent evt) {
@@ -605,16 +627,6 @@ public class UnitServerEvents {
             evt.setAmount(evt.getAmount() / 4);
         }
 
-        if (evt.getEntity() instanceof CreeperUnit && (evt.getSource().isExplosion())) {
-            evt.setCanceled(true);
-        }
-
-        // prevent friendly fire from your own/friendly creepers (but still cause knockback)
-        if (evt.getSource().getEntity() instanceof CreeperUnit creeperUnit
-            && getUnitToEntityRelationship(creeperUnit, evt.getEntity()) == Relationship.FRIENDLY) {
-            evt.setCanceled(true);
-        }
-
         if (evt.getSource() == DamageSource.LIGHTNING_BOLT) {
             if (evt.getEntity() instanceof CreeperUnit) {
                 evt.setCanceled(true);
@@ -632,17 +644,7 @@ public class UnitServerEvents {
         if (evt.getEntity() instanceof BruteUnit brute && brute.isHoldingUpShield && (evt.getSource().isProjectile())) {
             evt.setAmount(evt.getAmount() / 3);
         }
-
-        if (evt.getEntity() instanceof CreeperUnit && (evt.getSource().isExplosion())) {
-            evt.setCanceled(true);
-        }
-
-        // prevent friendly fire from your own creepers (but still set off chained explosions and cause knockback)
-        if (evt.getSource().getEntity() instanceof CreeperUnit creeperUnit
-            && getUnitToEntityRelationship(creeperUnit, evt.getEntity()) == Relationship.FRIENDLY) {
-            evt.setCanceled(true);
-        }
-
+        
         if (evt.getSource() == DamageSource.LIGHTNING_BOLT) {
             if (evt.getEntity() instanceof CreeperUnit) {
                 evt.setCanceled(true);
