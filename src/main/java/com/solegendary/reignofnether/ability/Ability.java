@@ -17,6 +17,8 @@ public class Ability {
     public final float radius; // if <= 0, is single target
     public final boolean canTargetEntities;
     public final boolean oneClickOneUse; // if true, a group of units/buildings will use their abilities one by one
+    public boolean canAutocast = false;
+    public boolean autocast = false;
 
     public Ability(UnitAction action, int cooldownMax, float range, float radius, boolean canTargetEntities) {
         this.action = action;

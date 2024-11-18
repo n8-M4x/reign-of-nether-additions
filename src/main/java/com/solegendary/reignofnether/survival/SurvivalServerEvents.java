@@ -27,6 +27,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.EntityLeaveLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ import java.util.Random;
 public class SurvivalServerEvents {
 
     private static boolean isEnabled = false;
-    private static Wave nextWave = Wave.getWave(0);
+    public static Wave nextWave = Wave.getWave(0);
     private static WaveDifficulty difficulty = WaveDifficulty.EASY;
     private static final ArrayList<WaveEnemy> enemies = new ArrayList<>();
     public static final String MONSTER_OWNER_NAME = "Monsters";
@@ -50,6 +51,35 @@ public class SurvivalServerEvents {
     private static long ticks = 0;
 
     private static ServerLevel serverLevel = null;
+
+    public static void saveStage(ServerLevel level) {
+        SurvivalSaveData survivalData = SurvivalSaveData.getInstance(level);
+        survivalData.isEnabled = isEnabled;
+        survivalData.waveNumber = nextWave.number;
+        survivalData.difficulty = difficulty;
+        survivalData.save();
+        level.getDataStorage().save();
+        ReignOfNether.LOGGER.info("saved survival data in serverevents");
+    }
+
+    @SubscribeEvent
+    public static void loadWaveData(ServerStartedEvent evt) {
+        ServerLevel level = evt.getServer().getLevel(Level.OVERWORLD);
+        if (level != null) {
+            SurvivalSaveData survivalData = SurvivalSaveData.getInstance(level);
+            isEnabled = survivalData.isEnabled;
+            nextWave = Wave.getWave(survivalData.waveNumber);
+            difficulty = survivalData.difficulty;
+
+            if (isEnabled()) {
+                SurvivalClientboundPacket.enableAndSetDifficulty(difficulty);
+                SurvivalClientboundPacket.setWaveNumber(nextWave.number);
+            }
+            ReignOfNether.LOGGER.info("loaded survival data: isEnabled: " + isEnabled());
+            ReignOfNether.LOGGER.info("loaded survival data: nextWave: " + nextWave.number);
+            ReignOfNether.LOGGER.info("loaded survival data: difficulty: " + difficulty);
+        }
+    }
 
     @SubscribeEvent
     public static void onLevelTick(TickEvent.LevelTickEvent evt) {
@@ -94,7 +124,7 @@ public class SurvivalServerEvents {
         int enemyCount = getCurrentEnemies().size();
         if (enemyCount < lastEnemyCount && enemyCount <= 3) {
             if (enemyCount == 0)
-                endCurrentWave((ServerLevel) evt.level);
+                waveCleared((ServerLevel) evt.level);
             else if (enemyCount == 1) {
                 PlayerServerEvents.sendMessageToAllPlayers("survival.reignofnether.remaining_enemies_one");
             } else {
@@ -136,6 +166,8 @@ public class SurvivalServerEvents {
             difficulty = diff;
             isEnabled = true;
             SurvivalClientboundPacket.enableAndSetDifficulty(difficulty);
+            if (serverLevel != null)
+                saveStage(serverLevel);
         }
     }
 
@@ -145,6 +177,8 @@ public class SurvivalServerEvents {
         nextWave = Wave.getWave(0);
         difficulty = WaveDifficulty.EASY;
         isEnabled = false;
+        if (serverLevel != null)
+            saveStage(serverLevel);
     }
 
     @SubscribeEvent
@@ -225,15 +259,16 @@ public class SurvivalServerEvents {
     }
 
     // triggered when last enemy is killed
-    public static void endCurrentWave(ServerLevel level) {
+    public static void waveCleared(ServerLevel level) {
         nextWave = Wave.getWave(nextWave.number + 1);
         SurvivalClientboundPacket.setWaveNumber(nextWave.number);
         PlayerServerEvents.sendMessageToAllPlayers("survival.reignofnether.wave_cleared", true);
         SoundClientboundPacket.playSoundForAllPlayers(SoundAction.ALLY);
+        saveStage(level);
     }
 
-    private static final int MONSTER_MAX_SPAWN_RANGE = 120;
-    private static final int MONSTER_MIN_SPAWN_RANGE = 90;
+    private static final int MONSTER_MAX_SPAWN_RANGE = 80;
+    private static final int MONSTER_MIN_SPAWN_RANGE = 60;
 
     public static void spawnMonsterWave(ServerLevel level) {
         Random random = new Random();
@@ -243,20 +278,20 @@ public class SurvivalServerEvents {
             return;
 
         do {
-            Building building = buildings.get(random.nextInt(0, buildings.size()));
-            BlockPos centrePos = building.centrePos;
-
             int spawnAttempts = 0;
             BlockState spawnBs;
             BlockPos spawnBp;
             double distSqrToNearestBuilding = 0;
 
             do {
-                int x = centrePos.getX() + random.nextInt(-MONSTER_MAX_SPAWN_RANGE / 2, MONSTER_MAX_SPAWN_RANGE / 2);
-                int z = centrePos.getZ() + random.nextInt(-MONSTER_MAX_SPAWN_RANGE / 2, MONSTER_MAX_SPAWN_RANGE / 2);
+                Building building = buildings.get(random.nextInt(0, buildings.size()));
+                BlockPos centrePos = building.centrePos;
+
+                int x = centrePos.getX() + random.nextInt(-MONSTER_MAX_SPAWN_RANGE, MONSTER_MAX_SPAWN_RANGE);
+                int z = centrePos.getZ() + random.nextInt(-MONSTER_MAX_SPAWN_RANGE, MONSTER_MAX_SPAWN_RANGE);
                 int y = level.getChunkAt(new BlockPos(x, 0, z)).getHeight(Heightmap.Types.WORLD_SURFACE, x, z);
 
-                spawnBp =  MiscUtil.getHighestNonAirBlock(level, new BlockPos(x, y, z), true);
+                spawnBp = MiscUtil.getHighestNonAirBlock(level, new BlockPos(x, y, z), true);
                 spawnBs = level.getBlockState(spawnBp);
                 spawnAttempts += 1;
                 if (spawnAttempts > 30) {
@@ -265,11 +300,12 @@ public class SurvivalServerEvents {
                 }
                 Vec3 vec3 = new Vec3(x,y,z);
                 Building b = BuildingUtils.findClosestBuilding(false, vec3, (b1) -> true);
-                distSqrToNearestBuilding = b.centrePos.distToCenterSqr(vec3);
+                if (b != null)
+                    distSqrToNearestBuilding = b.centrePos.distToCenterSqr(vec3);
 
             } while (spawnBs.getMaterial() == Material.LEAVES
                     || spawnBs.getMaterial() == Material.WOOD
-                    || distSqrToNearestBuilding < (MONSTER_MIN_SPAWN_RANGE / 2f) * (MONSTER_MIN_SPAWN_RANGE / 2f)
+                    || distSqrToNearestBuilding < (MONSTER_MIN_SPAWN_RANGE) * (MONSTER_MIN_SPAWN_RANGE)
                     || BuildingUtils.isPosInsideAnyBuilding(level.isClientSide(), spawnBp)
                     || BuildingUtils.isPosInsideAnyBuilding(level.isClientSide(), spawnBp.above()));
 

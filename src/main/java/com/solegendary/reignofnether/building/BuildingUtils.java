@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -261,6 +262,7 @@ public class BuildingUtils {
         return false;
     }
 
+    @Nullable
     public static Building findClosestBuilding(boolean isClientSide, Vec3 pos, Predicate<Building> condition) {
         List<Building> buildings;
         if (isClientSide)

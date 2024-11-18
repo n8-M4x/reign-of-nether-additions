@@ -164,7 +164,6 @@ public class HudClientEvents {
         ItemStack itemStack = ((LivingEntity) entity).getItemBySlot(EquipmentSlot.HEAD);
 
         if (itemStack.getItem() instanceof BannerItem) {
-            entity.setItemSlot(EquipmentSlot.HEAD, itemStack);
             name += " " + I18n.get("units.reignofnether.captain");
         }
         if (entity.getPassengers().size() == 1) {

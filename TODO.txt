@@ -10,42 +10,35 @@
 Features
 --------
 [🟡] Wave Survival
-    [❌] Save on exit
+    [🟡] Save on exit
     [❌] Units sometimes get stuck without walking across water
-
     [❌] Cave sounds are localised in the world
     [❌] Check that defeat doesn't bug out the world
-        - should unlock gamemode?
 
+    - REMEMBER TO LOCK THIS BEFORE RELEASE!
 
 [🟡] Bloodlust ability
     - Unlockable active ability for Brutes and Headhunters
     - Researched at the Fortress (250 all resources, 150s)
-    - When used, instantly trades 10hp for 10s of +50% attack speed and +50% movement speed
+    - When used, instantly trades 10hp for 10s of +50% attack speed and +20% movement speed
     - Headhunters cannot bloodlust while mounted
 
 
 Bugfixes
 --------
+[✔] Fixed Illager Captain banners becoming invisible
+[🟡] Fixed crash on exit when neutral units are placed
 [🟡] Mangrove roots are now gatherable (same value as logs)
-
 [🟡] Fixed being unable to exit an ally's garrison
-
 [✔] Hoglins can no longer spawn as neutral baby hoglins from spawn eggs
-
 [🟡] Reworked unit and building data saving when the server shuts down
     - This should reduce the issue of losing control of units/buildings when the server crashes
-
 [🟡] Piglins can now build on all types of blackstone and nether brick
-
 [🟡] Farmland and overworld crops convert into soulsand and nether wart respectively
     - Excludes solid crop blocks like melons and pumpkins
     - Plant blocks replaced by nether blocks no longer drop items
-
 [🟡] Fixed crash related to attacking buildings (again)
-
 [✔] Shroomlight is now gatherable for 120 food
-
 [✔] Various language fixes and additions
 
 
@@ -55,21 +48,23 @@ Quality of Life Features
     - Used to swap between Standard, Wave Survival and future gamemodes
     - Once a player joins the match, the game mode they chose is locked for everyone until /rts-reset is used
     - Mapmakers can use /gamerule disallowWaveSurvival to prevent players from choosing wave survival
-
+[🟡] Removing control groups now requires SHIFT + right-click
+[🟡] RTS data now saves every 60 seconds to reduce chance of losing unit/building control on a server crash
 [🟡] Added sounds when you make or disband an alliance
-
 [🟡] Added name checks to network packets to prevent exploits
-
 [🟡] If animals can't spawn at the required range around your capitol, spawning is reattempted at a closer range
-
 [✔] Portals being placed on overworld terrain show a yellow indicator
+
+[🟡] Workers no longer collide with other units
+[❌] Spider Webs can now be autocast by right-clicking it
+    - When active, the first unit they attack will be webbed if off cooldown
+    - need to send serverbound packet for this
 
 [🟡] Witch potions can now be thrown by right-clicking a unit
     - Right-clicking a friendly unit throws a regen potion
     - Right-clicking an enemy unit throws a harming potion
     - Only one potion is thrown at a time if multiple witches are selected
     - This will NOT be automatically used off cooldown
-
 
 Balancing
 ---------
@@ -84,6 +79,7 @@ Piglins
 [✔] Brute Shields now make brutes immune to knockback when active
 
 Monsters
+[🟡] Creepers now friendly fire
 [✔] Dark Watchtower: -25 ore
 [✔] Husks: -5hp
 [✔] Skeletons & Strays: -10 food, +10 wood
@@ -94,6 +90,7 @@ Villagers
 [✔] Watchtower: -25 ore
 [✔] Vindicators: -5 food, +5hp, -3s
 [✔] Pillager: -5 wood, -3s
+[✔] Evoker Fangs: -1s cd
 [✔] Iron Golem: -10hp, -0.05as
 
 
