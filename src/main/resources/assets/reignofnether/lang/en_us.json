@@ -385,6 +385,7 @@
     "server.reignofnether.surrendered": "surrendered",
     "server.reignofnether.players_remaining": "There are %d RTS player(s) remaining",
     "server.reignofnether.victorious": "%s is victorious!",
+    "server.reignofnether.victory_alliance": "%s and their allies are victorious!",
     "server.reignofnether.match_reset": "Match has been reset!",
     "server.reignofnether.match_locked": "The RTS match has been locked. No new players may join.",
     "server.reignofnether.match_unlocked": "The RTS match has been unlocked. New players may now join.",

@@ -17,7 +17,7 @@ Features
 
     - REMEMBER TO LOCK THIS BEFORE RELEASE!
 
-[🟡] Bloodlust ability
+[✔] Bloodlust ability
     - Unlockable active ability for Brutes and Headhunters
     - Researched at the Fortress (250 all resources, 150s)
     - When used, instantly trades 10hp for 10s of +50% attack speed and +20% movement speed
@@ -27,17 +27,15 @@ Features
 Bugfixes
 --------
 [✔] Fixed Illager Captain banners becoming invisible
-[🟡] Fixed crash on exit when neutral units are placed
-[🟡] Mangrove roots are now gatherable (same value as logs)
-[🟡] Fixed being unable to exit an ally's garrison
+[✔] Fixed crash on exit when neutral units are placed
+[✔] Mangrove roots are now gatherable (same value as logs)
+[✔] Fixed being unable to exit an ally's garrison
 [✔] Hoglins can no longer spawn as neutral baby hoglins from spawn eggs
-[🟡] Reworked unit and building data saving when the server shuts down
-    - This should reduce the issue of losing control of units/buildings when the server crashes
-[🟡] Piglins can now build on all types of blackstone and nether brick
-[🟡] Farmland and overworld crops convert into soulsand and nether wart respectively
+[✔] Piglins can now build on all types of blackstone and nether brick
+[✔] Farmland and overworld crops convert into soulsand and nether wart respectively
     - Excludes solid crop blocks like melons and pumpkins
     - Plant blocks replaced by nether blocks no longer drop items
-[🟡] Fixed crash related to attacking buildings (again)
+[✔] Fixed crash related to attacking buildings (again)
 [✔] Shroomlight is now gatherable for 120 food
 [✔] Various language fixes and additions
 
@@ -68,7 +66,7 @@ Quality of Life Features
 Balancing
 ---------
 [✔] All bridges: +50 wood (ore for piglins)
-[🟡] Random damage dealt to garrisoned units by explosions has been halved
+[✔] Random damage dealt to garrisoned units by explosions has been halved
     - This affects creepers and ghasts
 
 Piglins
@@ -78,7 +76,7 @@ Piglins
 [✔] Brute Shields now make brutes immune to knockback when active
 
 Monsters
-[🟡] Creepers now friendly fire
+[✔] Creepers now friendly fire
 [✔] Dark Watchtower: -25 ore
 [✔] Husks: -5hp
 [✔] Skeletons & Strays: -10 food, +10 wood
@@ -92,34 +90,3 @@ Villagers
 [✔] Evoker Fangs: -1s cd
 [✔] Iron Golem: -10hp, -0.05as
 
-
-
-Languages
----------
-Split "time.reignofnether.time_until" into two strings:
-    "time.reignofnether.time_until_day": "%s until day",
-    "time.reignofnether.time_until_night": "%s until night",
-
-Updated strings:
-    "units.monsters.reignofnether.husk.tooltip1": "A hardy variant of the zombie that is immune ",
-    "units.monsters.reignofnether.husk.tooltip2": "to burning from sunlight.",
-    "research.reignofnether.husks.tooltip1": "Transforms all of your zombies into husks, ",
-    "research.reignofnether.husks.tooltip2": "granting them immunity to sunlight.",
-
-New strings:
-    "abilities.reignofnether.wither_cloud": "Wither Cloud",
-    "abilities.reignofnether.wither_cloud.tooltip1": "Causes the Wither Skeleton to release a cloud",
-    "abilities.reignofnether.wither_cloud.tooltip2": "of deadly wither around it for the next %d seconds.",
-    "abilities.reignofnether.bloodlust": "Bloodlust",
-    "abilities.reignofnether.bloodlust.tooltip1": "Pay %d life to gain 50%% faster attack speed ",
-    "abilities.reignofnether.bloodlust.tooltip2": "and 50%% faster movement for %d seconds.",
-    "research.reignofnether.bloodlust": "Bloodlust",
-    "research.reignofnether.bloodlust.tooltip1": "Unlocks the ability for Brutes and Headhunters to trade ",
-    "research.reignofnether.bloodlust.tooltip2": "life for a temporary boost to attack and move speed.",
-    "time.reignofnether.survival_wave": "Survival Wave: %s",
-    "server.reignofnether.surrendered": "surrendered",
-    "server.reignofnether.victory_alliance": "%s and their allies are victorious!",
-    "server.reignofnether.victory": "%s is victorious!"
-    "survival.reignofnether.wave_cleared": "Your enemies have been defeated... for now.",
-    "survival.reignofnether.remaining_enemies_one": "1 enemy remains",
-    "survival.reignofnether.remaining_enemies": "%d enemies remain",
