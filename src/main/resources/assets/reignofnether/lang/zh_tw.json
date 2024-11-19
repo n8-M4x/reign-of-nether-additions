@@ -122,6 +122,7 @@
   "abilities.reignofnether.spin_webs.tooltip1": "向地面吐出一塊黏性網子",
   "abilities.reignofnether.spin_webs.tooltip2": "蜘蛛網會在 %d 秒後消失。",
   "abilities.reignofnether.spin_webs.tooltip3": "無法在騎乘時使用。",
+  "abilities.reignofnether.spin_webs.tooltip4": "右鍵點擊自動施放。",
   "abilities.reignofnether.spin_webs.error1": "無法在騎乘時使用。",
   "abilities.reignofnether.wither_cloud": "凋零亡語",
   "abilities.reignofnether.wither_cloud.tooltip1": "使凋零骷髏在接下來 %d 秒內，",
@@ -330,7 +331,7 @@
 
   "hud.buttons.reignofnether.on_cooldown": "此能力仍在冷卻中",
 
-  "hud.control_group.reignofnether.control_group": "控制編組 %s（右鍵點擊解散編組）",
+  "hud.control_group.reignofnether.control_group": "控制編組 %s（Shift + 右鍵點擊解散編組）",
 
   "hud.actionbuttons.reignofnether.build_repair": "建造/修理",
   "hud.actionbuttons.reignofnether.gather": "採集",
@@ -381,8 +382,10 @@
   "server.reignofnether.lost_capitol": "%s 失去他們的首府建築，若在 %d 秒前未成功重建，將在地圖上暴露行蹤！",
   "server.reignofnether.lost_all": "失去所有單位和建築物",
   "server.reignofnether.lost_capitol_defeat": "失去他們的首府建築",
+  "server.reignofnether.surrendered": "投降",
   "server.reignofnether.players_remaining": "還剩下 %d 名 RTS 玩家",
   "server.reignofnether.victorious": "%s 獲勝了！",
+  "server.reignofnether.victory_alliance": "%s 和他的盟友獲勝了！",
   "server.reignofnether.match_reset": "本局已重設！",
   "server.reignofnether.match_locked": "本局 RTS 已鎖定，新玩家暫時無法加入。",
   "server.reignofnether.match_unlocked": "本局 RTS 已解鎖，新玩家可以加入。",
@@ -470,7 +473,7 @@
   "research.reignofnether.ravager_cavalry.tooltip2": "獲得能像迫擊砲射擊般的爆炸箭。",
   "research.reignofnether.resource_capacity": "資源容量",
   "research.reignofnether.resource_capacity.tooltip1": "提升工人攜帶的資源量從 100 至 200，",
-  "research.reignofnether.resource_capacity.tooltip2": "工人仍會在攜帶的資源超過 50 時返回存放資源。",
+  "research.reignofnether.resource_capacity.tooltip2": "工人仍會在攜帶的資源超過 100 時返回存放資源。",
   "research.reignofnether.silverfish": "蠹魚",
   "research.reignofnether.silverfish.tooltip1": "使建築物被摧毀時",
   "research.reignofnether.silverfish.tooltip2": "有 %d 機率生成蠹魚。",
