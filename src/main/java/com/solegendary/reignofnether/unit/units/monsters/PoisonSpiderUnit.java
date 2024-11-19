@@ -217,6 +217,9 @@ public class PoisonSpiderUnit extends CaveSpider implements Unit, AttackerUnit {
         if (super.doHurtTarget(pEntity)) {
             if (pEntity instanceof LivingEntity)
                 ((LivingEntity)pEntity).addEffect(new MobEffectInstance(MobEffects.POISON, POISON_SECONDS * 20, 0), this);
+            for (Ability ability : abilities)
+                if (ability instanceof SpinWebs spinWebs && spinWebs.autocast && spinWebs.isOffCooldown())
+                    spinWebs.use(this.level, this, pEntity.getOnPos());
             return true;
         } else {
             return false;

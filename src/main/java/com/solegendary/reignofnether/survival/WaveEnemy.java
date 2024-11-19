@@ -13,6 +13,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -66,23 +68,17 @@ public class WaveEnemy {
 
     // done shortly after spawn
     public void startingCommand() {
-        if (unit instanceof AttackerUnit attackerUnit) {
-            ((Unit) attackerUnit).resetBehaviours();
-            attackMoveNearestBuilding();
-        }
+        attackMoveNearestBuilding();
     }
 
     // done every X ticks
     public void periodicCommand() {
-        if (unit instanceof AttackerUnit attackerUnit) {
-            ((Unit) attackerUnit).resetBehaviours();
-            attackMoveNearestBuilding();
-        }
+        attackMoveNearestBuilding();
     }
 
     // done if the unit didn't change position in X ticks
     public void idleCommand() {
-        // TODO: move around randomly
+        attackMoveNearestBuilding();
     }
 
     // done when attacked
@@ -91,6 +87,8 @@ public class WaveEnemy {
     }
 
     private void attackMoveNearestBuilding() {
+        unit.resetBehaviours();
+
         Entity entity = (Entity) unit;
         List<Building> buildings = BuildingServerEvents.getBuildings().stream()
                 .sorted(Comparator.comparing(b -> b.centrePos.distToCenterSqr(entity.getEyePosition())))
@@ -103,6 +101,21 @@ public class WaveEnemy {
         if (targetBp != null)
             UnitServerEvents.addActionItem(unit.getOwnerName(), UnitAction.ATTACK_MOVE, -1,
                     new int[]{entity.getId()},  targetBp, new BlockPos(0,0,0));
+    }
+
+    private void attackMoveRandomBuilding() {
+        unit.resetBehaviours();
+
+        ArrayList<Building> buildings = BuildingServerEvents.getBuildings();
+        Collections.shuffle(buildings);
+
+        BlockPos targetBp = null;
+        if (!buildings.isEmpty())
+            targetBp = buildings.get(0).centrePos;
+
+        if (targetBp != null)
+            UnitServerEvents.addActionItem(unit.getOwnerName(), UnitAction.ATTACK_MOVE, -1,
+                    new int[]{((Entity) unit).getId()},  targetBp, new BlockPos(0,0,0));
     }
 
     private void attackMoveNearestUnit(AttackerUnit unit, String ownerName) {

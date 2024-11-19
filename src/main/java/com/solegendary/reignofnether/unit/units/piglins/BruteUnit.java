@@ -104,7 +104,11 @@ public class BruteUnit extends PiglinBrute implements Unit, AttackerUnit {
     public float getUnitArmorValue() {return armorValue;}
     public int getPopCost() {return popCost;}
     public boolean getWillRetaliate() {return willRetaliate;}
-    public float getAttacksPerSecond() {return attacksPerSecond;}
+    public float getAttacksPerSecond() {
+        if (bloodlustTicks > 0)
+            return attacksPerSecond * BLOODLUST_MULTIPLIER;
+        return attacksPerSecond;
+    }
     public float getAggroRange() {return aggroRange;}
     public boolean getAggressiveWhenIdle() {return aggressiveWhenIdle && !isVehicle();}
     public float getAttackRange() {return attackRange;}

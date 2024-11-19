@@ -43,7 +43,6 @@ public class VindicatorProd extends ProductionItem {
     }
 
     public static Button getStartButton(ProductionBuilding prodBuilding, Keybinding hotkey) {
-
         List<FormattedCharSequence> tooltipLines = new ArrayList<>(List.of(
                 FormattedCharSequence.forward(I18n.get("units.villagers.reignofnether.vindicator"), Style.EMPTY.withBold(true)),
                 ResourceCosts.getFormattedCost(cost),
@@ -51,10 +50,6 @@ public class VindicatorProd extends ProductionItem {
                 FormattedCharSequence.forward("", Style.EMPTY),
                 FormattedCharSequence.forward(I18n.get("units.villagers.reignofnether.vindicator.tooltip1"), Style.EMPTY)
         ));
-        if (ResearchClient.hasResearch(ResearchVindicatorAxes.itemName)) {
-            tooltipLines.add(FormattedCharSequence.forward("", Style.EMPTY));
-            tooltipLines.add(FormattedCharSequence.forward(I18n.get("units.villagers.reignofnether.vindicator.tooltip2"), Style.EMPTY.withBold(true)));
-        }
         return new Button(
             VindicatorProd.itemName,
             14,

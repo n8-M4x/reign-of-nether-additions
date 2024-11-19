@@ -197,6 +197,11 @@ public class ZombieVillagerUnit extends Vindicator implements Unit, WorkerUnit, 
     }
 
     @Override
+    public boolean isPushable() {
+        return false;
+    }
+
+    @Override
     public boolean removeWhenFarAway(double d) { return false; }
 
     public static AttributeSupplier.Builder createAttributes() {

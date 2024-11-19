@@ -122,6 +122,7 @@
     "abilities.reignofnether.spin_webs.tooltip1": "Throw a bunch of sticky webs onto the ",
     "abilities.reignofnether.spin_webs.tooltip2": "field that decay after %d seconds.",
     "abilities.reignofnether.spin_webs.tooltip3": "Cannot be used while or recently mounted.",
+    "abilities.reignofnether.spin_webs.tooltip4": "Right-click to autocast.",
     "abilities.reignofnether.spin_webs.error1": "Cannot use while mounted.",
     "abilities.reignofnether.wither_cloud": "Wither Cloud",
     "abilities.reignofnether.wither_cloud.tooltip1": "Causes the Wither Skeleton to release a cloud",
@@ -330,7 +331,7 @@
 
     "hud.buttons.reignofnether.on_cooldown": "This ability is still on cooldown",
 
-    "hud.control_group.reignofnether.control_group": "Control Group %s (Right click to remove)",
+    "hud.control_group.reignofnether.control_group": "Control Group %s (Shift + right click to remove)",
 
     "hud.actionbuttons.reignofnether.build_repair": "Build/Repair",
     "hud.actionbuttons.reignofnether.gather": "Gather",
@@ -384,6 +385,7 @@
     "server.reignofnether.surrendered": "surrendered",
     "server.reignofnether.players_remaining": "There are %d RTS player(s) remaining",
     "server.reignofnether.victorious": "%s is victorious!",
+    "server.reignofnether.victory_alliance": "%s and their allies are victorious!",
     "server.reignofnether.match_reset": "Match has been reset!",
     "server.reignofnether.match_locked": "The RTS match has been locked. No new players may join.",
     "server.reignofnether.match_unlocked": "The RTS match has been unlocked. New players may now join.",

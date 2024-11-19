@@ -192,6 +192,11 @@ public class VillagerUnit extends Vindicator implements Unit, WorkerUnit, Attack
     }
 
     @Override
+    public boolean isPushable() {
+        return false;
+    }
+
+    @Override
     public boolean removeWhenFarAway(double d) { return false; }
 
     public static AttributeSupplier.Builder createAttributes() {
