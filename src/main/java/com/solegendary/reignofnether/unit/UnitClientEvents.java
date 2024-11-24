@@ -2,6 +2,9 @@ package com.solegendary.reignofnether.unit;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Vector3d;
+import com.solegendary.reignofnether.ability.abilities.ThrowLingeringHarmingPotion;
+import com.solegendary.reignofnether.ability.abilities.ThrowLingeringRegenPotion;
+import com.solegendary.reignofnether.alliance.AllianceSystem;
 import com.solegendary.reignofnether.building.*;
 import com.solegendary.reignofnether.building.buildings.shared.AbstractBridge;
 import com.solegendary.reignofnether.building.buildings.villagers.IronGolemBuilding;
@@ -28,10 +31,7 @@ import com.solegendary.reignofnether.unit.units.monsters.ZoglinUnit;
 import com.solegendary.reignofnether.unit.units.piglins.BruteUnit;
 import com.solegendary.reignofnether.unit.units.piglins.GhastUnit;
 import com.solegendary.reignofnether.unit.units.piglins.HoglinUnit;
-import com.solegendary.reignofnether.unit.units.villagers.EvokerUnit;
-import com.solegendary.reignofnether.unit.units.villagers.IronGolemUnit;
-import com.solegendary.reignofnether.unit.units.villagers.RavagerUnit;
-import com.solegendary.reignofnether.unit.units.villagers.VindicatorUnit;
+import com.solegendary.reignofnether.unit.units.villagers.*;
 import com.solegendary.reignofnether.util.Faction;
 import com.solegendary.reignofnether.util.MiscUtil;
 import com.solegendary.reignofnether.util.MyMath;
@@ -71,8 +71,8 @@ public class UnitClientEvents {
 
     private static final Minecraft MC = Minecraft.getInstance();
 
-    // max possible pop you can have regardless of buildings, adjustable via thereisnospoon cheat
-    public static int maxPopulation = ResourceCosts.DEFAULT_HARD_CAP_POPULATION;
+    // max possible pop you can have regardless of buildings, adjustable via /gamerule maxPopulation cheat
+    public static int maxPopulation = ResourceCosts.DEFAULT_MAX_POPULATION;
 
     // list of vecs used in RenderChunkRegionMixin to replace leaf rendering
     private static final int WINDOW_RADIUS = 5; // size of area to hide leaves
@@ -241,7 +241,11 @@ public class UnitClientEvents {
     private static void resolveMoveAction() {
         // follow friendly unit
         if (preselectedUnits.size() == 1 && !targetingSelf()) {
-            sendUnitCommand(UnitAction.FOLLOW);
+            if (hudSelectedEntity instanceof WitchUnit witchUnit) {
+                sendUnitCommand(UnitAction.THROW_LINGERING_REGEN_POTION);
+            } else {
+                sendUnitCommand(UnitAction.FOLLOW);
+            }
         }
         // move to ground pos (disabled during camera manip)
         else if (!Keybindings.altMod.isDown() && selectedUnits.size() > 0 && MC.level != null) {
@@ -394,6 +398,7 @@ public class UnitClientEvents {
     /**
      * Add and update entities from clientside action
      */
+
     @SubscribeEvent
     public static void onEntityJoin(EntityJoinLevelEvent evt) {
         Entity entity = evt.getEntity();
@@ -514,7 +519,11 @@ public class UnitClientEvents {
                      getPlayerToEntityRelationship(preselectedUnits.get(0)) == Relationship.HOSTILE ||
                      ResourceSources.isHuntableAnimal(preselectedUnits.get(0)))) {
 
-                    sendUnitCommand(UnitAction.ATTACK);
+                     if (hudSelectedEntity instanceof WitchUnit witchUnit) {
+                         sendUnitCommand(UnitAction.THROW_LINGERING_HARMING_POTION);
+                     } else {
+                         sendUnitCommand(UnitAction.ATTACK);
+                     }
                 }
                 // right click -> attack unfriendly building
                 else if (hudSelectedEntity instanceof AttackerUnit &&
@@ -686,22 +695,44 @@ public class UnitClientEvents {
 
     public static Relationship getPlayerToEntityRelationship(LivingEntity entity) {
         if (MC.level != null && MC.player != null) {
+            String playerName = MC.player.getName().getString();
 
-            if (entity instanceof Unit unit && unit.getOwnerName().isBlank())
+            // Check if the entity is a Unit with no owner (neutral)
+            if (entity instanceof Unit unit && unit.getOwnerName().isBlank()) {
                 return Relationship.NEUTRAL;
+            }
 
-            if (entity instanceof Player)
-                return Relationship.HOSTILE;
-            else if (!(entity instanceof Unit))
+            // If the entity is a player, default to hostile unless further alliance checks are needed
+            if (entity instanceof Player playerEntity) {
+                String entityName = playerEntity.getName().getString();
+
+                if (playerName.equals(entityName)) {
+                    return Relationship.OWNED;
+                } else if (AllianceSystem.isAllied(playerName, entityName)) {
+                    return Relationship.FRIENDLY;
+                } else {
+                    return Relationship.HOSTILE;
+                }
+            }
+
+            // Check if the entity is not a Unit (e.g., an NPC or neutral entity)
+            if (!(entity instanceof Unit)) {
                 return Relationship.NEUTRAL;
+            }
 
+            // For Units, check ownership and alliance
             String ownerName = ((Unit) entity).getOwnerName();
 
-            if (ownerName.equals(MC.player.getName().getString()))
+            if (playerName.equals(ownerName)) {
                 return Relationship.OWNED;
-            else
+            } else if (AllianceSystem.isAllied(playerName, ownerName)) {
+                return Relationship.FRIENDLY;
+            } else {
                 return Relationship.HOSTILE;
+            }
         }
+
+        // If the world or player is null, return NEUTRAL
         return Relationship.NEUTRAL;
     }
 
@@ -858,6 +889,10 @@ public class UnitClientEvents {
             double d2 = rand.nextGaussian() * 0.2;
             level.addParticle(ParticleTypes.POOF, entity.getX(), entity.getY(), entity.getZ(), d0, d1, d2);
         }
+    }
+
+    public static void setMaxPopulation(int value) {
+        maxPopulation = value;
     }
 
     /*

@@ -226,7 +226,7 @@ public class EvokerUnit extends Evoker implements Unit, AttackerUnit, RangedAtta
         this.moveGoal = new MoveToTargetBlockGoal(this, false, 0);
         this.targetGoal = new SelectedTargetGoal<>(this, true, true);
         this.garrisonGoal = new GarrisonGoal(this);
-        this.attackGoal = new UnitBowAttackGoal<>(this, getAttackCooldown());
+        this.attackGoal = new UnitBowAttackGoal<>(this);
         this.returnResourcesGoal = new ReturnResourcesGoal(this);
         this.castFangsGoal = new CastFangsGoal(this, FANGS_CHANNEL_SECONDS * ResourceCost.TICKS_PER_SECOND, FANGS_RANGE_LINE, this::createEvokerFangs);
         this.castSummonVexesGoal = new CastSummonVexesGoal(this);

@@ -1,83 +1,95 @@
 
-1.19.2-1.0.8
+1.19.2-1.0.9
 -------------
-
-Tthings to regression test once PRs are merged
-- /gamerule neutralAggro still works
-- cycling unit groups with tab and shift tab
-- all tooltips for multiple languages
-
 
 - Done and tested
 [✔] Done and tested
-[🟡] Partially done, only has a workaround and/or needs testing
+[🟡] Partially done and/or needs testing
 [❌] Not done, including unmerged PRs
 
 Features
 --------
-(In Optimize and Crash Fixes #107 PR)
-[❌] Alliance System (Thanks to @Boobcat)
-    - /ally <player name> to send an alliance request to another player
-    - /allyconfirm <requester name> to accept an alliance request
-    - /disband to leave an alliance
-    - Allies are shown as blue in unit/building highlights and the minimap
-    - Allies win and lose together
-    - Allying a player will not automatically ally you with their allies
-    - Effects that don't friendly fire like creepers should also not affect allies
-    - You can still force attack allies using A + left-click
+[🟡] Wave Survival
+    [🟡] Save on exit
+    [❌] Frostwalker sometimes doesn't work (because of kelp?)
+    [❌] Frostwalker doesn't work on lava
+    [❌] Cave sounds are localised in the world
+    [❌] Check that defeat doesn't bug out the world
 
-[❌] Localisation Keys (Thanks to @Promethia)
-    - All strings in the mod are now translatable
-    - If a string in your locale is not available, it will default to English
-    - Due to an unforseen bug, you must restart your client when switching languages for it to take effect
-    - Languages completed so far are English (en_us) and Chinese (Simplified) (zh_cn)
-    - If you would like to contribute translations, please make a pull request to the Github here:
-        - https://github.com/SoLegendary/reignofnether/tree/1.19.2-dev/src/main/resources/assets/reignofnether/lang
+    - REMEMBER TO LOCK THIS BEFORE RELEASE!
+
+
+[🟡] Wave Survival (Alpha Test)
+    - Disabled in the main release, see #wavesurvivalalphatest for a test jar
+    - This will be updated over the upcoming weeks until it's ready for full release
+
+[✔] Bloodlust ability
+    - Unlockable active ability for Brutes and Headhunters
+    - Researched at the Fortress (250 all resources, 150s)
+    - When used, instantly trades 10hp for 10s of +50% attack speed and +20% movement speed
+    - Headhunters cannot bloodlust while mounted
 
 
 Bugfixes
 --------
-(In Optimize and Crash Fixes #107 PR)
-[❌] Fixed workers not actually working if they were too far out of view
-[❌] Improved performance for all buildings
-[❌] Fixed crash related to Hiding Leaves
-[❌] Fixed crash related to Ranged units attacking buildings
-[❌] Fixed crash related to pressing Tab on a group of units
-[❌] Fixed enchantment icons
-
-
-[🟡] Fixed issue of being kicked from the official server when switching instances (eg. between a game and the lobby)
-[❌] The world generation datapack is now hardcoded into the mod by default
-    - as a world gen option like superflat
-[❌] Reduce melee unit repathing rate if out of melee range
-    - "Made melee unit pathing slightly dumber to improve performance by a lot (they still chase slower units correctly)"
-[❌] Central portals sometimes do not ignite (and this somehow makes grunts spawn underground)
-[❌] Spider webs stay forever if the spider dies before they decay
-
+[✔] Fixed Illager Captain banners becoming invisible
+[✔] Fixed crash on exit when neutral units are placed
+[✔] Mangrove roots are now gatherable (same value as logs)
+[✔] Fixed being unable to exit an ally's garrison
+[✔] Hoglins can no longer spawn as neutral baby hoglins from spawn eggs
+[✔] Piglins can now build on all types of blackstone and nether brick
+[✔] Farmland and overworld crops convert into soulsand and nether wart respectively
+    - Excludes solid crop blocks like melons and pumpkins
+    - Plant blocks replaced by nether blocks no longer drop items
+[✔] Fixed crash related to attacking buildings (again)
+[✔] Shroomlight is now gatherable for 120 food
+[✔] Various language fixes and additions
 
 
 Quality of Life Features
 ------------------------
-(In Optimize and Crash Fixes #107 PR)
-[❌] Improved performance for all units and buildings
-[❌] Improved performance for Fog of War
+[✔] Removing control groups now requires SHIFT + right-click
+[✔] RTS data now saves every 60 seconds to reduce chance of losing unit/building control on a server crash
+[✔] Added sounds when you make or disband an alliance
+[✔] Added name checks to network packets to prevent exploits
+[✔] If animals can't spawn at the required range around your capitol, spawning is reattempted at a closer range
+[✔] Portals being placed on overworld terrain show a yellow indicator
 
+[✔] Workers no longer collide with other units
+[✔] Spider Webs can now be autocast by right-clicking it
+    - When active, the first unit they attack will be webbed if off cooldown
 
-[❌] The thereisnospoon cheatcode to modify max population is now /gamerule maxpopulation <value>
-[🟡] Added saved UUID data for all units
-[❌] Leaving F12 will now more reliably set you to spectator mode if you were in spectator previously
-
+[✔] Witch potions can now be thrown by right-clicking a unit
+    - Right-clicking a friendly unit throws a regen potion
+    - Right-clicking an enemy unit throws a harming potion
+    - Only one potion is thrown at a time if multiple witches are selected
+    - This will NOT be automatically used off cooldown
 
 Balancing
 ---------
-[🟡] Build times with more than 1 worker are now slightly slower (now is the same speeds as AOE2)
+[✔] All bridges: +50 wood (ore for piglins)
+[✔] Random damage dealt to garrisoned units by explosions has been halved
+    - This affects creepers and ghasts
+
+Piglins
+[✔] Bastion: -20% build time
+[✔] All piglin units now move at regular speed on soulsand
+[✔] Ghasts are now immune to knockback
+[✔] Brute Shields now make brutes immune to knockback when active
+
+Monsters
+[✔] Creepers now friendly fire
+[✔] Dark Watchtower: -25 ore
+[✔] Husks: -5hp
+[✔] Skeletons & Strays: -10 food, +10 wood
+[✔] Night now begins 10 mins after game start
+    - This reverses the change from 1.0.5 which was made before Sculk Catalysts
 
 Villagers
-[🟡] Vindicators and Pillagers: -5 food
-[🟡] Blacksmith: -100 wood, +100 ore
-[🟡] Libraries now only require a Barracks to be built instead of an Arcane Tower
-[🟡] Library: -50 wood, +10% build time
-[🟡] Grand Library Upgrade: +100 wood, -250 ore, +20s
-[🟡] Swapped Maiming and Sharpness Enchantment costs and requirements (Sharpness is now level II)
-[🟡] Enchant Maiming: -5 wood, -15 ore
-[🟡] Enchant Multishot: -10 wood, -5 ore
+[✔] Watchtower: -25 ore
+[✔] Vindicators: -5 food, +5hp, -3s
+[✔] Pillager: -5 wood, -3s
+[✔] Witch: -10 all resources
+[✔] Evoker: -30 ore
+[✔] Iron Golem: +50 ore, +5s (including when built by workers)
+

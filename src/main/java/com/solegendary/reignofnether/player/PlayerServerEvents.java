@@ -1,13 +1,17 @@
 package com.solegendary.reignofnether.player;
 
-import com.mojang.datafixers.util.Pair;
+import com.mojang.brigadier.context.ParsedArgument;
+import com.mojang.brigadier.context.ParsedCommandNode;
+import com.solegendary.reignofnether.alliance.AllianceSystem;
 import com.solegendary.reignofnether.ReignOfNether;
+import com.solegendary.reignofnether.alliance.AllyCommand;
 import com.solegendary.reignofnether.building.Building;
 import com.solegendary.reignofnether.building.BuildingServerEvents;
 import com.solegendary.reignofnether.building.NetherZone;
 import com.solegendary.reignofnether.building.ProductionBuilding;
 import com.solegendary.reignofnether.guiscreen.TopdownGuiContainer;
 import com.solegendary.reignofnether.registrars.EntityRegistrar;
+import com.solegendary.reignofnether.registrars.GameRuleRegistrar;
 import com.solegendary.reignofnether.research.ResearchClientboundPacket;
 import com.solegendary.reignofnether.research.ResearchServerEvents;
 import com.solegendary.reignofnether.resources.ResourceCost;
@@ -21,6 +25,7 @@ import com.solegendary.reignofnether.unit.interfaces.Unit;
 import com.solegendary.reignofnether.unit.packets.UnitSyncClientboundPacket;
 import com.solegendary.reignofnether.util.Faction;
 import com.solegendary.reignofnether.util.MiscUtil;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -36,6 +41,7 @@ import net.minecraft.world.inventory.MenuConstructor;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.TickEvent;
@@ -44,9 +50,8 @@ import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.network.NetworkHooks;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 // this class tracks all available players so that any serverside functions that need to affect the player can be
 // performed here by sending a client->server packet containing MC.player.getId()
@@ -54,7 +59,9 @@ import java.util.List;
 public class PlayerServerEvents {
 
     // list of what gamemode these players should be in when outside of RTS cam
-    private static final ArrayList<Pair<String, GameType>> playerDefaultGameModes = new ArrayList<>();
+    private static final Map<String, GameType> playerDefaultGameModes = new HashMap<>();
+    private static final Map<String, Boolean> playerGuiOpenStatus = new HashMap<>();
+
     private static final GameType defaultGameMode = GameType.SPECTATOR;
     public static final ArrayList<ServerPlayer> players = new ArrayList<>();
     public static final ArrayList<ServerPlayer> orthoviewPlayers = new ArrayList<>();
@@ -63,7 +70,7 @@ public class PlayerServerEvents {
     public static boolean rtsLocked = false; // can players join as RTS players or not?
     public static boolean rtsSyncingEnabled = true; // will logging in players sync units and buildings?
 
-    private static final int MONSTER_START_TIME_OF_DAY = 6500; // 6500 = noon, 12500 = dusk
+    private static final int MONSTER_START_TIME_OF_DAY = 500; // 500 = dawn, 6500 = noon, 12500 = dusk
 
     public static final int ORTHOVIEW_PLAYER_BASE_Y = 85;
 
@@ -78,7 +85,6 @@ public class PlayerServerEvents {
     // modifythephasevariance - ignore building requirements
     // medievalman - get all research (cannot reverse)
     // greedisgood X - gain X of each resource
-    // thereisnospoon X - set hard population cap for everyone to X
     // foodforthought - ignore soft population caps
     public static final List<String> singleWordCheats = List.of("warpten",
         "operationcwal",
@@ -99,7 +105,22 @@ public class PlayerServerEvents {
     }
 
     @SubscribeEvent
-    public static void loadRTSPlayers(ServerStartedEvent evt) {
+    public static void onCommandUsed(CommandEvent evt) {
+        List<ParsedCommandNode<CommandSourceStack>> nodes = evt.getParseResults().getContext().getNodes();
+        if (nodes.size() >= 2 &&
+                nodes.get(0).getNode().getName().equals("gamerule") &&
+                nodes.get(1).getNode().getName().equals("maxPopulation")) {
+
+            Map<String, ParsedArgument<CommandSourceStack, ?>> args = evt.getParseResults().getContext().getArguments();
+            if (args.containsKey("value")) {
+                UnitServerEvents.maxPopulation = (int) args.get("value").getResult();
+                PlayerClientboundPacket.syncMaxPopulation(UnitServerEvents.maxPopulation);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onServerStarted(ServerStartedEvent evt) {
         ServerLevel level = evt.getServer().getLevel(Level.OVERWORLD);
 
         if (level != null) {
@@ -107,6 +128,9 @@ public class PlayerServerEvents {
 
             rtsPlayers.clear();
             rtsPlayers.addAll(data.rtsPlayers);
+
+            UnitServerEvents.maxPopulation = level.getGameRules().getInt(GameRuleRegistrar.MAX_POPULATION);
+            PlayerClientboundPacket.syncMaxPopulation(UnitServerEvents.maxPopulation);
         }
     }
 
@@ -246,6 +270,7 @@ public class PlayerServerEvents {
         } else {
             PlayerClientboundPacket.disableStartRTS(playerName);
         }
+        PlayerClientboundPacket.syncMaxPopulation(UnitServerEvents.maxPopulation);
     }
 
     @SubscribeEvent
@@ -400,25 +425,7 @@ public class PlayerServerEvents {
                                 amount
                             ));
                             evt.setCanceled(true);
-                            sendMessageToAllPlayers("server.reignofnether.cheat_used",
-                                false,
-                                playerName,
-                                words[0],
-                                Integer.toString(amount)
-                            );
-                        }
-                    } else if (words[0].equalsIgnoreCase("thereisnospoon")) {
-                        int amount = Integer.parseInt(words[1]);
-                        if (amount > 0) {
-                            UnitServerEvents.hardCapPopulation = amount;
-                            for (ServerPlayer player : players) {
-                                ResearchClientboundPacket.addCheatWithValue(player.getName().getString(),
-                                    words[0],
-                                    amount
-                                );
-                            }
-                            evt.setCanceled(true);
-                            sendMessageToAllPlayers("server.reignofnether.cheat_used",
+                            sendMessageToAllPlayers("server.reignofnether.used_cheat",
                                 false,
                                 playerName,
                                 words[0],
@@ -450,11 +457,12 @@ public class PlayerServerEvents {
 
             // apply all cheats - NOTE can cause concurrentModificationException clientside
             if (words.length == 1 && words[0].equalsIgnoreCase("allcheats") && (
-                playerName.equalsIgnoreCase("solegendary") || playerName.equalsIgnoreCase("altsolegendary")
-            )) {
+                playerName.equalsIgnoreCase("solegendary") ||
+                playerName.equalsIgnoreCase("altsolegendary") ||
+                playerName.equalsIgnoreCase("texboobcat"))
+            ) {
                 ResourcesServerEvents.addSubtractResources(new Resources(playerName, 99999, 99999, 99999));
-                UnitServerEvents.hardCapPopulation = 99999;
-                ResearchClientboundPacket.addCheatWithValue(playerName, "thereisnospoon", 99999);
+                UnitServerEvents.maxPopulation = 99999;
 
                 for (String cheatName : singleWordCheats) {
                     ResearchServerEvents.addCheat(playerName, cheatName);
@@ -485,32 +493,51 @@ public class PlayerServerEvents {
     public static void openTopdownGui(int playerId) {
         ServerPlayer serverPlayer = getPlayerById(playerId);
 
-        // containers have to be opened server side so that the server can track its data
         if (serverPlayer != null) {
+            // Open GUI server-side
             MenuConstructor provider = TopdownGuiContainer.getServerContainerProvider();
             MenuProvider namedProvider = new SimpleMenuProvider(provider, TopdownGuiContainer.TITLE);
             NetworkHooks.openScreen(serverPlayer, namedProvider);
 
+            // Save original game mode only if it's not already saved for this session
             String playerName = serverPlayer.getName().getString();
-            playerDefaultGameModes.removeIf(p -> p.getFirst().equals(playerName));
-            playerDefaultGameModes.add(new Pair<>(playerName, serverPlayer.gameMode.getGameModeForPlayer()));
+            playerDefaultGameModes.putIfAbsent(playerName, serverPlayer.gameMode.getGameModeForPlayer());
 
-            serverPlayer.setGameMode(GameType.CREATIVE); // could use spectator, but makes rendering less reliable
+            // Mark that this player has the GUI open
+            playerGuiOpenStatus.put(playerName, true);
+
+            // Set game mode to CREATIVE for GUI interaction
+            serverPlayer.setGameMode(GameType.CREATIVE);
         } else {
-            ReignOfNether.LOGGER.error("serverPlayer is null, cannot open topdown gui");
+            ReignOfNether.LOGGER.warn("serverPlayer is null, cannot open topdown GUI");
         }
     }
 
     public static void closeTopdownGui(int playerId) {
         ServerPlayer serverPlayer = getPlayerById(playerId);
 
-        for (Pair<String, GameType> defaultGameMode : playerDefaultGameModes) {
-            if (serverPlayer.getName().getString().equals(defaultGameMode.getFirst())) {
-                serverPlayer.setGameMode(defaultGameMode.getSecond());
-                return;
+        if (serverPlayer != null) {
+            String playerName = serverPlayer.getName().getString();
+
+            // Ensure player had GUI open before attempting to close
+            if (Boolean.TRUE.equals(playerGuiOpenStatus.get(playerName))) {
+                // Restore the player’s original game mode if saved
+                GameType originalGameMode = playerDefaultGameModes.remove(playerName);
+
+                if (originalGameMode != null) {
+                    serverPlayer.setGameMode(originalGameMode);
+                } else {
+                    ReignOfNether.LOGGER.warn("No original game mode found for player {}", playerName);
+                }
+
+                // Mark that the GUI is now closed
+                playerGuiOpenStatus.remove(playerName);
+            } else {
+                ReignOfNether.LOGGER.warn("Attempted to close GUI for player {} who didn't have it open", playerName);
             }
+        } else {
+            ReignOfNether.LOGGER.warn("serverPlayer is null, cannot close topdown GUI");
         }
-        serverPlayer.setGameMode(defaultGameMode);
     }
 
     public static void movePlayer(int playerId, double x, double y, double z) {
@@ -547,50 +574,67 @@ public class PlayerServerEvents {
 
     public static void defeat(String playerName, String reason) {
         synchronized (rtsPlayers) {
+            // Remove the defeated player from the list
             rtsPlayers.removeIf(rtsPlayer -> {
                 if (rtsPlayer.name.equals(playerName)) {
-                    sendMessageToAllPlayers("server.reignofnether.is_defeated",
-                        true,
-                        playerName,
-                        Component.translatable(reason)
-                    );
-                    sendMessageToAllPlayers("server.reignofnether.players_remaining", false, rtsPlayers.size() - 1);
+                    sendMessageToAllPlayers(playerName + " has " + reason + " and is defeated!", true);
+                    sendMessageToAllPlayers("server.reignofnether.players_remaining", false, (rtsPlayers.size() - 1));
 
                     PlayerClientboundPacket.defeat(playerName);
 
+                    // Remove ownership from all units and buildings of the defeated player
                     for (LivingEntity entity : UnitServerEvents.getAllUnits())
-                        if (entity instanceof Unit unit && unit.getOwnerName().equals(playerName)) {
+                        if (entity instanceof Unit unit && unit.getOwnerName().equals(playerName))
                             unit.setOwnerName("");
-                        }
 
                     for (Building building : BuildingServerEvents.getBuildings())
-                        if (building.ownerName.equals(playerName)) {
+                        if (building.ownerName.equals(playerName))
                             building.ownerName = "";
-                        }
 
                     return true;
                 }
                 return false;
             });
-            // if there is only one player left, they are automatically victorious
-            if (rtsPlayers.size() == 1) {
-                for (RTSPlayer rtsPlayer : rtsPlayers) {
-                    sendMessageToAllPlayers("server.reignofnether.victorious", true, rtsPlayer.name);
-                    PlayerClientboundPacket.victory(rtsPlayer.name);
-                }
-            }
-            saveRTSPlayers();
 
+            // Remove research data and resources associated with the defeated player
+            saveRTSPlayers();
             ResearchServerEvents.removeAllResearchFor(playerName);
             ResearchServerEvents.syncResearch(playerName);
-
             ResearchServerEvents.saveResearch();
+            ResourcesServerEvents.resourcesList.removeIf(rl -> rl.ownerName.equals(playerName));
+
+            // Check if only allied players are left or if a single player remains
+            if (rtsPlayers.size() > 1) {
+                // Get the set of remaining player names
+                Set<String> remainingPlayers = rtsPlayers.stream()
+                        .map(player -> player.name)
+                        .collect(Collectors.toSet());
+
+                // Use the first remaining player as a reference to find all connected allies
+                String referencePlayer = remainingPlayers.iterator().next();
+                Set<String> factionGroup = AllianceSystem.getAllConnectedAllies(referencePlayer);
+
+                // Check if all remaining players are part of the same alliance group
+                if (remainingPlayers.equals(factionGroup)) {
+                    // Declare victory for all players in the faction group
+                    for (String winner : remainingPlayers) {
+                        sendMessageToAllPlayers("server.reignofnether.victory_alliance", true, winner);
+                        PlayerClientboundPacket.victory(winner);
+                    }
+                }
+            } else if (rtsPlayers.size() == 1) {
+                // Single remaining player - declare victory
+                RTSPlayer winner = rtsPlayers.get(0);
+                sendMessageToAllPlayers("server.reignofnether.victorious", true, winner.name);
+                PlayerClientboundPacket.victory(winner.name);
+            }
         }
-        ResourcesServerEvents.resourcesList.removeIf(rl -> rl.ownerName.equals(playerName));
     }
 
     @SubscribeEvent
     public static void onRegisterCommand(RegisterCommandsEvent evt) {
+        AllyCommand.register(evt.getDispatcher());
+
         evt.getDispatcher().register(Commands.literal("rts-reset").executes((command) -> {
             resetRTS();
             return 1;
@@ -618,7 +662,7 @@ public class PlayerServerEvents {
             PlayerClientboundPacket.resetRTS();
 
             if (!TutorialServerEvents.isEnabled()) {
-                sendMessageToAllPlayers("server.reignofnether.match_reset", true, null);
+                sendMessageToAllPlayers("server.reignofnether.match_reset", true);
             }
 
             ResourcesServerEvents.resourcesList.clear();
@@ -628,10 +672,9 @@ public class PlayerServerEvents {
 
             if (rtsLocked)
                 setRTSLock(false);
-
+            AllianceSystem.resetAllAlliances();
             if (SurvivalServerEvents.isEnabled()) {
-                SurvivalServerEvents.resetWaves();
-                SurvivalServerEvents.setEnabled(false);
+                SurvivalServerEvents.reset();
             }
         }
     }

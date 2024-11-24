@@ -8,6 +8,7 @@ import com.solegendary.reignofnether.hud.Button;
 import com.solegendary.reignofnether.minimap.MinimapClientEvents;
 import com.solegendary.reignofnether.orthoview.OrthoviewClientEvents;
 import com.solegendary.reignofnether.player.PlayerClientEvents;
+import com.solegendary.reignofnether.survival.SurvivalClientEvents;
 import com.solegendary.reignofnether.tutorial.TutorialClientEvents;
 import com.solegendary.reignofnether.tutorial.TutorialStage;
 import com.solegendary.reignofnether.util.MyRenderer;
@@ -52,7 +53,7 @@ public class TimeClientEvents {
         null,
         null,
         () -> false,
-        () -> false,
+        () -> !OrthoviewClientEvents.isEnabled(),
         () -> true,
         () -> {
             if (nightCircleMode == NightCircleMode.ALL) {
@@ -105,7 +106,8 @@ public class TimeClientEvents {
             MinimapClientEvents.CORNER_OFFSET * 2
         ) - 6;
 
-        CLOCK_BUTTON.render(evt.getPoseStack(), xPos - 3, yPos - 3, evt.getMouseX(), evt.getMouseY());
+        if (!CLOCK_BUTTON.isHidden.get())
+            CLOCK_BUTTON.render(evt.getPoseStack(), xPos - 3, yPos - 3, evt.getMouseX(), evt.getMouseY());
     }
 
     @SubscribeEvent
@@ -134,18 +136,28 @@ public class TimeClientEvents {
             String dayStr = " (%s)".formatted(I18n.get(isDay ? "time.reignofnether.day" : "time.reignofnether.night"));
             String timeStr = get12HourTimeStr(serverTime) + dayStr;
 
-            FormattedCharSequence timeUntilStr = FormattedCharSequence.forward(I18n.get("time.reignofnether.time_until",
-                getTimeUntilStr(serverTime, isDay ? DUSK : DAWN),
-                isDay ? I18n.get("time.reignofnether.day") : I18n.get("time.reignofnether.night")
-            ), Style.EMPTY);
+            FormattedCharSequence timeUntilStr =
+                FormattedCharSequence.forward(
+                    isDay ? I18n.get("time.reignofnether.time_until_night",
+                        getTimeUntilStr(serverTime, DUSK)) :
+                        I18n.get("time.reignofnether.time_until_day",
+                        getTimeUntilStr(serverTime, DAWN)),
+                    Style.EMPTY);
 
             FormattedCharSequence gameLengthStr = FormattedCharSequence.forward("", Style.EMPTY);
 
             if (PlayerClientEvents.isRTSPlayer) {
-                gameLengthStr = FormattedCharSequence.forward(
-                    I18n.get("time.reignofnether.game_time", getTimeStrFromTicks(PlayerClientEvents.rtsGameTicks)),
-                    Style.EMPTY
-                );
+                if (SurvivalClientEvents.isEnabled) {
+                    gameLengthStr = FormattedCharSequence.forward(
+                            I18n.get("time.reignofnether.survival_wave", SurvivalClientEvents.waveNumber),
+                            Style.EMPTY
+                    );
+                } else {
+                    gameLengthStr = FormattedCharSequence.forward(
+                            I18n.get("time.reignofnether.game_time", getTimeStrFromTicks(PlayerClientEvents.rtsGameTicks)),
+                            Style.EMPTY
+                    );
+                }
             }
 
             String nightCircleModeName = switch (nightCircleMode) {
@@ -158,7 +170,6 @@ public class TimeClientEvents {
                     timeStr
                 ), Style.EMPTY),
                 timeUntilStr,
-                FormattedCharSequence.forward(timeStr, Style.EMPTY),
                 gameLengthStr,
                 FormattedCharSequence.forward(I18n.get("time.reignofnether.night_circles", nightCircleModeName),
                     Style.EMPTY
@@ -217,13 +228,15 @@ public class TimeClientEvents {
     }
 
     // maintain a mapping of night sources for easy culling calcs
-    private static final int NIGHT_SOURCES_UPDATE_TICKS_MAX = 100;
+    private static final int NIGHT_SOURCES_UPDATE_TICKS_MAX = 50;
     private static int nightSourcesUpdateTicks = NIGHT_SOURCES_UPDATE_TICKS_MAX;
     public static ArrayList<Pair<BlockPos, Integer>> nightSourceOrigins = new ArrayList<>();
     public static final int VISIBLE_BORDER_ADJ = 2; // shrink a bit so borderlines themselves are safe to walk on
 
     @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent evt) {
+        if (evt.phase != TickEvent.Phase.END)
+            return;
 
         nightSourcesUpdateTicks -= 1;
         if (nightSourcesUpdateTicks <= 0) {

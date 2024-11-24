@@ -1,52 +1,6 @@
 
-[✔] Done and tested
-[🟡] Partially done, only has a workaround and/or needs testing
-[❌] Not done, including unmerged PRs
-
-
 Features
 --------
-[❌] Wave Survival
-    - Start anywhere, set time to morning
-    - Whenever night begins, spawn wave of enemies to attack move your base
-
-    - play a random cave ambience sound at the start of each night and title function
-    - start off doing only monster enemies
-    - lose if your capitol dies
-    - need to make sure enemies don't spawn too close to your buildings
-    - might need improved pathfinding
-        - for now, just keep repeating attack move commands
-    - each day length depends on difficulty
-        - 10mins - easy (same as vanilla length)
-        - 8mins - medium
-        - 6mins - hard
-    - nights last forever until you clear the wave
-    - add button to look for few remaining units (similar to idle villagers button)
-
-    WAVE DESIGN
-    - Each night is either piglin, illager or monster
-        - Piglins get popup portals that continuously send units
-            - medium sized wave from each portal at start (smaller than an illager wave) and
-            - must be destroyed before the wave ends
-            - cannot be damaged while building, builds extra fast
-            - at least 1 portal targets the capitol
-        - Monsters attack from all directions randomly at random targets
-        - Illagers attack in a large group always focusing the capitol
-        - can't be the same faction twice in a row
-        - as days pass, waves get larger (balanced by population value)
-
-    ANTI-CHEESING
-    - Give enemies all frostwalker to allow islands
-        - But won't work on sky maps
-    - Prevent leaving one enemy alive to farm resources forever
-        - At least some proportion of enemies try to focus workers
-        - X enemies or less remaining, all enemies focus on workers
-
-    VANILLA WORLD COMPATIBILITY
-    - Players are forced to expand further to keep getting resources, but always have to protect their capitol
-
-
-
 
 [❌] King of the Beacon
     - simple pyramid made of 4 layers + beacon block (9x9 minimum)
@@ -62,24 +16,36 @@ Features
     - instead of scaffolding underneath, place some other brick blocks
     - add a UI later to show the effects, for now just have a number next to name showing how much ore to next tier)
 
-
+[❌] Mapmaker mode:
+    - Provide a bunch of neutral buildings to place
+        - Tavern to recruit mercenaries
+        - Healing fountain
+        - Mini beacon
 
 Bugfixes
 --------
 
-[❌] On a server, unloaded workers stop gathering stuff
-    - Relook at forced chunks?
+[❌] With high lag, units waiting to be queued at 99% become uncancellable
+    - https://discord.com/channels/1294953087567663135/1306165740730322986
 
-[❌] Made building on tall grass easier
+[❌] Central portals sometimes do not ignite (and this somehow makes grunts spawn underground)
+
+[❌] Must restart client when switching languages for it to take effect
+
+[❌] Tall grass and barrier blocks are now ignored by the cursor
 
 
 
 Quality of Life Features
 ------------------------
 
-[❌] Highlight portal in yellow if being built on overworld terrain
+[❌] Limit ghast heights?
 
 [❌] Shift queueing movements and buildings (not just placement)
+    - Add index to sendCommand packets
+    - Add recursive field to UnitActionItem: nextActionItem
+    - Add end detections in goals for when to move to nextActionItem
+    - Add clientside checkpoints
 
 [❌] Flatten terrain ability
     - Require that villagers work on it like a building
@@ -87,21 +53,19 @@ Quality of Life Features
 
 [❌] Amethyst is now mineable, and regenerates automatically after 1min
 
+[❌] Getters and Setters for unit stats
+
 
 
 Balancing
 ---------
 
-[❌] Lightning should only charge one creeper at a time
+[❌] Solution to discourage rushing
+    - villagers are most vulnerable due to their lategame nature
+    - copy the wc3 ability of turning villagers into temporary militia?
+        - give them a helmet and stone sword upgrade for +2 damage
+        - turn back on isPushable
 
-[❌] - Upgrade gives stimpacks (-10hp for 10s of double attack speed and speed buff, cant be used while mounted)
-
-
-
-
-
-
-
-
-
+[❌] Implement damage dropoffs to buildings for charged creepers
+    - and provide a radius indicator for them when hovering over explode
 

@@ -1,6 +1,7 @@
 package com.solegendary.reignofnether.ability.abilities;
 
 import com.solegendary.reignofnether.ability.Ability;
+import com.solegendary.reignofnether.ability.AbilityClientboundPacket;
 import com.solegendary.reignofnether.cursor.CursorClientEvents;
 import com.solegendary.reignofnether.hud.AbilityButton;
 import com.solegendary.reignofnether.hud.HudClientEvents;
@@ -10,6 +11,7 @@ import com.solegendary.reignofnether.research.researchItems.ResearchSpiderWebs;
 import com.solegendary.reignofnether.research.researchItems.ResearchWitherClouds;
 import com.solegendary.reignofnether.resources.ResourceCost;
 import com.solegendary.reignofnether.unit.UnitAction;
+import com.solegendary.reignofnether.unit.UnitServerEvents;
 import com.solegendary.reignofnether.unit.interfaces.Unit;
 import com.solegendary.reignofnether.util.MiscUtil;
 import com.solegendary.reignofnether.util.MyMath;
@@ -19,6 +21,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.level.Level;
@@ -32,6 +35,10 @@ import net.minecraft.world.phys.Vec3;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
+
+import static com.solegendary.reignofnether.unit.UnitClientEvents.sendUnitCommand;
 
 public class SpinWebs extends Ability {
 
@@ -64,6 +71,7 @@ public class SpinWebs extends Ability {
             true
         );
         this.spider = spider;
+        this.canAutocast = true;
     }
 
     @Override
@@ -72,17 +80,18 @@ public class SpinWebs extends Ability {
                 "Spin Webs",
                 new ResourceLocation("minecraft", "textures/block/cobweb.png"),
                 hotkey,
-                () -> CursorClientEvents.getLeftClickAction() == UnitAction.SPIN_WEBS,
+                () -> CursorClientEvents.getLeftClickAction() == UnitAction.SPIN_WEBS || autocast,
                 () -> !ResearchClient.hasResearch(ResearchSpiderWebs.itemName),
                 () -> true,
                 () -> CursorClientEvents.setLeftClickAction(UnitAction.SPIN_WEBS),
-                null,
+                () -> sendUnitCommand(UnitAction.AUTOCAST),
                 List.of(
                         FormattedCharSequence.forward(I18n.get("abilities.reignofnether.spin_webs"), Style.EMPTY.withBold(true)),
                         FormattedCharSequence.forward("\uE004  " + CD_MAX_SECONDS + "s  \uE005  " + RANGE, MyRenderer.iconStyle),
                         FormattedCharSequence.forward(I18n.get("abilities.reignofnether.spin_webs.tooltip1"), Style.EMPTY),
                         FormattedCharSequence.forward(I18n.get("abilities.reignofnether.spin_webs.tooltip2", DURATION_SECONDS), Style.EMPTY),
                         FormattedCharSequence.forward("", Style.EMPTY),
+                        FormattedCharSequence.forward(I18n.get("abilities.reignofnether.spin_webs.tooltip4"), Style.EMPTY),
                         FormattedCharSequence.forward(I18n.get("abilities.reignofnether.spin_webs.tooltip3"), Style.EMPTY)
                 ),
                 this
@@ -91,8 +100,12 @@ public class SpinWebs extends Ability {
 
     @Override
     public void use(Level level, Unit unitUsing, BlockPos targetBp) {
+        if (!isOffCooldown())
+            return;
 
-        if (!level.isClientSide() && !((LivingEntity) unitUsing).isVehicle()) {
+        boolean isVehicle = ((LivingEntity) unitUsing).isVehicle();
+
+        if (!level.isClientSide() && !isVehicle) {
             BlockPos limitedBp = MyMath.getXZRangeLimitedBlockPos(((LivingEntity) unitUsing).getOnPos(), targetBp, range);
 
             BlockPos originBp = MiscUtil.getHighestNonAirBlock(level, limitedBp, true);
@@ -110,12 +123,16 @@ public class SpinWebs extends Ability {
                     webs.add(new WebBlock(bp.above().above()));
             }
         } else if (level.isClientSide()) {
-            if (((LivingEntity) unitUsing).isVehicle()) {
+            if (isVehicle) {
                 HudClientEvents.showTemporaryMessage(I18n.get("abilities.reignofnether.spin_webs.error1"));
                 return;
             }
         }
-        this.setToMaxCooldown();
+        if (!isVehicle) {
+            this.setToMaxCooldown();
+            if (!level.isClientSide())
+                AbilityClientboundPacket.sendSetCooldownPacket(((Entity) unitUsing).getId(), action, cooldownMax);
+        }
     }
 
     public void tick(Level level) {
@@ -142,5 +159,13 @@ public class SpinWebs extends Ability {
         }
         for (WebBlock web : webs)
             web.tickAge += 1;
+    }
+
+    public void delayedRemoveWebs(Level level) {
+        CompletableFuture.delayedExecutor(DURATION_SECONDS, TimeUnit.SECONDS).execute(() -> {
+            for (WebBlock web : webs)
+                if (web.isPlaced && level.getBlockState(web.bp).getBlock() == Blocks.COBWEB)
+                    level.destroyBlock(web.bp, false);
+        });
     }
 }

@@ -1,5 +1,7 @@
 package com.solegendary.reignofnether.registrars;
 
+import com.solegendary.reignofnether.alliance.AllianceClientboundAddPacket;
+import com.solegendary.reignofnether.alliance.AllianceClientboundRemovePacket;
 import com.solegendary.reignofnether.ReignOfNether;
 import com.solegendary.reignofnether.ability.EnchantAbilityServerboundPacket;
 import com.solegendary.reignofnether.attackwarnings.AttackWarningClientboundPacket;
@@ -8,6 +10,8 @@ import com.solegendary.reignofnether.building.BuildingServerboundPacket;
 import com.solegendary.reignofnether.fogofwar.FogOfWarServerboundPacket;
 import com.solegendary.reignofnether.fogofwar.FrozenChunkClientboundPacket;
 import com.solegendary.reignofnether.fogofwar.FrozenChunkServerboundPacket;
+import com.solegendary.reignofnether.gamemode.GameModeClientboundPacket;
+import com.solegendary.reignofnether.gamemode.GameModeServerboundPacket;
 import com.solegendary.reignofnether.guiscreen.TopdownGuiServerboundPacket;
 import com.solegendary.reignofnether.fogofwar.FogOfWarClientboundPacket;
 import com.solegendary.reignofnether.player.PlayerClientboundPacket;
@@ -15,11 +19,16 @@ import com.solegendary.reignofnether.player.PlayerServerboundPacket;
 import com.solegendary.reignofnether.research.ResearchClientboundPacket;
 import com.solegendary.reignofnether.resources.ResourcesClientboundPacket;
 import com.solegendary.reignofnether.sounds.SoundClientboundPacket;
+import com.solegendary.reignofnether.survival.SurvivalClientboundPacket;
+import com.solegendary.reignofnether.survival.SurvivalServerboundPacket;
 import com.solegendary.reignofnether.tps.TPSClientBoundPacket;
 import com.solegendary.reignofnether.ability.AbilityClientboundPacket;
 import com.solegendary.reignofnether.tutorial.TutorialClientboundPacket;
 import com.solegendary.reignofnether.tutorial.TutorialServerboundPacket;
 import com.solegendary.reignofnether.unit.packets.*;
+import com.solegendary.reignofnether.votesystem.networking.VotePacket;
+import com.solegendary.reignofnether.votesystem.networking.VoteSyncPacket;
+import com.solegendary.reignofnether.votesystem.networking.ClientboundOpenVotenScreenPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
@@ -135,5 +144,59 @@ public final class PacketHandler {
         INSTANCE.messageBuilder(TutorialServerboundPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
                 .encoder(TutorialServerboundPacket::encode).decoder(TutorialServerboundPacket::new)
                 .consumer(TutorialServerboundPacket::handle).add();
+
+        INSTANCE.messageBuilder(AllianceClientboundAddPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(AllianceClientboundAddPacket::toBytes)
+                .decoder(AllianceClientboundAddPacket::new)
+                .consumer(AllianceClientboundAddPacket::handle)
+                .add();
+
+        INSTANCE.messageBuilder(AllianceClientboundRemovePacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(AllianceClientboundRemovePacket::toBytes)
+                .decoder(AllianceClientboundRemovePacket::new)
+                .consumer(AllianceClientboundRemovePacket::handle)
+                .add();
+
+        INSTANCE.messageBuilder(GameModeServerboundPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(GameModeServerboundPacket::encode)
+                .decoder(GameModeServerboundPacket::new)
+                .consumer(GameModeServerboundPacket::handle)
+                .add();
+
+        INSTANCE.messageBuilder(GameModeClientboundPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(GameModeClientboundPacket::encode)
+                .decoder(GameModeClientboundPacket::new)
+                .consumer(GameModeClientboundPacket::handle)
+                .add();
+
+        INSTANCE.messageBuilder(SurvivalServerboundPacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(SurvivalServerboundPacket::encode)
+                .decoder(SurvivalServerboundPacket::new)
+                .consumer(SurvivalServerboundPacket::handle)
+                .add();
+
+        INSTANCE.messageBuilder(SurvivalClientboundPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(SurvivalClientboundPacket::encode)
+                .decoder(SurvivalClientboundPacket::new)
+                .consumer(SurvivalClientboundPacket::handle)
+                .add();
+
+        INSTANCE.messageBuilder(VotePacket.class, index++, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(VotePacket::encode)
+                .decoder(VotePacket::new)
+                .consumer(VotePacket::handle)
+                .add();
+
+        INSTANCE.messageBuilder(VoteSyncPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(VoteSyncPacket::encode)
+                .decoder(VoteSyncPacket::new)
+                .consumer(VoteSyncPacket::handle)
+                .add();
+
+        INSTANCE.messageBuilder(ClientboundOpenVotenScreenPacket.class, index++, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(ClientboundOpenVotenScreenPacket::encode)
+                .decoder(ClientboundOpenVotenScreenPacket::decode)
+                .consumer(ClientboundOpenVotenScreenPacket::handle)
+                .add();
     }
 }

@@ -198,8 +198,8 @@ public class WardenUnit extends Warden implements Unit, AttackerUnit {
         this.sonicBoomGoal.tick();
 
         // apply slowness level 2 during daytime for a short time repeatedly
-        if (tickCount % 4 == 0 && !this.level.isClientSide() && this.level.isDay() && !NightUtils.isInRangeOfNightSource(this.getEyePosition(), false))
-            this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 10, 1));
+        if (tickCount % 10 == 0 && !this.level.isClientSide() && this.level.isDay() && !NightUtils.isInRangeOfNightSource(this.getEyePosition(), false))
+            this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 15, 1));
     }
 
     public void initialiseGoals() {
@@ -207,7 +207,7 @@ public class WardenUnit extends Warden implements Unit, AttackerUnit {
         this.moveGoal = new MoveToTargetBlockGoal(this, false, 0);
         this.targetGoal = new SelectedTargetGoal<>(this, true, true);
         this.garrisonGoal = new GarrisonGoal(this);
-        this.attackGoal = new MeleeAttackUnitGoal(this, getAttackCooldown(), false);
+        this.attackGoal = new MeleeAttackUnitGoal(this, false);
         this.attackBuildingGoal = new MeleeAttackBuildingGoal(this);
         this.returnResourcesGoal = new ReturnResourcesGoal(this);
         this.sonicBoomGoal = new SonicBoomGoal(this, SONIC_BOOM_CHANNEL_TICKS, SONIC_BOOM_RANGE, this::doEntitySonicBoom, this::doBuildingSonicBoom);

@@ -102,7 +102,7 @@ public class OrthoviewClientEvents {
     public static void updateOrthoviewY() {
         if (MC.player != null && MC.level != null) {
             BlockPos playerPos = MC.player.blockPosition();
-            int radius = 5; // Defines the area around the player to sample heights
+            int radius = 10; // Defines the area around the player to sample heights
             int sumHeights = 0;
             int count = 0;
 
@@ -120,7 +120,7 @@ public class OrthoviewClientEvents {
             int avgHeight = count > 0 ? sumHeights / count : playerPos.getY();
 
             // Update ORTHOVIEW values based on the average height
-            ORTHOVIEW_PLAYER_BASE_Y = avgHeight + 40;
+            ORTHOVIEW_PLAYER_BASE_Y = Math.max(avgHeight + 40, 0);
             ORTHOVIEW_PLAYER_MAX_Y = avgHeight + 100;
         }
     }
@@ -330,9 +330,7 @@ public class OrthoviewClientEvents {
                     MC.gameMode.getPlayerMode() == GameType.ADVENTURE
                         || MC.gameMode.getPlayerMode() == GameType.SURVIVAL
                 )) {
-                    MC.player.sendSystemMessage(Component.literal(""));
-                    MC.player.sendSystemMessage(Component.literal("You must be in creative or spectator for RTS mode"));
-                    MC.player.sendSystemMessage(Component.literal(""));
+                    MC.player.sendSystemMessage(Component.literal(I18n.get("hud.orthoview.reignofnether.ortho_error")));
                 } else {
                     toggleEnable();
                 }

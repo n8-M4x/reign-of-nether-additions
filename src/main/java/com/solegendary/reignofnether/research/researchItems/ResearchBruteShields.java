@@ -67,7 +67,8 @@ public class ResearchBruteShields extends ProductionItem {
                 ResourceCosts.getFormattedTime(cost),
                 FormattedCharSequence.forward("", Style.EMPTY),
                 FormattedCharSequence.forward(I18n.get("research.reignofnether.brute_shields.tooltip1"), Style.EMPTY),
-                FormattedCharSequence.forward(I18n.get("research.reignofnether.brute_shields.tooltip2"), Style.EMPTY)
+                FormattedCharSequence.forward(I18n.get("research.reignofnether.brute_shields.tooltip2"), Style.EMPTY),
+                FormattedCharSequence.forward(I18n.get("research.reignofnether.brute_shields.tooltip3"), Style.EMPTY)
             )
         );
     }

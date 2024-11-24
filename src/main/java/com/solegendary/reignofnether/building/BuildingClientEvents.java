@@ -3,6 +3,7 @@ package com.solegendary.reignofnether.building;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.solegendary.reignofnether.alliance.AllianceSystem;
 import com.solegendary.reignofnether.building.buildings.monsters.Laboratory;
 import com.solegendary.reignofnether.building.buildings.piglins.Portal;
 import com.solegendary.reignofnether.building.buildings.shared.AbstractBridge;
@@ -281,6 +282,17 @@ public class BuildingClientEvents {
 
         float r = valid ? 0 : 1.0f;
         float g = valid ? 1.0f : 0;
+
+        // highlight yellow if we are placing a portal on overworld terrain
+        if (valid) {
+            String buildingName = buildingToPlace.getName().toLowerCase();
+            if (buildingName.contains("portal") &&
+                !buildingName.contains("central_portal") &&
+                !isOnNetherBlocks(blocksToDraw, originPos)) {
+                r = 0.5f;
+                g = 0.5f;
+            }
+        }
         ResourceLocation rl = new ResourceLocation("forge:textures/white.png");
         AABB aabb = new AABB(minX, minY, minZ, maxX, minY, maxZ);
         MyRenderer.drawLineBox(matrix, aabb, r, g, 0, 0.5f);
@@ -612,7 +624,7 @@ public class BuildingClientEvents {
             if (isInBrightChunk) {
                 switch (buildingRs) {
                     case OWNED -> MyRenderer.drawBoxBottom(evt.getPoseStack(), aabb, 0.3f, 1.0f, 0.3f, 0.2f);
-                    case FRIENDLY -> MyRenderer.drawBoxBottom(evt.getPoseStack(), aabb, 0.3f, 0.3f, 1.0f, 0.2f);
+                    case FRIENDLY -> MyRenderer.drawBoxBottom(evt.getPoseStack(), aabb, 0.2f, 0.2f, 1.0f, 0.3f);
                     case HOSTILE -> MyRenderer.drawBoxBottom(evt.getPoseStack(), aabb, 1.0f, 0.3f, 0.3f, 0.2f);
                     case NEUTRAL -> MyRenderer.drawBoxBottom(evt.getPoseStack(), aabb, 1.0f, 1.0f, 0.15f, 0.2f);
                 }
@@ -998,7 +1010,7 @@ public class BuildingClientEvents {
                 if (!FogOfWarClientEvents.movedToCapitol) {
                     OrthoviewClientEvents.centreCameraOnPos(newBuilding.originPos.getX(), newBuilding.originPos.getZ());
                     if (newBuilding.isCapitol) {
-                        FogOfWarClientEvents.movedToCapitol = true;
+                        FogOfWarClientEvents.movedToCapitol = true;  // Set the AtomicBoolean to true
                     }
                 }
             }
@@ -1019,13 +1031,23 @@ public class BuildingClientEvents {
     }
 
     public static Relationship getPlayerToBuildingRelationship(Building building) {
-        if (MC.player != null && building.ownerName.equals(MC.player.getName().getString())) {
-            return Relationship.OWNED;
-        } else if (building.ownerName.isBlank()) {
-            return Relationship.NEUTRAL;
-        } else {
-            return Relationship.HOSTILE;
+        if (MC.player != null) {
+            String playerName = MC.player.getName().getString();
+            String buildingOwnerName = building.ownerName;
+
+            if (playerName.equals(buildingOwnerName)) {
+                return Relationship.OWNED;
+            } else if (AllianceSystem.isAllied(playerName, buildingOwnerName)) {
+                return Relationship.FRIENDLY;
+            } else if (buildingOwnerName.isBlank()) {
+                return Relationship.NEUTRAL;
+            } else {
+                return Relationship.HOSTILE;
+            }
         }
+
+        // If MC.player is null, we can't determine the relationship, so return NEUTRAL.
+        return Relationship.NEUTRAL;
     }
 
     // does the player own one of these buildings?

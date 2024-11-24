@@ -3,15 +3,19 @@ package com.solegendary.reignofnether.player;
 import com.solegendary.reignofnether.building.Building;
 import com.solegendary.reignofnether.building.BuildingClientEvents;
 import com.solegendary.reignofnether.fogofwar.FogOfWarClientEvents;
+import com.solegendary.reignofnether.gamemode.GameMode;
+import com.solegendary.reignofnether.gamemode.ClientGameModeHelper;
 import com.solegendary.reignofnether.hud.HudClientEvents;
 import com.solegendary.reignofnether.keybinds.Keybindings;
 import com.solegendary.reignofnether.orthoview.OrthoviewClientEvents;
 import com.solegendary.reignofnether.registrars.SoundRegistrar;
 import com.solegendary.reignofnether.research.ResearchClient;
 import com.solegendary.reignofnether.resources.ResourcesClientEvents;
+import com.solegendary.reignofnether.survival.SurvivalClientEvents;
 import com.solegendary.reignofnether.unit.UnitClientEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
@@ -35,25 +39,11 @@ public class PlayerClientEvents {
 
     @SubscribeEvent
     public static void onRegisterCommand(RegisterClientCommandsEvent evt) {
+
         evt.getDispatcher().register(Commands.literal("rts-surrender").executes((command) -> {
             PlayerServerboundPacket.surrender();
             return 1;
         }));
-        evt.getDispatcher().register(Commands.literal("rts-reset").executes((command) -> {
-            if (MC.player != null && MC.player.hasPermissions(4)) {
-                PlayerServerboundPacket.resetRTS();
-                return 1;
-            }
-            return 0;
-        }));
-        evt.getDispatcher()
-            .register(Commands.literal("rts-lock").then(Commands.literal("enable").executes((command) -> {
-                if (MC.player != null && MC.player.hasPermissions(4)) {
-                    PlayerServerboundPacket.lockRTS();
-                    return 1;
-                }
-                return 0;
-            })));
         evt.getDispatcher().register(Commands.literal("rts-reset").executes((command) -> {
             if (MC.player != null && MC.player.hasPermissions(4)) {
                 PlayerServerboundPacket.resetRTS();
@@ -95,55 +85,22 @@ public class PlayerClientEvents {
             })));
         evt.getDispatcher().register(Commands.literal("rts-help").executes((command) -> {
             if (MC.player != null) {
-                MC.player.sendSystemMessage(Component.literal(" "));
-                MC.player.sendSystemMessage(Component.literal(
-                    "/rts-fog enable/disable - Toggle fog of war for all players"));
-                MC.player.sendSystemMessage(Component.literal("/rts-surrender - Concede the match"));
-                MC.player.sendSystemMessage(Component.literal(
-                    "/rts-reset - Delete all units/buildings, set all to spectator"));
-                MC.player.sendSystemMessage(Component.literal(
-                    "/rts-lock enable/disable - Prevent all players from joining the RTS match"));
-                MC.player.sendSystemMessage(Component.literal(
-                    "/gamerule doLogFalling - Set whether tree logs fall when cut"));
-                MC.player.sendSystemMessage(Component.literal(
-                    "/gamerule neutralAggro - Set whether you auto-attack neutral units/buildings"));
-            }
-            return 1;
-        }));
-        evt.getDispatcher()
-            .register(Commands.literal("rts-syncing").then(Commands.literal("enable").executes((command) -> {
-                if (MC.player != null && MC.player.hasPermissions(4)) {
-                    PlayerServerboundPacket.enableRTSSyncing();
-                    return 1;
-                }
-                return 0;
-            })));
-        evt.getDispatcher()
-            .register(Commands.literal("rts-syncing").then(Commands.literal("disable").executes((command) -> {
-                if (MC.player != null && MC.player.hasPermissions(4)) {
-                    PlayerServerboundPacket.disableRTSSyncing();
-                    return 1;
-                }
-                return 0;
-            })));
-        evt.getDispatcher().register(Commands.literal("rts-help").executes((command) -> {
-            if (MC.player != null) {
-                MC.player.sendSystemMessage(Component.literal(" "));
-                MC.player.sendSystemMessage(Component.translatable("commands.reignofnether.toggle_fow",
-                    "/rts-fog enable/disable"
-                ));
-                MC.player.sendSystemMessage(Component.translatable("commands.reignofnether.surrender",
-                    "/rts-surrender"
-                ));
+                MC.player.sendSystemMessage(Component.literal(""));
+                MC.player.sendSystemMessage(Component.translatable("commands.reignofnether.toggle_fow","/rts-fog enable/disable"));
+                MC.player.sendSystemMessage(Component.translatable("commands.reignofnether.surrender","/rts-surrender"));
                 MC.player.sendSystemMessage(Component.translatable("commands.reignofnether.reset", "/rts-reset"));
-                MC.player.sendSystemMessage(Component.translatable("commands.reignofnether.lock",
-                    "/rts-lock enable/disable"
-                ));
+                MC.player.sendSystemMessage(Component.translatable("commands.reignofnether.lock", "/rts-lock enable/disable"));
+                MC.player.sendSystemMessage(Component.translatable("commands.reignofnether.ally", "/ally"));
+                MC.player.sendSystemMessage(Component.translatable("commands.reignofnether.disband", "/disband"));
+                MC.player.sendSystemMessage(Component.translatable("commands.reignofnether.gamerule.do_log_falling", "/gamerule doLogFalling"));
+                MC.player.sendSystemMessage(Component.translatable("commands.reignofnether.gamerule.neutral_aggro", "/gamerule neutralAggro"));
+                MC.player.sendSystemMessage(Component.translatable("commands.reignofnether.gamerule.max_population", "/gamerule maxPopulation"));
             }
             return 1;
         }));
         evt.getDispatcher().register(Commands.literal("rts-controls").executes((command) -> {
             if (MC.player != null) {
+                MC.player.sendSystemMessage(Component.literal(""));
                 MC.player.sendSystemMessage(Component.translatable("controls.reignofnether.toggle_cam"));
                 MC.player.sendSystemMessage(Component.translatable("controls.reignofnether.refresh_chunks"));
                 MC.player.sendSystemMessage(Component.translatable("controls.reignofnether.toggle_fps_tps"));
@@ -254,7 +211,9 @@ public class PlayerClientEvents {
     // disallow opening the creative menu while orthoview is enabled
     @SubscribeEvent
     public static void onScreenOpen(ScreenEvent.Opening evt) {
-        if (OrthoviewClientEvents.isEnabled() && evt.getScreen() instanceof CreativeModeInventoryScreen) {
+        if (OrthoviewClientEvents.isEnabled() &&
+            (evt.getScreen() instanceof CreativeModeInventoryScreen ||
+            evt.getScreen() instanceof InventoryScreen)) {
             evt.setCanceled(true);
         }
     }
@@ -290,6 +249,10 @@ public class PlayerClientEvents {
         BuildingClientEvents.getSelectedBuildings().clear();
         BuildingClientEvents.getBuildings().clear();
         ResourcesClientEvents.resourcesList.clear();
+        ClientGameModeHelper.gameMode = GameMode.STANDARD;
+        SurvivalClientEvents.reset();
+        if (!ClientGameModeHelper.disallowSurvival)
+            ClientGameModeHelper.gameModeLocked = false;
     }
 
     public static void setRTSLock(boolean lock) {

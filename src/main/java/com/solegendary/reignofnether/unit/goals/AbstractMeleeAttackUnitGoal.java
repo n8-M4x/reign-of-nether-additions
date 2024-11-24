@@ -1,6 +1,7 @@
 package com.solegendary.reignofnether.unit.goals;
 
 import com.mojang.math.Vector3d;
+import com.solegendary.reignofnether.unit.interfaces.AttackerUnit;
 import com.solegendary.reignofnether.unit.interfaces.Unit;
 import com.solegendary.reignofnether.unit.units.piglins.WitherSkeletonUnit;
 import net.minecraft.core.BlockPos;
@@ -29,17 +30,17 @@ public abstract class AbstractMeleeAttackUnitGoal extends Goal {
     private int ticksUntilNextPathRecalculation;
     private final int tickPathRecalcMax = 5;
     private int ticksUntilNextAttack;
-    private final int attackInterval;
     private long lastCanUseCheck;
 
-    public AbstractMeleeAttackUnitGoal(Mob mob, int attackInterval, boolean followingTargetEvenIfNotSeen) {
+    public AbstractMeleeAttackUnitGoal(Mob mob, boolean followingTargetEvenIfNotSeen) {
         this.mob = mob;
-        this.attackInterval = attackInterval;
         this.followingTargetEvenIfNotSeen = followingTargetEvenIfNotSeen;
         this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
     }
 
     public void tickAttackCooldown() {
+        if (this.ticksUntilNextAttack > ((AttackerUnit) this.mob).getAttackCooldown())
+            this.ticksUntilNextAttack = getAttackInterval();
         if (ticksUntilNextAttack > 0) // tick down even when not targeting anything
             this.ticksUntilNextAttack -= 1;
     }
@@ -114,7 +115,12 @@ public abstract class AbstractMeleeAttackUnitGoal extends Goal {
                 if (ticksUntilNextPathRecalculation <= 0) {
                     Path path = mob.getNavigation().createPath(target.getX(), target.getY(), target.getZ(), 0);
                     this.mob.getNavigation().moveTo(path, Unit.getSpeedModifier((Unit) this.mob));
-                    ticksUntilNextPathRecalculation = tickPathRecalcMax;
+                    if (d0 < 16)
+                        ticksUntilNextPathRecalculation = tickPathRecalcMax;
+                    else if (d0 < 64)
+                        ticksUntilNextPathRecalculation = tickPathRecalcMax * 2;
+                    else
+                        ticksUntilNextPathRecalculation = tickPathRecalcMax * 4;
                 } else {
                     ticksUntilNextPathRecalculation -= 1;
                 }
@@ -126,11 +132,11 @@ public abstract class AbstractMeleeAttackUnitGoal extends Goal {
     protected void checkAndPerformAttack(LivingEntity target, double p_25558_) {
         double d0 = this.getAttackReachSqr(target);
         if (p_25558_ <= d0 && this.ticksUntilNextAttack <= 0) {
-            this.ticksUntilNextAttack = this.adjustedTickDelay(attackInterval);
+            this.ticksUntilNextAttack = this.adjustedTickDelay(getAttackInterval());
             this.mob.swing(InteractionHand.MAIN_HAND);
             this.mob.doHurtTarget(target);
-            //if (target instanceof WitherSkeletonUnit witherSkeletonUnit && witherSkeletonUnit.deathCloudTicks > 0)
-            //    this.mob.addEffect(new MobEffectInstance(MobEffects.WITHER, (WitherSkeletonUnit.WITHER_SECONDS_ON_HIT * 20), 1));
+            if (target instanceof WitherSkeletonUnit witherSkeletonUnit)
+                this.mob.addEffect(new MobEffectInstance(MobEffects.WITHER, (WitherSkeletonUnit.WITHER_SECONDS_TO_ATTACKERS * 20), 1));
         }
     }
 
@@ -139,7 +145,7 @@ public abstract class AbstractMeleeAttackUnitGoal extends Goal {
     }
 
     protected int getAttackInterval() {
-        return this.adjustedTickDelay(attackInterval);
+        return this.adjustedTickDelay(((AttackerUnit) this.mob).getAttackCooldown());
     }
 
     protected double getAttackReachSqr(LivingEntity p_25556_) {

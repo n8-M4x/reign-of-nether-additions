@@ -4,6 +4,7 @@ import com.solegendary.reignofnether.ReignOfNether;
 import com.solegendary.reignofnether.building.Building;
 import com.solegendary.reignofnether.building.BuildingClientEvents;
 import com.solegendary.reignofnether.keybinds.Keybinding;
+import com.solegendary.reignofnether.keybinds.Keybindings;
 import com.solegendary.reignofnether.orthoview.OrthoviewClientEvents;
 import com.solegendary.reignofnether.unit.Relationship;
 import com.solegendary.reignofnether.unit.UnitClientEvents;
@@ -155,7 +156,10 @@ public class ControlGroup {
             () -> false,
             () -> true,
             this::loadToSelected,
-            this::clearAll,
+            () -> {
+                if (Keybindings.shiftMod.isDown())
+                    clearAll();
+            },
             List.of(FormattedCharSequence.forward(
                 I18n.get("hud.control_group.reignofnether.control_group", keybinding.buttonLabel),
                 Style.EMPTY

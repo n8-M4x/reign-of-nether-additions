@@ -145,7 +145,7 @@ public class PortraitRendererUnit<T extends LivingEntity, M extends EntityModel<
         int bgCol = 0x0;
         switch (rs) {
             case OWNED -> bgCol = 0x90000000;
-            case FRIENDLY -> bgCol = 0x90009000;
+            case FRIENDLY -> bgCol = 0x90202090;
             case NEUTRAL -> bgCol = 0x90909000;
             case HOSTILE -> bgCol = 0x90900000;
         }
@@ -162,11 +162,12 @@ public class PortraitRendererUnit<T extends LivingEntity, M extends EntityModel<
         drawY += yAndScaleOffsets.getFirst();
         sizeFinal += yAndScaleOffsets.getSecond();
 
-        ItemStack itemStack = entity.getItemBySlot(EquipmentSlot.HEAD);
-        if (itemStack.getItem() instanceof BannerItem) {
+        boolean hasBanner = false;
+        ItemStack bannerStack = entity.getItemBySlot(EquipmentSlot.HEAD);
+        if (bannerStack.getItem() instanceof BannerItem) {
+            hasBanner = true;
             entity.setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
         }
-
         drawEntityOnScreen(poseStack, entity, drawX, drawY, sizeFinal);
 
         name = WordUtils.capitalize(name);
@@ -223,7 +224,7 @@ public class PortraitRendererUnit<T extends LivingEntity, M extends EntityModel<
         MultiBufferSource.BufferSource multibuffersource$buffersource =
             MultiBufferSource.immediate(Tesselator.getInstance()
             .getBuilder());
-        String text = healthText + "/" + entity.getMaxHealth();
+        String text = healthText + "/" + (int) entity.getMaxHealth();
         FormattedCharSequence pTooltips = FormattedCharSequence.forward(text, Style.EMPTY);
         ClientTooltipComponent clientTooltip = ClientTooltipComponent.create(pTooltips);
         poseStack.translate(0.0, 0.0, 400.0);
@@ -237,6 +238,9 @@ public class PortraitRendererUnit<T extends LivingEntity, M extends EntityModel<
         );
         multibuffersource$buffersource.endBatch();
         poseStack.popPose();
+
+        if (hasBanner)
+            entity.setItemSlot(EquipmentSlot.HEAD, bannerStack);
 
         return rectZone;
     }

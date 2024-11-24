@@ -58,7 +58,6 @@ public class HuskProd extends ProductionItem {
                 ResourceCosts.getFormattedPopAndTime(cost),
                 FormattedCharSequence.forward("", Style.EMPTY),
                 FormattedCharSequence.forward(I18n.get("units.monsters.reignofnether.husk.tooltip1"), Style.EMPTY),
-                FormattedCharSequence.forward("", Style.EMPTY),
                 FormattedCharSequence.forward(I18n.get("units.monsters.reignofnether.husk.tooltip2"), Style.EMPTY),
                 FormattedCharSequence.forward("", Style.EMPTY),
                 FormattedCharSequence.forward(I18n.get("units.monsters.reignofnether.husk.tooltip3"), Style.EMPTY)

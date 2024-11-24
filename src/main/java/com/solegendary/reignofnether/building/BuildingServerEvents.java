@@ -69,11 +69,23 @@ public class BuildingServerEvents {
 
     public static final Random random = new Random();
 
-    public static void saveBuildings() {
-        if (serverLevel == null) {
+    private static final int SAVE_TICKS_MAX = 1200;
+    private static int saveTicks = 0;
+    @SubscribeEvent
+    public static void onServerTick(TickEvent.ServerTickEvent evt) {
+        if (evt.phase != TickEvent.Phase.END)
             return;
+        saveTicks += 1;
+        if (saveTicks >= SAVE_TICKS_MAX) {
+            ServerLevel level = evt.getServer().getLevel(Level.OVERWORLD);
+            if (level != null) {
+                saveBuildings(level);
+                saveTicks = 0;
+            }
         }
+    }
 
+    public static void saveBuildings(ServerLevel level) {
         BuildingSaveData buildingData = BuildingSaveData.getInstance(serverLevel);
         buildingData.buildings.clear();
 
@@ -85,7 +97,7 @@ public class BuildingServerEvents {
             }
 
             buildingData.buildings.add(new BuildingSave(b.originPos,
-                serverLevel,
+                level,
                 b.name,
                 b.ownerName,
                 b.rotation,
@@ -98,19 +110,15 @@ public class BuildingServerEvents {
             ReignOfNether.LOGGER.info("saved buildings/nether in serverevents: " + b.originPos);
         });
         buildingData.save();
-        serverLevel.getDataStorage().save();
+        level.getDataStorage().save();
     }
 
-    public static void saveNetherZones() {
-        if (serverLevel == null) {
-            return;
-        }
-
-        NetherZoneSaveData netherData = NetherZoneSaveData.getInstance(serverLevel);
+    public static void saveNetherZones(ServerLevel level) {
+        NetherZoneSaveData netherData = NetherZoneSaveData.getInstance(level);
         netherData.netherZones.clear();
         netherData.netherZones.addAll(netherZones);
         netherData.save();
-        serverLevel.getDataStorage().save();
+        level.getDataStorage().save();
 
         ReignOfNether.LOGGER.info("saved " + netherZones.size() + " netherzones in serverevents");
     }
@@ -176,9 +184,12 @@ public class BuildingServerEvents {
     }
 
     @SubscribeEvent
-    public static void onServerStop(ServerStoppingEvent evt) {
-        saveNetherZones();
-        saveBuildings();
+    public static void onServerStopping(ServerStoppingEvent evt) {
+        ServerLevel level = evt.getServer().getLevel(Level.OVERWORLD);
+        if (level != null) {
+            saveNetherZones(level);
+            saveBuildings(level);
+        }
     }
 
     public static void placeBuilding(
@@ -344,7 +355,7 @@ public class BuildingServerEvents {
         buildings.remove(building);
         if (building instanceof NetherConvertingBuilding nb && nb.getZone() != null) {
             nb.getZone().startRestoring();
-            saveNetherZones();
+            saveNetherZones(serverLevel);
         }
         FrozenChunkClientboundPacket.setBuildingDestroyedServerside(building.originPos);
 
@@ -363,7 +374,7 @@ public class BuildingServerEvents {
 
     public static int getTotalPopulationSupply(String ownerName) {
         if (ResearchServerEvents.playerHasCheat(ownerName, "foodforthought")) {
-            return UnitServerEvents.hardCapPopulation;
+            return UnitServerEvents.maxPopulation;
         }
 
         int totalPopulationSupply = 0;
@@ -371,7 +382,7 @@ public class BuildingServerEvents {
             if (building.ownerName.equals(ownerName) && building.isBuilt) {
                 totalPopulationSupply += building.popSupply;
             }
-        return Math.min(UnitServerEvents.hardCapPopulation, totalPopulationSupply);
+        return Math.min(UnitServerEvents.maxPopulation, totalPopulationSupply);
     }
 
     // similar to BuildingClientEvents getPlayerToBuildingRelationship: given a Unit and Building, what is the
@@ -461,7 +472,7 @@ public class BuildingServerEvents {
             if (b.shouldBeDestroyed()) {
                 if (b instanceof NetherConvertingBuilding nb && nb.getZone() != null) {
                     nb.getZone().startRestoring();
-                    saveNetherZones();
+                    saveNetherZones(serverLevel);
                 }
                 FrozenChunkClientboundPacket.setBuildingDestroyedServerside(b.originPos);
                 return true;
@@ -482,7 +493,7 @@ public class BuildingServerEvents {
         netherZones.removeIf(NetherZone::isDone);
         int nzSizeAfter = netherZones.size();
         if (nzSizeBefore != nzSizeAfter) {
-            saveNetherZones();
+            saveNetherZones(serverLevel);
         }
     }
 
@@ -570,10 +581,10 @@ public class BuildingServerEvents {
                 }
 
                 if (atkDmg > 0) {
-                    // all explosion damage will directly hit all occupants at an average of half rate
+                    // all explosion damage will directly hit all occupants at an average of 1/4 rate
                     if (building instanceof GarrisonableBuilding garr) {
                         for (LivingEntity le : garr.getOccupants())
-                            le.hurt(exp.getDamageSource(), random.nextInt(atkDmg + 1));
+                            le.hurt(exp.getDamageSource(), (random.nextInt(atkDmg + 1)) / 2f);
                     }
 
                     if (building instanceof AbstractBridge) {
