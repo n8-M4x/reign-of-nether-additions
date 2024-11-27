@@ -557,23 +557,22 @@ public class BuildingClientEvents {
         int zAdj = 0;
         int xRadius = buildingDimensions.getX() / 2;
         int zRadius = buildingDimensions.getZ() / 2;
-
         switch (buildingRotation) {
             case NONE -> {
                 xAdj = -xRadius;
                 zAdj = -zRadius;
             }
-            case CLOCKWISE_90 -> {
-                xAdj = xRadius;
-                zAdj = -zRadius;
+            case CLOCKWISE_90 -> {// x and z are switched because of rotation
+                xAdj = zRadius;
+                zAdj = -xRadius;
             }
             case CLOCKWISE_180 -> {
                 xAdj = xRadius;
                 zAdj = zRadius;
             }
-            case COUNTERCLOCKWISE_90 -> {
-                xAdj = -xRadius;
-                zAdj = zRadius;
+            case COUNTERCLOCKWISE_90 -> {// x and z are switched because of rotation
+                xAdj = -zRadius;
+                zAdj = xRadius;
             }
         }
         BlockPos bp = CursorClientEvents.getPreselectedBlockPos();
