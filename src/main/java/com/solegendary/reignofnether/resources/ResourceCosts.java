@@ -31,7 +31,7 @@ public class ResourceCosts {
 
     public static final int REPLANT_WOOD_COST = 1;
     public static final int REDUCED_REPLANT_WOOD_COST = 0;
-    public static final int DEFAULT_MAX_POPULATION = 150;
+    public static final int DEFAULT_MAX_POPULATION = 250;
 
 
     // ******************* UNITS ******************* //
@@ -85,6 +85,9 @@ public class ResourceCosts {
     public static ResourceCost LABORATORY = ResourceCost.Building(0,250,150, 0);
     public static ResourceCost DARK_WATCHTOWER = ResourceCost.Building(0,100,75, 0);
     public static ResourceCost STRONGHOLD = ResourceCost.Building(0,400,300, 0);
+    //
+    public static ResourceCost MINE_MONSTERS = ResourceCost.Building(200,250,100, 0);
+    public static ResourceCost MONSTER_WALL = ResourceCost.Building(0,120,100, 0);
 
     // Villagers
     public static ResourceCost TOWN_CENTRE = ResourceCost.Building(0,300,150, 10);
@@ -97,6 +100,10 @@ public class ResourceCosts {
     public static ResourceCost WATCHTOWER = ResourceCost.Building(0,100,75, 0);
     public static ResourceCost CASTLE = ResourceCost.Building(0,400,300, 0);
     public static ResourceCost IRON_GOLEM_BUILDING = ResourceCost.Building(0,50,250, 0);
+    //
+    public static ResourceCost MINE = ResourceCost.Building(200,250,100, 0);
+    public static ResourceCost VILLAGER_WALL = ResourceCost.Building(0,120,100, 0);
+
 
     // Piglins
     public static ResourceCost CENTRAL_PORTAL = ResourceCost.Building(0,300,150, 10);
@@ -107,6 +114,10 @@ public class ResourceCosts {
     public static ResourceCost FLAME_SANCTUARY = ResourceCost.Building(0, 300, 150, 0);
     public static ResourceCost WITHER_SHRINE = ResourceCost.Building(0, 350, 200, 0);
     public static ResourceCost FORTRESS = ResourceCost.Building(0, 400, 300, 0);
+    //
+    public static ResourceCost MINE_PIGLINS = ResourceCost.Building(200,250,100, 0);
+    public static ResourceCost PIGLIN_WALL = ResourceCost.Building(0,120,100, 0);
+
 
     // ******************* RESEARCH ******************* //
     public static ResourceCost RESEARCH_GOLEM_SMITHING = ResourceCost.Research(0, 150,200, 90);

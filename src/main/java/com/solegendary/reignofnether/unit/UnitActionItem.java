@@ -43,6 +43,7 @@ public class UnitActionItem {
         UnitAction.FOLLOW,
         UnitAction.BUILD_REPAIR,
         UnitAction.FARM,
+        UnitAction.MINE_ORE,
         UnitAction.RETURN_RESOURCES,
         UnitAction.RETURN_RESOURCES_TO_CLOSEST,
         UnitAction.DELETE,
@@ -241,6 +242,26 @@ public class UnitActionItem {
                                     if (level.isClientSide()) {
                                         HudClientEvents.showTemporaryMessage(I18n.get(
                                             "hud.reignofnether.worker_inv_full"));
+                                    }
+                                    goal.saveAndReturnResources();
+                                }
+                            }
+                        }
+                    }
+                }
+                case MINE_ORE -> {
+                    if (unit instanceof WorkerUnit workerUnit) {
+                        GatherResourcesGoal goal = workerUnit.getGatherResourceGoal();
+                        if (goal != null) {
+                            goal.setTargetResourceName(ResourceName.ORE);
+                            goal.setMoveTarget(preselectedBlockPos);
+                            Building building = BuildingUtils.findBuilding(level.isClientSide(), preselectedBlockPos);
+                            if (building != null && building.name.contains("Mine")) {
+                                goal.setTargetFarm(building);
+                                if (Unit.atMaxResources((Unit) workerUnit)) {
+                                    if (level.isClientSide()) {
+                                        HudClientEvents.showTemporaryMessage(I18n.get(
+                                                "hud.reignofnether.worker_inv_full"));
                                     }
                                     goal.saveAndReturnResources();
                                 }

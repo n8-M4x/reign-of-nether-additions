@@ -9,6 +9,12 @@ import com.solegendary.reignofnether.building.buildings.monsters.SpruceBridge;
 import com.solegendary.reignofnether.building.buildings.villagers.OakStockpile;
 import com.solegendary.reignofnether.building.buildings.villagers.OakBridge;
 import com.solegendary.reignofnether.building.buildings.villagers.*;
+import de.n8M4.building.buildings.monsters.MonsterMine;
+import de.n8M4.building.buildings.monsters.MonsterWall;
+import de.n8M4.building.buildings.piglins.PiglinMine;
+import de.n8M4.building.buildings.piglins.PiglinWall;
+import de.n8M4.building.buildings.villagers.Mine;
+import de.n8M4.building.buildings.villagers.VillagerWall;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,8 +26,6 @@ import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -100,6 +104,12 @@ public class BuildingUtils {
             case VillagerHouse.buildingName -> building = new VillagerHouse(level, pos, rotation, ownerName);
             case Graveyard.buildingName -> building = new Graveyard(level, pos, rotation, ownerName);
             case WheatFarm.buildingName -> building = new WheatFarm(level, pos, rotation, ownerName);
+            case Mine.buildingName -> building = new Mine(level, pos, rotation, ownerName);
+            case PiglinMine.buildingName -> building = new PiglinMine(level, pos, rotation, ownerName);
+            case MonsterMine.buildingName -> building = new MonsterMine(level, pos, rotation, ownerName);
+            case MonsterWall.buildingName -> building = new MonsterWall(level, pos, rotation, ownerName);
+            case PiglinWall.buildingName -> building = new PiglinWall(level, pos, rotation, ownerName);
+            case VillagerWall.buildingName -> building = new VillagerWall(level, pos, rotation, ownerName);
             case Laboratory.buildingName -> building = new Laboratory(level, pos, rotation, ownerName);
             case Barracks.buildingName -> building = new Barracks(level, pos, rotation, ownerName);
             case PumpkinFarm.buildingName -> building = new PumpkinFarm(level, pos, rotation, ownerName);

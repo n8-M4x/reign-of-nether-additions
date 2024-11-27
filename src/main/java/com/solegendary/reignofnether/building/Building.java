@@ -68,7 +68,7 @@ public abstract class Building {
     public boolean isDestroyedServerside = false;
     public boolean isBuiltServerside = false;
 
-    private final static int BASE_MS_PER_BUILD = 500; // time taken to build each block with 1 villager assigned;
+    public static int BASE_MS_PER_BUILD = 500; // time taken to build each block with 1 villager assigned;
     // normally 500ms in real games
     public final float MELEE_DAMAGE_MULTIPLIER = 0.20f; // damage multiplier applied to melee attackers
 
@@ -817,8 +817,8 @@ public abstract class Building {
         Random random = new Random();
 
         do {
-            int x = centrePos.getX() + random.nextInt(-range / 2, range / 2);
-            int z = centrePos.getZ() + random.nextInt(-range / 2, range / 2);
+            int x = centrePos.getX() + random.nextInt(Math.min(-range / 2, range / 2), Math.max(-range / 2, range / 2));
+            int z = centrePos.getZ() + random.nextInt(Math.min(-range / 2, range / 2), Math.max(-range / 2, range / 2));
             int y = level.getChunkAt(new BlockPos(x, 0, z)).getHeight(Heightmap.Types.WORLD_SURFACE, x, z);
             BlockState bs;
             do {

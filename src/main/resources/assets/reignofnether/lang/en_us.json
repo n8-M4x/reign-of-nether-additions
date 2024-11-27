@@ -218,6 +218,10 @@
     "buildings.monsters.reignofnether.sculk_catalyst.tooltip3": "Nearby sculk extends this range up to %d and ",
     "buildings.monsters.reignofnether.sculk_catalyst.tooltip4": "provides absorption health.",
 
+    "buildings.monsters.reignofnether.monster_wall": "Defense Wall",
+    "buildings.monsters.reignofnether.monster_wall.tooltip2": "A defensive wall to protect from attacks",
+
+
     "buildings.piglins.reignofnether.bastion": "Bastion",
     "buildings.piglins.reignofnether.bastion.tooltip1": "A fortified barracks to house Headhunter piglins, ",
     "buildings.piglins.reignofnether.bastion.tooltip2": "enabling them to be produced at military portals.",
@@ -254,6 +258,10 @@
     "buildings.piglins.reignofnether.wither_shrine.tooltip1": "A dark shrine dedicated to the power of Withers.",
     "buildings.piglins.reignofnether.wither_shrine.tooltip2": "Enables wither skeletons production at military portals.",
     "buildings.piglins.reignofnether.wither_shrine.tooltip3": "Requires a Bastion.",
+
+    "buildings.piglins.reignofnether.piglin_wall": "Defense Wall",
+    "buildings.piglins.reignofnether.piglin_wall.tooltip2": "A defensive wall to protect from attacks",
+
 
     "buildings.villagers.reignofnether.arcane_tower": "Arcane Tower",
     "buildings.villagers.reignofnether.arcane_tower.tooltip1": "A magical tower that is home to Witches and Evokers.",
@@ -294,6 +302,12 @@
     "buildings.villagers.reignofnether.wheat_farm.tooltip1": "\uE001  %d  +  %d  per  crop  planted",
     "buildings.villagers.reignofnether.wheat_farm.tooltip2": "A wheat field that be can tilled to collect food.",
     "buildings.villagers.reignofnether.wheat_farm.tooltip3": "Workers automatically use wood to replant seeds while working.",
+
+    "buildings.villagers.reignofnether.mine": "Ore Mine",
+    "buildings.villagers.reignofnether.mine.tooltip2": "Not faster than regular mining but does not need ore veins nearby",
+    "buildings.villagers.reignofnether.villager_wall": "Defense Wall",
+    "buildings.villagers.reignofnether.villager_wall.tooltip2": "A defensive wall to protect from attacks",
+
 
     "commands.reignofnether.toggle_fow": "%s - Toggle fog of war for all players",
     "commands.reignofnether.surrender": "%s - Concede the match",

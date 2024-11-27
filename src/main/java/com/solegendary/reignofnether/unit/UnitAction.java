@@ -22,6 +22,7 @@ public enum UnitAction {
     DELETE, // instantly kills this unit
     DISCARD, // instantly removes this unit from the level without any death animation/event
     AUTOCAST, // toggle autocast for a unit's ability
+    MINE_ORE, // mines ore in a mine
 
     ATTACK_GROUND,
     // special abilities - these can also be assigned to cursor actions

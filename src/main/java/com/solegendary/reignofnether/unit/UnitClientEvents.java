@@ -547,6 +547,8 @@ public class UnitClientEvents {
 
                     if (preSelBuilding.name.contains(" Farm") && preSelBuilding.isBuilt)
                         sendUnitCommand(UnitAction.FARM);
+                    else if (preSelBuilding.name.contains("Mine") && preSelBuilding.isBuilt)
+                        sendUnitCommand(UnitAction.MINE_ORE);
                     else if (BuildingUtils.isBuildingBuildable(true, preSelBuilding))
                         sendUnitCommand(UnitAction.BUILD_REPAIR);
                     else

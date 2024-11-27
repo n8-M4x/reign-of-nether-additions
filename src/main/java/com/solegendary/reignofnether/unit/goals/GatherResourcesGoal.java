@@ -259,6 +259,19 @@ public class GatherResourcesGoal extends MoveToTargetBlockGoal {
                         if (isLogBlock(this.mob.level.getBlockState(gatherTarget)))
                             ResourcesServerEvents.fellAdjacentLogs(gatherTarget, new ArrayList<>(), this.mob.level);
 
+                        if(targetFarm != null && targetFarm.name.contains("Mine")) {
+                            BlockState replaceBs;
+                            replaceBs = Blocks.COAL_ORE.defaultBlockState();
+                            this.mob.level.setBlockAndUpdate(gatherTarget, replaceBs);
+
+                            Unit unit = (Unit) mob;
+                            unit.getItems().add(new ItemStack(targetResourceSource.items.get(0)));
+                            UnitSyncClientboundPacket.sendSyncResourcesPacket(unit);
+
+                            // if at max resources, go to drop off automatically, then return to this gather goal
+                            if (Unit.atThresholdResources(unit))
+                                saveAndReturnResources();
+                        } else {
                         if (mob.level.destroyBlock(gatherTarget, false)) {
                             // replace workers' mine ores with cobble to prevent creating potholes
                             if (targetResourceSource.resourceName == ResourceName.ORE) {
@@ -287,6 +300,7 @@ public class GatherResourcesGoal extends MoveToTargetBlockGoal {
                                 saveAndReturnResources();
 
                             removeGatherTarget();
+                        }
                         }
                     }
                 }
