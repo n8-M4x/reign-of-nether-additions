@@ -21,6 +21,8 @@ import com.solegendary.reignofnether.unit.units.modelling.VillagerUnitModel;
 import com.solegendary.reignofnether.unit.units.villagers.VillagerUnit;
 import com.solegendary.reignofnether.util.Faction;
 import de.n8M4.building.buildings.monsters.MonsterMine;
+import de.n8M4.building.buildings.monsters.MonsterWall;
+import de.n8M4.building.buildings.villagers.VillagerWall;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -187,6 +189,7 @@ public class ZombieVillagerUnit extends Vindicator implements Unit, WorkerUnit, 
             this.abilityButtons.add(HauntedHouse.getBuildButton(Keybindings.keyE));
             this.abilityButtons.add(PumpkinFarm.getBuildButton(Keybindings.keyR));
             this.abilityButtons.add(MonsterMine.getBuildButton(Keybindings.keyF));
+            this.abilityButtons.add(MonsterWall.getBuildButton(Keybindings.keyG));
             this.abilityButtons.add(DarkWatchtower.getBuildButton(Keybindings.keyT));
             this.abilityButtons.add(Graveyard.getBuildButton(Keybindings.keyY));
             this.abilityButtons.add(Dungeon.getBuildButton(Keybindings.keyU));

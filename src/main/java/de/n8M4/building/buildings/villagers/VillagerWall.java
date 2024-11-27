@@ -33,7 +33,7 @@ public class VillagerWall extends ProductionBuilding {
 
     public final static String buildingName = "Villager Wall";
     public final static String structureName = "villager_wall";
-    public final static ResourceCost cost = ResourceCosts.MONSTER_WALL;
+    public final static ResourceCost cost = ResourceCosts.VILLAGER_WALL;
 
     private static final int ICE_CHECK_TICKS_MAX = 100;
     private int ticksToNextIceCheck = ICE_CHECK_TICKS_MAX;
@@ -44,7 +44,7 @@ public class VillagerWall extends ProductionBuilding {
         this.name = buildingName;
         this.ownerName = ownerName;
         this.portraitBlock = Blocks.COBBLESTONE_WALL;
-        this.icon = new ResourceLocation("minecraft", "textures/item/cobblestone_wall.png");
+        this.icon = new ResourceLocation("reignofnether", "textures/icons/cobblestone_wall.png");
         this.foodCost = cost.food;
         this.woodCost = cost.wood;
         this.oreCost = cost.ore;
@@ -64,7 +64,7 @@ public class VillagerWall extends ProductionBuilding {
     public static AbilityButton getBuildButton(Keybinding hotkey) {
         return new AbilityButton(
                 VillagerWall.buildingName,
-                new ResourceLocation("minecraft", "textures/item/cobblestone_wall.png"),
+                new ResourceLocation("reignofnether", "textures/icons/cobblestone_wall.png"),
                 hotkey,
                 () -> BuildingClientEvents.getBuildingToPlace() == VillagerWall.class,
                 () -> !TutorialClientEvents.isAtOrPastStage(TutorialStage.EXPLAIN_BUILDINGS),

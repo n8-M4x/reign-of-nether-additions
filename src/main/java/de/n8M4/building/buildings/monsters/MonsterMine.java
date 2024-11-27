@@ -44,7 +44,7 @@ public class MonsterMine extends ProductionBuilding {
         this.name = buildingName;
         this.ownerName = ownerName;
         this.portraitBlock = Blocks.POLISHED_BLACKSTONE_BRICK_WALL;
-        this.icon = new ResourceLocation("minecraft", "textures/item/polished_blackstone_brick_wall.png");
+        this.icon = new ResourceLocation("minecraft", "textures/item/minecart.png");
         this.foodCost = cost.food;
         this.woodCost = cost.wood;
         this.oreCost = cost.ore;
@@ -64,7 +64,7 @@ public class MonsterMine extends ProductionBuilding {
     public static AbilityButton getBuildButton(Keybinding hotkey) {
         return new AbilityButton(
                 MonsterMine.buildingName,
-                new ResourceLocation("minecraft", "textures/item/polished_blackstone_brick_wall.png"),
+                new ResourceLocation("minecraft", "textures/item/minecart.png"),
                 hotkey,
                 () -> BuildingClientEvents.getBuildingToPlace() == MonsterMine.class,
                 () -> !TutorialClientEvents.isAtOrPastStage(TutorialStage.EXPLAIN_BUILDINGS),

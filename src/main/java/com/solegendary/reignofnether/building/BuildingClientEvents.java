@@ -385,6 +385,9 @@ public class BuildingClientEvents {
     // messed up
     private static boolean isOverlappingAnyOtherBuilding() {
 
+        // make it possible to connect watchtowers/bastions to walls
+        if(buildingToPlace.getName().contains("Wall") || buildingToPlace.getName().contains("Watchtower") || buildingToPlace.getName().contains("Bastion")) return false;
+
         BlockPos origin = getOriginPos();
         Vec3i originOffset = new Vec3i(origin.getX(), origin.getY(), origin.getZ());
         BlockPos minPos = BuildingUtils.getMinCorner(blocksToDraw).offset(originOffset).offset(-1, -1, -1);

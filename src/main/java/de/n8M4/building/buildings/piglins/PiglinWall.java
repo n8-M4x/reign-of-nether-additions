@@ -33,7 +33,7 @@ public class PiglinWall extends ProductionBuilding {
 
     public final static String buildingName = "Piglin Wall";
     public final static String structureName = "piglin_wall";
-    public final static ResourceCost cost = ResourceCosts.MONSTER_WALL;
+    public final static ResourceCost cost = ResourceCosts.PIGLIN_WALL;
 
     private static final int ICE_CHECK_TICKS_MAX = 100;
     private int ticksToNextIceCheck = ICE_CHECK_TICKS_MAX;
@@ -43,8 +43,8 @@ public class PiglinWall extends ProductionBuilding {
         super(level, originPos, rotation, ownerName, getAbsoluteBlockData(getRelativeBlockData(level), level, originPos, rotation), false);
         this.name = buildingName;
         this.ownerName = ownerName;
-        this.portraitBlock = Blocks.POLISHED_BLACKSTONE_BRICK_WALL;
-        this.icon = new ResourceLocation("minecraft", "textures/item/nether_brick_wall.png");
+        this.portraitBlock = Blocks.NETHER_BRICK_WALL;
+        this.icon = new ResourceLocation("reignofnether", "textures/icons/nether_brick_wall.png");
         this.foodCost = cost.food;
         this.woodCost = cost.wood;
         this.oreCost = cost.ore;
@@ -64,7 +64,7 @@ public class PiglinWall extends ProductionBuilding {
     public static AbilityButton getBuildButton(Keybinding hotkey) {
         return new AbilityButton(
                 PiglinWall.buildingName,
-                new ResourceLocation("minecraft", "textures/item/nether_brick_wall.png"),
+                new ResourceLocation("reignofnether", "textures/icons/nether_brick_wall.png"),
                 hotkey,
                 () -> BuildingClientEvents.getBuildingToPlace() == PiglinWall.class,
                 () -> !TutorialClientEvents.isAtOrPastStage(TutorialStage.EXPLAIN_BUILDINGS),

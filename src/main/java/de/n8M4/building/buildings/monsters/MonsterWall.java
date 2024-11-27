@@ -43,7 +43,7 @@ public class MonsterWall extends ProductionBuilding {
         this.name = buildingName;
         this.ownerName = ownerName;
         this.portraitBlock = Blocks.POLISHED_BLACKSTONE_BRICK_WALL;
-        this.icon = new ResourceLocation("minecraft", "textures/item/polished_blackstone_brick_wall.png");
+        this.icon = new ResourceLocation("reignofnether", "textures/icons/blackstone_wall.png");
         this.foodCost = cost.food;
         this.woodCost = cost.wood;
         this.oreCost = cost.ore;
@@ -63,7 +63,7 @@ public class MonsterWall extends ProductionBuilding {
     public static AbilityButton getBuildButton(Keybinding hotkey) {
         return new AbilityButton(
                 MonsterWall.buildingName,
-                new ResourceLocation("minecraft", "textures/item/polished_blackstone_brick_wall.png"),
+                new ResourceLocation("reignofnether", "textures/icons/blackstone_wall.png"),
                 hotkey,
                 () -> BuildingClientEvents.getBuildingToPlace() == MonsterWall.class,
                 () -> !TutorialClientEvents.isAtOrPastStage(TutorialStage.EXPLAIN_BUILDINGS),

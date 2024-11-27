@@ -44,7 +44,7 @@ public class PiglinMine extends ProductionBuilding {
         this.name = buildingName;
         this.ownerName = ownerName;
         this.portraitBlock = Blocks.NETHER_BRICK_WALL;
-        this.icon = new ResourceLocation("minecraft", "textures/item/nether_brick_wall.png");
+        this.icon = new ResourceLocation("minecraft", "textures/item/minecart.png");
         this.foodCost = cost.food;
         this.woodCost = cost.wood;
         this.oreCost = cost.ore;
@@ -64,7 +64,7 @@ public class PiglinMine extends ProductionBuilding {
     public static AbilityButton getBuildButton(Keybinding hotkey) {
         return new AbilityButton(
                 PiglinMine.buildingName,
-                new ResourceLocation("minecraft", "textures/item/nether_brick_wall.png"),
+                new ResourceLocation("minecraft", "textures/item/minecart.png"),
                 hotkey,
                 () -> BuildingClientEvents.getBuildingToPlace() == PiglinMine.class,
                 () -> !TutorialClientEvents.isAtOrPastStage(TutorialStage.EXPLAIN_BUILDINGS),

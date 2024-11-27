@@ -18,6 +18,7 @@ import com.solegendary.reignofnether.unit.interfaces.WorkerUnit;
 import com.solegendary.reignofnether.ability.Ability;
 import com.solegendary.reignofnether.util.Faction;
 import de.n8M4.building.buildings.piglins.PiglinMine;
+import de.n8M4.building.buildings.piglins.PiglinWall;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -174,6 +175,7 @@ public class GruntUnit extends Piglin implements Unit, WorkerUnit, AttackerUnit,
             this.abilityButtons.add(Portal.getBuildButton(Keybindings.keyW));
             this.abilityButtons.add(NetherwartFarm.getBuildButton(Keybindings.keyE));
             this.abilityButtons.add(PiglinMine.getBuildButton(Keybindings.keyF));
+            this.abilityButtons.add(PiglinWall.getBuildButton(Keybindings.keyG));
             this.abilityButtons.add(Bastion.getBuildButton(Keybindings.keyR));
             this.abilityButtons.add(HoglinStables.getBuildButton(Keybindings.keyT));
             this.abilityButtons.add(FlameSanctuary.getBuildButton(Keybindings.keyY));

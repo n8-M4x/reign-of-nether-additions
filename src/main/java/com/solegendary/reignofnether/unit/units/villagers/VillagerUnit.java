@@ -19,6 +19,7 @@ import com.solegendary.reignofnether.unit.interfaces.WorkerUnit;
 import com.solegendary.reignofnether.ability.Ability;
 import com.solegendary.reignofnether.util.Faction;
 import de.n8M4.building.buildings.villagers.Mine;
+import de.n8M4.building.buildings.villagers.VillagerWall;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -182,6 +183,7 @@ public class VillagerUnit extends Vindicator implements Unit, WorkerUnit, Attack
             this.abilityButtons.add(VillagerHouse.getBuildButton(Keybindings.keyE));
             this.abilityButtons.add(WheatFarm.getBuildButton(Keybindings.keyR));
             this.abilityButtons.add(Mine.getBuildButton(Keybindings.keyF));
+            this.abilityButtons.add(VillagerWall.getBuildButton(Keybindings.keyG));
             this.abilityButtons.add(Watchtower.getBuildButton(Keybindings.keyT));
             this.abilityButtons.add(Barracks.getBuildButton(Keybindings.keyY));
             this.abilityButtons.add(Blacksmith.getBuildButton(Keybindings.keyU));
