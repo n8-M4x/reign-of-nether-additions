@@ -9,6 +9,7 @@ import com.solegendary.reignofnether.unit.units.monsters.*;
 import com.solegendary.reignofnether.hud.AbilityButton;
 import com.solegendary.reignofnether.resources.ResourceCosts;
 import com.solegendary.reignofnether.util.Faction;
+import de.n8M4.research.researchItems.*;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Style;
@@ -52,7 +53,10 @@ public class Graveyard extends ProductionBuilding {
                 HuskProd.getStartButton(this, Keybindings.keyQ),
                 DrownedProd.getStartButton(this, Keybindings.keyW),
                 SkeletonProd.getStartButton(this, Keybindings.keyE),
-                StrayProd.getStartButton(this, Keybindings.keyE)
+                StrayProd.getStartButton(this, Keybindings.keyE),
+                ResearchGraveyardProduction.getStartButton(this, Keybindings.keyU),
+                ResearchGraveyardProductionT2.getStartButton(this, Keybindings.keyI),
+                ResearchGraveyardProductionT3.getStartButton(this, Keybindings.keyO)
             );
     }
 

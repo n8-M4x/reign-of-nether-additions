@@ -1,5 +1,8 @@
 package com.solegendary.reignofnether.unit.units.villagers;
 
+import de.n8M4.research.researchItems.ResearchBarracksProduction;
+import de.n8M4.research.researchItems.ResearchBarracksProductionT2;
+import de.n8M4.research.researchItems.ResearchBarracksProductionT3;
 import net.minecraft.client.resources.language.I18n;
 import com.solegendary.reignofnether.ReignOfNether;
 import com.solegendary.reignofnether.building.BuildingServerboundPacket;
@@ -27,7 +30,7 @@ public class VindicatorProd extends ProductionItem {
     public final static ResourceCost cost = ResourceCosts.VINDICATOR;
 
     public VindicatorProd(ProductionBuilding building) {
-        super(building, cost.ticks);
+        super(building, (int) (cost.ticks * getSpeedMultiplier()));
         this.onComplete = (Level level) -> {
             if (!level.isClientSide())
                 building.produceUnit((ServerLevel) level, EntityRegistrar.VINDICATOR_UNIT.get(), building.ownerName, true);
@@ -37,6 +40,14 @@ public class VindicatorProd extends ProductionItem {
         this.oreCost = cost.ore;
         this.popCost = cost.population;
     }
+
+    public static double getSpeedMultiplier() {// Research Barracks Production upgrade
+        if(ResearchClient.hasResearch(ResearchBarracksProductionT3.itemName)) return 0.5;
+        if(ResearchClient.hasResearch(ResearchBarracksProductionT2.itemName)) return 0.7;
+        if(ResearchClient.hasResearch(ResearchBarracksProduction.itemName)) return 0.9;
+        return 1;
+    }
+
 
     public String getItemName() {
         return VindicatorProd.itemName;

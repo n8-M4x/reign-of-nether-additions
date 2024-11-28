@@ -77,7 +77,9 @@ public class VillagerWall extends ProductionBuilding {
                         FormattedCharSequence.forward(I18n.get("buildings.villagers.reignofnether.villager_wall"), Style.EMPTY.withBold(true)),
                         ResourceCosts.getFormattedCost(cost),
                         FormattedCharSequence.forward("", Style.EMPTY),
-                        FormattedCharSequence.forward(I18n.get("buildings.villagers.reignofnether.villager_wall.tooltip2"), Style.EMPTY)
+                        FormattedCharSequence.forward(I18n.get("buildings.villagers.reignofnether.villager_wall.tooltip2"), Style.EMPTY),
+                        FormattedCharSequence.forward("", Style.EMPTY),
+                        FormattedCharSequence.forward(I18n.get("buildings.villagers.reignofnether.villager_wall.tooltip3"), Style.EMPTY)
                 ),
                 null
 

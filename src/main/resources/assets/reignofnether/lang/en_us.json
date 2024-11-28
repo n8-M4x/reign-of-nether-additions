@@ -519,6 +519,12 @@
 
     "research.reignofnether.worker_speed": "Salary Increase",
     "research.reignofnether.worker_speed.tooltip1": "Increases the speed of your workers",
+    "research.reignofnether.prod_tier_i": "Production Time Decrease Tier I",
+    "research.reignofnether.prod_tier_i.tooltip1": "Speeds up production by 10%",
+    "research.reignofnether.prod_tier_ii": "Production Time Decrease Tier II",
+    "research.reignofnether.prod_tier_ii.tooltip1": "Speeds up production by 30%",
+    "research.reignofnether.prod_tier_iii": "Production Time Decrease Tier III",
+    "research.reignofnether.prod_tier_iii.tooltip1": "Speeds up production 50%",
 
 
     "resources.reignofnether.food": "Food",

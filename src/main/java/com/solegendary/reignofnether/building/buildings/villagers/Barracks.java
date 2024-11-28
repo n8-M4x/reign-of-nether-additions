@@ -12,6 +12,10 @@ import com.solegendary.reignofnether.tutorial.TutorialStage;
 import com.solegendary.reignofnether.unit.units.villagers.PillagerProd;
 import com.solegendary.reignofnether.unit.units.villagers.VindicatorProd;
 import com.solegendary.reignofnether.util.Faction;
+import de.n8M4.research.researchItems.ResearchBarracksProduction;
+import de.n8M4.research.researchItems.ResearchBarracksProductionT2;
+import de.n8M4.research.researchItems.ResearchBarracksProductionT3;
+import de.n8M4.research.researchItems.ResearchWorkerSpeed;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Style;
@@ -52,7 +56,10 @@ public class Barracks extends ProductionBuilding {
         if (level.isClientSide())
             this.productionButtons = Arrays.asList(
                     VindicatorProd.getStartButton(this, Keybindings.keyQ),
-                    PillagerProd.getStartButton(this, Keybindings.keyW)
+                    PillagerProd.getStartButton(this, Keybindings.keyW),
+                    ResearchBarracksProduction.getStartButton(this, Keybindings.keyE),
+                    ResearchBarracksProductionT2.getStartButton(this, Keybindings.keyR),
+                    ResearchBarracksProductionT3.getStartButton(this, Keybindings.keyT)
             );
     }
 

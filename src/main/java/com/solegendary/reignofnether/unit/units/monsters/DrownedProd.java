@@ -1,5 +1,8 @@
 package com.solegendary.reignofnether.unit.units.monsters;
 
+import de.n8M4.research.researchItems.ResearchGraveyardProduction;
+import de.n8M4.research.researchItems.ResearchGraveyardProductionT2;
+import de.n8M4.research.researchItems.ResearchGraveyardProductionT3;
 import net.minecraft.client.resources.language.I18n;
 import com.solegendary.reignofnether.ReignOfNether;
 import com.solegendary.reignofnether.building.BuildingServerboundPacket;
@@ -26,7 +29,7 @@ public class DrownedProd extends ProductionItem {
     public final static ResourceCost cost = ResourceCosts.DROWNED;
 
     public DrownedProd(ProductionBuilding building) {
-        super(building, cost.ticks);
+        super(building, (int) (cost.ticks * getSpeedMultiplier()));
         this.onComplete = (Level level) -> {
             if (!level.isClientSide())
                 building.produceUnit((ServerLevel) level, EntityRegistrar.DROWNED_UNIT.get(), building.ownerName, true);
@@ -35,6 +38,13 @@ public class DrownedProd extends ProductionItem {
         this.woodCost = cost.wood;
         this.oreCost = cost.ore;
         this.popCost = cost.population;
+    }
+
+    public static double getSpeedMultiplier() {// Research Barracks Production upgrade
+        if(ResearchClient.hasResearch(ResearchGraveyardProductionT3.itemName)) return 0.5;
+        if(ResearchClient.hasResearch(ResearchGraveyardProductionT2.itemName)) return 0.7;
+        if(ResearchClient.hasResearch(ResearchGraveyardProduction.itemName)) return 0.9;
+        return 1;
     }
 
     public String getItemName() {

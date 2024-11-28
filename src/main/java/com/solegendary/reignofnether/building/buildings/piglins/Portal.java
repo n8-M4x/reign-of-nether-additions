@@ -18,6 +18,7 @@ import com.solegendary.reignofnether.resources.ResourceCost;
 import com.solegendary.reignofnether.resources.ResourceCosts;
 import com.solegendary.reignofnether.unit.units.piglins.*;
 import com.solegendary.reignofnether.util.Faction;
+import de.n8M4.research.researchItems.*;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Style;
@@ -212,7 +213,10 @@ public class Portal extends ProductionBuilding implements NetherConvertingBuildi
                         HoglinProd.getStartButton(this, Keybindings.keyE),
                         BlazeProd.getStartButton(this, Keybindings.keyR),
                         WitherSkeletonProd.getStartButton(this, Keybindings.keyT),
-                        GhastProd.getStartButton(this, Keybindings.keyY)
+                        GhastProd.getStartButton(this, Keybindings.keyY),
+                        ResearchPortalProduction.getStartButton(this, Keybindings.keyU),
+                        ResearchPortalProductionT2.getStartButton(this, Keybindings.keyI),
+                        ResearchPortalProductionT3.getStartButton(this, Keybindings.keyO)
                     );
                 }
             }

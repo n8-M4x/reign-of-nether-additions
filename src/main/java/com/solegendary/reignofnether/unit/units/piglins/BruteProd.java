@@ -1,5 +1,7 @@
 package com.solegendary.reignofnether.unit.units.piglins;
 
+import com.solegendary.reignofnether.research.ResearchClient;
+import de.n8M4.research.researchItems.*;
 import net.minecraft.client.resources.language.I18n;
 import com.solegendary.reignofnether.ReignOfNether;
 import com.solegendary.reignofnether.building.BuildingClientEvents;
@@ -27,7 +29,7 @@ public class BruteProd extends ProductionItem {
     public final static ResourceCost cost = ResourceCosts.BRUTE;
 
     public BruteProd(ProductionBuilding building) {
-        super(building, cost.ticks);
+        super(building, (int) (cost.ticks * getSpeedMultiplier()));
         this.onComplete = (Level level) -> {
             if (!level.isClientSide())
                 building.produceUnit((ServerLevel) level, EntityRegistrar.BRUTE_UNIT.get(), building.ownerName, true);
@@ -36,6 +38,13 @@ public class BruteProd extends ProductionItem {
         this.woodCost = cost.wood;
         this.oreCost = cost.ore;
         this.popCost = cost.population;
+    }
+
+    public static double getSpeedMultiplier() {// Research Barracks Production upgrade
+        if(ResearchClient.hasResearch(ResearchPortalProductionT3.itemName)) return 0.5;
+        if(ResearchClient.hasResearch(ResearchPortalProductionT2.itemName)) return 0.7;
+        if(ResearchClient.hasResearch(ResearchPortalProduction.itemName)) return 0.9;
+        return 1;
     }
 
     public String getItemName() {
