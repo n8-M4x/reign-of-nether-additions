@@ -1,2 +1,2 @@
 [x] center buildings when placed
-[ ] speed upgrades for workers
+[x] speed upgrades for workers
