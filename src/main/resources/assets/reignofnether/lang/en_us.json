@@ -221,6 +221,9 @@
     "buildings.monsters.reignofnether.monster_wall": "Defense Wall",
     "buildings.monsters.reignofnether.monster_wall.tooltip2": "A defensive wall to protect from attacks",
     "buildings.monsters.reignofnether.monster_wall.tooltip3": "Requires a Dark Watchtower",
+    "buildings.monsters.reignofnether.mine": "Ore Mine",
+    "buildings.monsters.reignofnether.mine.tooltip2": "Not faster than regular mining but does not need ore veins nearby",
+    "buildings.monsters.reignofnether.mine.tooltip3": "Requires a Graveyard.",
 
     "buildings.piglins.reignofnether.bastion": "Bastion",
     "buildings.piglins.reignofnether.bastion.tooltip1": "A fortified barracks to house Headhunter piglins, ",
@@ -262,6 +265,10 @@
     "buildings.piglins.reignofnether.piglin_wall": "Defense Wall",
     "buildings.piglins.reignofnether.piglin_wall.tooltip2": "A defensive wall to protect from attacks",
     "buildings.piglins.reignofnether.piglin_wall.tooltip3": "Requires a Bastion",
+    "buildings.piglins.reignofnether.mine": "Ore Mine",
+    "buildings.piglins.reignofnether.mine.tooltip2": "Not faster than regular mining but does not need ore veins nearby",
+    "buildings.piglins.reignofnether.mine.tooltip3": "Requires a Portal.",
+
 
     "buildings.villagers.reignofnether.arcane_tower": "Arcane Tower",
     "buildings.villagers.reignofnether.arcane_tower.tooltip1": "A magical tower that is home to Witches and Evokers.",
@@ -509,6 +516,10 @@
     "research.reignofnether.bloodlust": "Bloodlust",
     "research.reignofnether.bloodlust.tooltip1": "Unlocks the ability for Brutes and Headhunters to trade ",
     "research.reignofnether.bloodlust.tooltip2": "life for a temporary boost to attack and move speed.",
+
+    "research.reignofnether.worker_speed": "Salary Increase",
+    "research.reignofnether.worker_speed.tooltip1": "Increases the speed of your workers",
+
 
     "resources.reignofnether.food": "Food",
     "resources.reignofnether.wood": "Wood",

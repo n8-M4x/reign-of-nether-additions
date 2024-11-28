@@ -13,6 +13,7 @@ import com.solegendary.reignofnether.unit.UnitAction;
 import com.solegendary.reignofnether.hud.Button;
 import com.solegendary.reignofnether.unit.interfaces.Unit;
 import com.solegendary.reignofnether.unit.UnitServerEvents;
+import de.n8M4.research.researchItems.ResearchWorkerSpeed;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -208,6 +209,7 @@ public abstract class ProductionBuilding extends Building {
                 case ResearchSculkAmplifiers.itemName -> prodItem = new ResearchSculkAmplifiers(building);
                 case ResearchCastleFlag.itemName -> prodItem = new ResearchCastleFlag(building);
                 case ResearchRavagerCavalry.itemName -> prodItem = new ResearchRavagerCavalry(building);
+                case ResearchWorkerSpeed.itemName -> prodItem = new ResearchWorkerSpeed(building);
                 case ResearchBruteShields.itemName -> prodItem = new ResearchBruteShields(building);
                 case ResearchHoglinCavalry.itemName -> prodItem = new ResearchHoglinCavalry(building);
                 case ResearchHeavyTridents.itemName -> prodItem = new ResearchHeavyTridents(building);

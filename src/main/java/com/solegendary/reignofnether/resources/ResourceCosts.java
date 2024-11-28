@@ -147,6 +147,9 @@ public class ResourceCosts {
     public static ResourceCost RESEARCH_CIVILIAN_PORTAL = ResourceCost.Research(0, 75, 0, 20);
     public static ResourceCost RESEARCH_MILITARY_PORTAL = ResourceCost.Research(0, 125, 0, 30);
     public static ResourceCost RESEARCH_TRANSPORT_PORTAL = ResourceCost.Research(0, 175, 0, 40);
+    //
+    public static ResourceCost RESEARCH_WORKER_SPEED = ResourceCost.Research(800, 800, 800, 90);
+
 
     // ******************* ENCHANTMENTS ******************* //
     public static ResourceCost ENCHANT_MAIMING = ResourceCost.Enchantment(0,20, 30);

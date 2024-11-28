@@ -260,9 +260,7 @@ public class GatherResourcesGoal extends MoveToTargetBlockGoal {
                             ResourcesServerEvents.fellAdjacentLogs(gatherTarget, new ArrayList<>(), this.mob.level);
 
                         if(targetFarm != null && targetFarm.name.contains("Mine")) {
-                            BlockState replaceBs;
-                            replaceBs = Blocks.COAL_ORE.defaultBlockState();
-                            this.mob.level.setBlockAndUpdate(gatherTarget, replaceBs);
+                            // replace with ore block, so it never runs out of core
 
                             Unit unit = (Unit) mob;
                             unit.getItems().add(new ItemStack(targetResourceSource.items.get(0)));

@@ -8,6 +8,7 @@ import com.solegendary.reignofnether.unit.units.villagers.VillagerProd;
 import com.solegendary.reignofnether.hud.AbilityButton;
 import com.solegendary.reignofnether.resources.ResourceCosts;
 import com.solegendary.reignofnether.util.Faction;
+import de.n8M4.research.researchItems.ResearchWorkerSpeed;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Style;
@@ -48,7 +49,8 @@ public class TownCentre extends ProductionBuilding {
 
         if (level.isClientSide())
             this.productionButtons = List.of(
-                VillagerProd.getStartButton(this, Keybindings.keyQ)
+                VillagerProd.getStartButton(this, Keybindings.keyQ),
+                ResearchWorkerSpeed.getStartButton(this, Keybindings.keyW)
             );
     }
 
