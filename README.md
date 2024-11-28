@@ -2,6 +2,10 @@
 
 This is an extension mod of the mod Reign of Nether by SoLegendary (https://github.com/SoLegendary/reignofnether) that adds new structures and game mechanics.
 
+![reignofnether_village](https://github.com/user-attachments/assets/abf34986-625e-4fcc-9e6c-730eb019ad90)
+
+
+
 # Release
 The Curseforge mod page and release files are available here:
 
