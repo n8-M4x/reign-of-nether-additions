@@ -8,6 +8,7 @@ import com.solegendary.reignofnether.resources.ResourceCost;
 import com.solegendary.reignofnether.resources.ResourceCosts;
 import com.solegendary.reignofnether.unit.units.piglins.GruntProd;
 import com.solegendary.reignofnether.util.Faction;
+import de.n8M4.research.researchItems.ResearchWorkerSpeed;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Style;
@@ -73,7 +74,8 @@ public class CentralPortal extends ProductionBuilding implements NetherConvertin
 
         if (level.isClientSide())
             this.productionButtons = Arrays.asList(
-                    GruntProd.getStartButton(this, Keybindings.keyQ)
+                    GruntProd.getStartButton(this, Keybindings.keyQ),
+                    ResearchWorkerSpeed.getStartButton(this, Keybindings.keyW)
             );
     }
 

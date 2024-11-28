@@ -12,6 +12,7 @@ import com.solegendary.reignofnether.resources.ResourceCosts;
 import com.solegendary.reignofnether.unit.units.monsters.ZombieVillagerProd;
 import com.solegendary.reignofnether.util.Faction;
 import com.solegendary.reignofnether.util.MiscUtil;
+import de.n8M4.research.researchItems.ResearchWorkerSpeed;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Style;
@@ -66,7 +67,8 @@ public class Mausoleum extends ProductionBuilding implements NightSource {
         this.startingBlockTypes.add(Blocks.STONE_BRICK_STAIRS);
 
         if (level.isClientSide()) {
-            this.productionButtons = List.of(ZombieVillagerProd.getStartButton(this, Keybindings.keyQ));
+            this.productionButtons = List.of(ZombieVillagerProd.getStartButton(this, Keybindings.keyQ),
+                    ResearchWorkerSpeed.getStartButton(this, Keybindings.keyW));
         }
         updateNightBorderBps();
     }

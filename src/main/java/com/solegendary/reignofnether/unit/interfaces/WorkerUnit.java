@@ -1,11 +1,14 @@
 package com.solegendary.reignofnether.unit.interfaces;
 
+import com.solegendary.reignofnether.research.ResearchClient;
+import com.solegendary.reignofnether.research.researchItems.ResearchRavagerCavalry;
 import com.solegendary.reignofnether.resources.ResourceSources;
 import com.solegendary.reignofnether.unit.goals.BuildRepairGoal;
 import com.solegendary.reignofnether.unit.goals.GatherResourcesGoal;
 import com.solegendary.reignofnether.unit.packets.UnitSyncClientboundPacket;
 import com.solegendary.reignofnether.unit.units.monsters.ZombieVillagerUnit;
 import com.solegendary.reignofnether.unit.units.villagers.VillagerUnit;
+import de.n8M4.research.researchItems.ResearchWorkerSpeed;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -21,9 +24,15 @@ public interface WorkerUnit {
         BuildRepairGoal buildRepairGoal = unit.getBuildRepairGoal();
         if (buildRepairGoal != null)
             buildRepairGoal.tick();
+
         GatherResourcesGoal gatherResourcesGoal = unit.getGatherResourceGoal();
         if (gatherResourcesGoal != null)
             gatherResourcesGoal.tick();
+
+        if(ResearchClient.hasResearch(ResearchWorkerSpeed.itemName)) {
+            if (buildRepairGoal != null) buildRepairGoal.tick();
+            if (gatherResourcesGoal != null) gatherResourcesGoal.tick();
+        }
 
         LivingEntity entity = (LivingEntity) unit;
         ItemStack mainHandItem = entity.getItemBySlot(EquipmentSlot.MAINHAND);
@@ -66,6 +75,7 @@ public interface WorkerUnit {
                     UnitSyncClientboundPacket.sendSyncAnimationPacket(entity,false);
             }
         }
+
     }
 
     public static void resetBehaviours(WorkerUnit unit) {
