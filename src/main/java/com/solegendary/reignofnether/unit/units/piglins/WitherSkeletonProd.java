@@ -42,7 +42,7 @@ public class WitherSkeletonProd extends ProductionItem {
         this.popCost = cost.population;
     }
 
-    public static double getSpeedMultiplier() {// Research Barracks Production upgrade
+    public static double getSpeedMultiplier() {// Research Production upgrade
         if(ResearchClient.hasResearch(ResearchPortalProductionT3.itemName)) return 0.5;
         if(ResearchClient.hasResearch(ResearchPortalProductionT2.itemName)) return 0.7;
         if(ResearchClient.hasResearch(ResearchPortalProduction.itemName)) return 0.9;

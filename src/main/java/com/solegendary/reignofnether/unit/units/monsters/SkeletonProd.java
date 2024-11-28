@@ -43,7 +43,7 @@ public class SkeletonProd extends ProductionItem {
         this.popCost = cost.population;
     }
 
-    public static double getSpeedMultiplier() {// Research Barracks Production upgrade
+    public static double getSpeedMultiplier() {// Research Production upgrade
         if(ResearchClient.hasResearch(ResearchGraveyardProductionT3.itemName)) return 0.5;
         if(ResearchClient.hasResearch(ResearchGraveyardProductionT2.itemName)) return 0.7;
         if(ResearchClient.hasResearch(ResearchGraveyardProduction.itemName)) return 0.9;
