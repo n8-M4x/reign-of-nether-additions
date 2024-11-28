@@ -1,6 +1,6 @@
 # Reign of Nether: Minecraft as an RTS
 
-This is an extension of the mod Reign of Nether by SoLegendary (https://github.com/SoLegendary/reignofnether) that adds new structures and game mechanics.
+This is an extension of the mod [Reign of Nether](https://github.com/SoLegendary/reignofnether) by [SoLegendary](https://github.com/SoLegendary/) that adds new structures and game mechanics.
 
 ![reignofnether_village](https://github.com/user-attachments/assets/abf34986-625e-4fcc-9e6c-730eb019ad90)
 
