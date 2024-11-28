@@ -78,7 +78,9 @@ public class MonsterMine extends ProductionBuilding {
                         FormattedCharSequence.forward(I18n.get("buildings.villagers.reignofnether.mine"), Style.EMPTY.withBold(true)),
                         ResourceCosts.getFormattedCost(cost),
                         FormattedCharSequence.forward("", Style.EMPTY),
-                        FormattedCharSequence.forward(I18n.get("buildings.villagers.reignofnether.mine.tooltip2"), Style.EMPTY)
+                        FormattedCharSequence.forward(I18n.get("buildings.villagers.reignofnether.mine.tooltip2"), Style.EMPTY),
+                        FormattedCharSequence.forward("", Style.EMPTY),
+                        FormattedCharSequence.forward(I18n.get("buildings.villagers.reignofnether.mine.tooltip3"), Style.EMPTY)
                 ),
                 null
 

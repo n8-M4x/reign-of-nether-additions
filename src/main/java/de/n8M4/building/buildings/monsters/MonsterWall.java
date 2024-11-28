@@ -76,7 +76,9 @@ public class MonsterWall extends ProductionBuilding {
                         FormattedCharSequence.forward(I18n.get("buildings.monsters.reignofnether.monster_wall"), Style.EMPTY.withBold(true)),
                         ResourceCosts.getFormattedCost(cost),
                         FormattedCharSequence.forward("", Style.EMPTY),
-                        FormattedCharSequence.forward(I18n.get("buildings.monsters.reignofnether.monster_wall.tooltip2"), Style.EMPTY)
+                        FormattedCharSequence.forward(I18n.get("buildings.monsters.reignofnether.monster_wall.tooltip2"), Style.EMPTY),
+                        FormattedCharSequence.forward("", Style.EMPTY),
+                        FormattedCharSequence.forward(I18n.get("buildings.monsters.reignofnether.monster_wall.tooltip3"), Style.EMPTY)
                 ),
                 null
 

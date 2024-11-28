@@ -220,7 +220,7 @@
 
     "buildings.monsters.reignofnether.monster_wall": "Defense Wall",
     "buildings.monsters.reignofnether.monster_wall.tooltip2": "A defensive wall to protect from attacks",
-
+    "buildings.monsters.reignofnether.monster_wall.tooltip3": "Requires a Dark Watchtower",
 
     "buildings.piglins.reignofnether.bastion": "Bastion",
     "buildings.piglins.reignofnether.bastion.tooltip1": "A fortified barracks to house Headhunter piglins, ",
@@ -261,7 +261,7 @@
 
     "buildings.piglins.reignofnether.piglin_wall": "Defense Wall",
     "buildings.piglins.reignofnether.piglin_wall.tooltip2": "A defensive wall to protect from attacks",
-
+    "buildings.piglins.reignofnether.piglin_wall.tooltip3": "Requires a Bastion",
 
     "buildings.villagers.reignofnether.arcane_tower": "Arcane Tower",
     "buildings.villagers.reignofnether.arcane_tower.tooltip1": "A magical tower that is home to Witches and Evokers.",
@@ -305,9 +305,10 @@
 
     "buildings.villagers.reignofnether.mine": "Ore Mine",
     "buildings.villagers.reignofnether.mine.tooltip2": "Not faster than regular mining but does not need ore veins nearby",
+    "buildings.villagers.reignofnether.mine.tooltip3": "Requires a Barracks.",
     "buildings.villagers.reignofnether.villager_wall": "Defense Wall",
     "buildings.villagers.reignofnether.villager_wall.tooltip2": "A defensive wall to protect from attacks",
-
+    "buildings.villagers.reignofnether.villager_wall.tooltip3": "Requires a Watchtower.",
 
     "commands.reignofnether.toggle_fow": "%s - Toggle fog of war for all players",
     "commands.reignofnether.surrender": "%s - Concede the match",
