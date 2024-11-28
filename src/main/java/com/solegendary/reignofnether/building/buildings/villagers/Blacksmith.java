@@ -14,6 +14,9 @@ import com.solegendary.reignofnether.tutorial.TutorialClientEvents;
 import com.solegendary.reignofnether.tutorial.TutorialStage;
 import com.solegendary.reignofnether.unit.units.villagers.IronGolemProd;
 import com.solegendary.reignofnether.util.Faction;
+import de.n8M4.research.researchItems.ResearchBarracksProduction;
+import de.n8M4.research.researchItems.ResearchBarracksProductionT2;
+import de.n8M4.research.researchItems.ResearchBarracksProductionT3;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Style;
@@ -56,7 +59,10 @@ public class Blacksmith extends ProductionBuilding {
                 IronGolemProd.getStartButton(this, Keybindings.keyQ),
                 //ResearchVindicatorAxes.getStartButton(this, Keybindings.keyW),
                 //ResearchPillagerCrossbows.getStartButton(this, Keybindings.keyE),
-                ResearchGolemSmithing.getStartButton(this, Keybindings.keyW)
+                ResearchGolemSmithing.getStartButton(this, Keybindings.keyW),
+                    ResearchBarracksProduction.getStartButton(this, Keybindings.keyE),
+                    ResearchBarracksProductionT2.getStartButton(this, Keybindings.keyR),
+                    ResearchBarracksProductionT3.getStartButton(this, Keybindings.keyT)
             );
     }
 
