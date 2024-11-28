@@ -150,17 +150,17 @@ public class ResourceCosts {
     //
     public static ResourceCost RESEARCH_WORKER_SPEED = ResourceCost.Research(800, 800, 800, 90);
 
-    public static ResourceCost RESEARCH_BARRACKS_PROD_TIER_I = ResourceCost.Research(150, 0, 0, 10);
-    public static ResourceCost RESEARCH_BARRACKS_PROD_TIER_II = ResourceCost.Research(450, 0, 0, 20);
-    public static ResourceCost RESEARCH_BARRACKS_PROD_TIER_III = ResourceCost.Research(750, 0, 0, 30);
+    public static ResourceCost RESEARCH_BARRACKS_PROD_TIER_I = ResourceCost.Research(250, 0, 0, 10);
+    public static ResourceCost RESEARCH_BARRACKS_PROD_TIER_II = ResourceCost.Research(650, 0, 0, 20);
+    public static ResourceCost RESEARCH_BARRACKS_PROD_TIER_III = ResourceCost.Research(1750, 0, 0, 30);
 
-    public static ResourceCost RESEARCH_PORTAL_PROD_TIER_I = ResourceCost.Research(150, 0, 0, 10);
-    public static ResourceCost RESEARCH_PORTAL_PROD_TIER_II = ResourceCost.Research(450, 0, 0, 20);
-    public static ResourceCost RESEARCH_PORTAL_PROD_TIER_III = ResourceCost.Research(750, 0, 0, 30);
+    public static ResourceCost RESEARCH_PORTAL_PROD_TIER_I = ResourceCost.Research(250, 0, 0, 10);
+    public static ResourceCost RESEARCH_PORTAL_PROD_TIER_II = ResourceCost.Research(650, 0, 0, 20);
+    public static ResourceCost RESEARCH_PORTAL_PROD_TIER_III = ResourceCost.Research(1750, 0, 0, 30);
 
-    public static ResourceCost RESEARCH_GRAVEYARD_PROD_TIER_I = ResourceCost.Research(150, 0, 0, 10);
-    public static ResourceCost RESEARCH_GRAVEYARD_PROD_TIER_II = ResourceCost.Research(450, 0, 0, 20);
-    public static ResourceCost RESEARCH_GRAVEYARD_PROD_TIER_III = ResourceCost.Research(750, 0, 0, 30);
+    public static ResourceCost RESEARCH_GRAVEYARD_PROD_TIER_I = ResourceCost.Research(250, 0, 0, 10);
+    public static ResourceCost RESEARCH_GRAVEYARD_PROD_TIER_II = ResourceCost.Research(650, 0, 0, 20);
+    public static ResourceCost RESEARCH_GRAVEYARD_PROD_TIER_III = ResourceCost.Research(1750, 0, 0, 30);
 
 
 
